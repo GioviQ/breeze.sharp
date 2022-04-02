@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Breeze.Sharp;
 using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Foo;
-using System.Collections.Specialized;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
@@ -21,7 +17,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestInitialize]
     public void TestInitializeMethod() {
-      Configuration.Instance.ProbeAssemblies(typeof (Customer).Assembly);
+      Configuration.Instance.ProbeAssemblies(typeof(Customer).Assembly);
       _serviceName = TestFns.serviceName;
     }
 
@@ -36,7 +32,7 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var emp = new Employee();
-      var inde = (INotifyDataErrorInfo) emp;
+      var inde = (INotifyDataErrorInfo)emp;
       Assert.IsTrue(!inde.HasErrors);
       var eventArgsList = new List<DataErrorsChangedEventArgs>();
       inde.ErrorsChanged += (s, e) => {
@@ -85,13 +81,13 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var vr = new RequiredValidator();
-      var vrNode = ((IJsonSerializable) vr).ToJNode(null);
+      var vrNode = ((IJsonSerializable)vr).ToJNode(null);
       var vr2 = Validator.FindOrCreate(vrNode);
       var vr3 = Validator.FindOrCreate(vrNode);
       Assert.IsTrue(vr2 == vr3);
 
       var mlVr = new MaxLengthValidator(17);
-      var mlVrNode = ((IJsonSerializable) mlVr).ToJNode(null);
+      var mlVrNode = ((IJsonSerializable)mlVr).ToJNode(null);
       var mlVr2 = Validator.FindOrCreate(mlVrNode);
       var mlVr3 = Validator.FindOrCreate(mlVrNode);
       Assert.IsTrue(mlVr2 == mlVr3);
@@ -175,9 +171,9 @@ namespace Breeze.Sharp.Tests {
 
         Assert.IsTrue(ves.Any(ve => ve.Message.Contains("LastName") && ve.Message.Contains("required")));
         Assert.IsTrue(ves.All(ve => ve.Context.Entity == emp));
-        var msg = ves.Select(ve => 
-          ve.Validator.GetType() + " " 
-          + ve.Key + " " + 
+        var msg = ves.Select(ve =>
+          ve.Validator.GetType() + " "
+          + ve.Key + " " +
           (ve.Validator.Equals(new RequiredValidator().Intern())).ToString()
         ).ToAggregateString(" ,");
         Assert.IsTrue(ves.Any(ve => ve.Validator.Equals(new RequiredValidator().Intern())),
@@ -225,7 +221,7 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var emp = new Employee();
-      var vr = new RequiredValidator().WithMessage(typeof (Model.NorthwindIB.CustomMessages1));
+      var vr = new RequiredValidator().WithMessage(typeof(Model.NorthwindIB.CustomMessages1));
       var dp = emp.EntityAspect.EntityType.GetDataProperty("LastName");
       var vc = new ValidationContext(emp, dp, null);
       var ve = vr.Validate(vc);
@@ -242,7 +238,7 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var emp = new Employee();
-      var vr = new RequiredValidator().WithMessage("Model.NorthwindIB.CustomMessages2", typeof (Employee).Assembly);
+      var vr = new RequiredValidator().WithMessage("Model.NorthwindIB.CustomMessages2", typeof(Employee).Assembly);
       var dp = emp.EntityAspect.EntityType.GetDataProperty("LastName");
       var vc = new ValidationContext(emp, dp, null);
       var ve = vr.Validate(vc);
@@ -258,7 +254,7 @@ namespace Breeze.Sharp.Tests {
     public async Task CustomPropertyValidator() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var custType = em1.MetadataStore.GetEntityType(typeof (Customer));
+      var custType = em1.MetadataStore.GetEntityType(typeof(Customer));
       var countryProp = custType.GetDataProperty("Country");
       try {
         countryProp.Validators.Add(new CountryValidator("US"));
@@ -270,8 +266,7 @@ namespace Breeze.Sharp.Tests {
         em1.AttachEntity(cust);
         Assert.IsTrue(valErrors.Count == 1);
         Assert.IsTrue(valErrors.First().Message.Contains("must start with"));
-      }
-      finally {
+      } finally {
         countryProp.Validators.Remove(new CountryValidator("US"));
       }
     }
@@ -286,7 +281,7 @@ namespace Breeze.Sharp.Tests {
       public string CountryAbbrev { get; private set; }
 
       protected override bool ValidateCore(ValidationContext context) {
-        var value = (string) context.PropertyValue;
+        var value = (string)context.PropertyValue;
         if (value == null) return true;
         return value.StartsWith(CountryAbbrev);
       }
@@ -309,15 +304,15 @@ namespace Breeze.Sharp.Tests {
 
     [TestMethod]
     public async Task EmailValidator() {
-       var em1 = await TestFns.NewEm(_serviceName);
+      var em1 = await TestFns.NewEm(_serviceName);
 
-       var custType = em1.MetadataStore.GetEntityType(typeof(Customer));
+      var custType = em1.MetadataStore.GetEntityType(typeof(Customer));
       var validator = new EmailValidator();
       var validators = custType.GetDataProperty("Address").Validators;
       try {
         validators.Add(validator);
         custType.GetDataProperty("Address").Validators.Add(validator);
-        var cust = new Customer() {CompanyName = "Foo"};
+        var cust = new Customer() { CompanyName = "Foo" };
         em1.AddEntity(cust);
         var valErrors = cust.EntityAspect.ValidationErrors;
         CustPropValAssert(cust, "asdf", 1);
@@ -326,8 +321,7 @@ namespace Breeze.Sharp.Tests {
 
         CustPropValAssert(cust, null, 0);
         CustPropValAssert(cust, "john.doe@abc.com", 0);
-      }
-      finally {
+      } finally {
         validators.Remove(validator);
       }
     }
@@ -385,7 +379,7 @@ namespace Breeze.Sharp.Tests {
         validators.Remove(validator);
       }
     }
-    
+
     [TestMethod]
     public async Task CustomRegexValidator() {
       var em1 = await TestFns.NewEm(_serviceName);
@@ -408,7 +402,7 @@ namespace Breeze.Sharp.Tests {
         CustPropValAssert(cust, "CA", 0);
         CustPropValAssert(cust, "AZ", 0);
         CustPropValAssert(cust, "WY", 0);
-        
+
       } finally {
         validators.Remove(validator);
       }
@@ -429,16 +423,16 @@ namespace Breeze.Sharp.Tests {
         CustPropValAssert(cust, "asdf", 1);
         Assert.IsTrue(valErrors.First().Message.Contains("url"));
         CustPropValAssert(cust, "Pennsylvania 6500", 1);
-        CustPropValAssert(cust, "1234567", 1); 
+        CustPropValAssert(cust, "1234567", 1);
         CustPropValAssert(cust, "traband.contuso.com", 1); // protocol missing
-        
+
         CustPropValAssert(cust, null, 0);
-        CustPropValAssert(cust, "http://traband", 0); 
+        CustPropValAssert(cust, "http://traband", 0);
         CustPropValAssert(cust, "http://traband.contoso.com", 0);
         CustPropValAssert(cust, "https://traband.contoso.com", 0);
         CustPropValAssert(cust, "ftp://traband.contoso.com", 0);
         CustPropValAssert(cust, "http://traband.contoso.commiepinko", 0);
-        
+
 
       } finally {
         validators.Remove(validator);
@@ -447,7 +441,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestMethod]
     public void RestoreValidatorFromMetadata() {
-      
+
       Configuration.Instance.ProbeAssemblies(typeof(Customer).Assembly);
       var em1 = new EntityManager(_serviceName);
 
@@ -464,8 +458,8 @@ namespace Breeze.Sharp.Tests {
       var validators = countryProp2.Validators;
       var cv = validators.FirstOrDefault(v => v is CountryValidator);
       Assert.IsTrue(cv != null, "should have found the validator");
-      Assert.IsTrue(((CountryValidator) cv).CountryAbbrev == "XY");
-      
+      Assert.IsTrue(((CountryValidator)cv).CountryAbbrev == "XY");
+
     }
 
     //test("custom entity validation - register validator", function () {
@@ -500,7 +494,7 @@ namespace Breeze.Sharp.Tests {
     //    valErrors = cust1.entityAspect.getValidationErrors();
     //    ok(valErrors.length === 1, "length should be 0");
     //});
-    
+
 
   }
 }

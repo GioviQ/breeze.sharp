@@ -28,10 +28,10 @@ namespace Breeze.Sharp {
 
     public abstract EntityState EntityState { get; set; }
 
-    public abstract EntityVersion EntityVersion { get; internal set;  }
+    public abstract EntityVersion EntityVersion { get; internal set; }
 
     public abstract IEnumerable<ValidationError> GetValidationErrors(string propertyPath);
-     
+
     public abstract StructuralType StructuralType { get; }
 
     public bool Initialized { get; private set; }
@@ -76,11 +76,11 @@ namespace Breeze.Sharp {
     }
 
     public T GetValue<T>(StructuralProperty prop) {
-      return (T) GetRawValue(prop.Name);
+      return (T)GetRawValue(prop.Name);
     }
 
     public T GetValue<T>(string propertyName) {
-      return (T) GetRawValue(propertyName);
+      return (T)GetRawValue(propertyName);
     }
 
     public object GetValue(DataProperty property, EntityVersion version) {
@@ -175,7 +175,7 @@ namespace Breeze.Sharp {
         var ve = ValidateCore(vr, vc);
       }
 
-      
+
     }
 
     // called internally by property set logic
@@ -215,9 +215,9 @@ namespace Breeze.Sharp {
       //if (initAction != null) {
       //  initAction(so);
       //}
-      
+
       StructuralType.ComplexProperties.ForEach(cp => {
-        var co = (IComplexObject) GetValue(cp);
+        var co = (IComplexObject)GetValue(cp);
         co.ComplexAspect.Initialize();
       });
       Initialized = true;
@@ -294,8 +294,8 @@ namespace Breeze.Sharp {
       ProcessComplexProperties((co) => co.ComplexAspect.ClearBackupVersion(version));
     }
 
-    
-    protected internal virtual void RestoreBackupVersion( EntityVersion version) {
+
+    protected internal virtual void RestoreBackupVersion(EntityVersion version) {
       var backupMap = GetBackupMap(version, true);
       if (backupMap != null) {
         backupMap.ForEach(kvp => {
@@ -360,7 +360,7 @@ namespace Breeze.Sharp {
     private ReadOnlyDictionary<string, object> HandleNull(BackupValuesMap map) {
       return (map ?? BackupValuesMap.Empty).ReadOnlyDictionary;
     }
-    
+
     internal BackupValuesMap _originalValuesMap;
     internal BackupValuesMap _preproposedValuesMap;
 

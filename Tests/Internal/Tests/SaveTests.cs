@@ -1,20 +1,11 @@
-﻿using System;
+﻿using Breeze.Sharp;
+using Breeze.Sharp.Core;
+using Foo;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Foo;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using Newtonsoft.Json.Linq;
-using System.Dynamic;
-using System.Net.Http;
 
 namespace Breeze.Sharp.Tests {
 
@@ -31,7 +22,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
     //[TestMethod]
@@ -40,7 +31,7 @@ namespace Breeze.Sharp.Tests {
 
     //  var user = new User() {UserName = "Test1", FirstName = "John", 
     //    LastName = "Smith", Email="xxx", CreatedBy = "JJT"};
-      
+
     //  // user.CreatedDate is not set - so value will be DateTime.Min which is out of range of 
     //  em1.AddEntity(user);
     //  var sr1 = await em1.SaveChanges();
@@ -59,14 +50,12 @@ namespace Breeze.Sharp.Tests {
       try {
         var sr = await em.SaveChanges();
         Assert.Fail("should not get here");
-      }
-      catch (SaveException se) {
+      } catch (SaveException se) {
         Assert.IsTrue(true, se.Message);
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         Assert.Fail(e.Message);
       }
-      
+
     }
 
 
@@ -75,7 +64,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestMethod]
     public async Task NullableInt() {
-      
+
       var em = await TestFns.NewEm(_serviceName);
       var emp = new Employee() {
         FirstName = "Test",
@@ -91,8 +80,7 @@ namespace Breeze.Sharp.Tests {
       try {
         var sr2 = await em.SaveChanges();
         Assert.Fail("should not get here");
-      }
-      catch (SaveException e) {
+      } catch (SaveException e) {
         Assert.IsTrue(e.Message.Contains("constraint"), "error should mention fk constraint violation");
       }
       emp.EntityAspect.Delete();
@@ -187,7 +175,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(!em1.HasChanges());
     }
 
-    
+
 
     [TestMethod]
     public async Task SaveCustomersAndNewOrder() {
@@ -221,7 +209,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(em1.HasChanges() == false, "hasChanges should be false");
       Assert.IsTrue(em1.GetChanges().Count() == 0, "should be no changes left");
     }
-    
+
     [TestMethod]
     public async Task SaveModifiedCustomers() {
       var em1 = await TestFns.NewEm(_serviceName);
@@ -232,14 +220,14 @@ namespace Breeze.Sharp.Tests {
       custs.ForEach(c => c.Fax = TestFns.MorphString(c.Fax));
       var saveResult = await em1.SaveChanges();
       Assert.IsTrue(saveResult.Entities.Count == custs.Count());
-      
+
     }
 
     [TestMethod]
     public async Task NullableProperty() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var emp = new Employee() { FirstName = "Test Joe", LastName = "Test Smith" , BirthDate = DateTime.Now };
+      var emp = new Employee() { FirstName = "Test Joe", LastName = "Test Smith", BirthDate = DateTime.Now };
       Assert.IsTrue(emp.BirthDate != null);
       em1.AddEntity(emp);
       Assert.IsTrue(emp.BirthDate != null);
@@ -273,7 +261,7 @@ namespace Breeze.Sharp.Tests {
       var custCount = em1.GetEntities<Customer>().Count();
       Assert.IsTrue(em1.HasChanges(), "hasChanges should be true");
       Assert.IsTrue(em1.GetChanges().Count() > 0, "should have changes");
-      var saveResult = await em1.SaveChanges( new IEntity[] { custs[0], cust1, order1 });
+      var saveResult = await em1.SaveChanges(new IEntity[] { custs[0], cust1, order1 });
       Assert.IsTrue(custs[1].EntityAspect.EntityState.IsModified());
       Assert.IsTrue(saveResult.Entities.Count == 3, "should have returned the correct number of entities");
       Assert.IsTrue(order1Key != order1.EntityAspect.EntityKey, "order1 entityKey should have changed");
@@ -303,7 +291,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(sr.Entities.First() == emp, "should be the same emp");
       var em2 = new EntityManager(em1);
       em2.ImportEntities(em1.ExportEntities());
-      var sameEmp = (Employee) em2.GetEntities().First();
+      var sameEmp = (Employee)em2.GetEntities().First();
       Assert.IsTrue(emp.EntityAspect.EntityKey == sameEmp.EntityAspect.EntityKey, "should have the same key");
       sameEmp.EntityAspect.Delete();
       Assert.IsTrue(sameEmp.EntityAspect.EntityState.IsDeleted());
@@ -327,7 +315,7 @@ namespace Breeze.Sharp.Tests {
       try {
         var sr = await em1.SaveChanges();
         Assert.Fail("should not get here");
-      } catch(SaveException e) {
+      } catch (SaveException e) {
         Assert.IsTrue(e.Message.Contains("part of the entity's key"), "message should mention entity's key");
       }
 
@@ -465,7 +453,7 @@ namespace Breeze.Sharp.Tests {
 
       var product = CreateProduct(em1);
       var sr = await em1.SaveChanges();
-      
+
       Assert.IsTrue(sr.Entities.Count == 1, "should have saved 1 entity");
       var order = CreateOrder(em1);
       var orderDetail = CreateOrderDetail(em1, order, product);
@@ -490,7 +478,7 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task InsertEntityWithMultipartKey2() {
       var em1 = await TestFns.NewEm(_serviceName);
-      
+
       var order = CreateOrder(em1);
       var product = CreateProduct(em1);
       var orderDetail = CreateOrderDetail(em1, order, product);
@@ -549,8 +537,7 @@ namespace Breeze.Sharp.Tests {
     }
 
     [TestMethod]
-    public async Task SaveKeyGenerator()
-    {
+    public async Task SaveKeyGenerator() {
       var em1 = await TestFns.NewEm(_serviceName);
       var regionType = em1.MetadataStore.GetEntityType(typeof(Region));
       regionType.AutoGeneratedKeyType = AutoGeneratedKeyType.KeyGenerator;
@@ -584,7 +571,7 @@ namespace Breeze.Sharp.Tests {
     //    var em = newEm();
     //    var zzz = createParentAndChildren(em);
     //    var cust1 = zzz.cust1;
-        
+
     //    stop();
     //    em.saveChanges().then(function (sr) {
     //        zzz.cust1.setProperty("contactName", "foo");
@@ -690,7 +677,7 @@ namespace Breeze.Sharp.Tests {
     //       ok(errors[0].errorMessage === e2.entityErrors[0].errorMessage, "error message should appear on the cust");
     //    }).fin(start);
     //});
- 
+
     //test("add UserRole", function () {
     //    if (testFns.DEBUG_MONGO) {
     //        ok(true, "TODO for Mongo - needs to be written specifically for Mongo - should succeed in Mongo");
@@ -723,7 +710,7 @@ namespace Breeze.Sharp.Tests {
     //        ok(roleId2 === roleId, "roleIds match");
     //        var userId2 = resultRole.getProperty("userId");
     //        ok(userId2 === userId, "userIds match");
-            
+
     //        // delete entity
     //        resultRole.entityAspect.setDeleted();
     //        return em.saveChanges();

@@ -25,7 +25,7 @@ namespace Breeze.Sharp {
       // noop
     }
 
-    
+
 
     #region syntactic sugar helper methods 
 
@@ -99,5 +99,5 @@ namespace Breeze.Sharp {
     }
   }
 
-  
+
 }

@@ -1,20 +1,16 @@
 
+using Breeze.Sharp.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp.Core;
 
 namespace Breeze.Sharp {
 
   #region EntityGroup
-  
-  internal class EntityGroup : IGrouping<Type, EntityAspect>  {
+
+  internal class EntityGroup : IGrouping<Type, EntityAspect> {
 
     #region ctors
 
@@ -39,7 +35,7 @@ namespace Breeze.Sharp {
       EntityManager = em;
       EntityType = em.MetadataStore.GetEntityType(ClrType);
       // insure that any added table can watch for change events
-      ChangeNotificationEnabled = em.ChangeNotificationEnabled;      
+      ChangeNotificationEnabled = em.ChangeNotificationEnabled;
     }
 
 
@@ -57,7 +53,7 @@ namespace Breeze.Sharp {
     /// </summary>
     public EntityType EntityType {
       get;
-      internal set; 
+      internal set;
     }
 
     /// <summary>
@@ -267,10 +263,10 @@ namespace Breeze.Sharp {
       _entityKeyMap.Remove(aspect.EntityKey);
     }
 
-   
+
     #endregion
 
- 
+
 
     #region explict interfaces
 
@@ -290,7 +286,7 @@ namespace Breeze.Sharp {
 
     #region Fields
 
-    
+
     // this member will only exist on EntityCache's sent from the server to the client
     // it should always be null on persistent client side entity sets
     private EntityCollection _entityAspects;

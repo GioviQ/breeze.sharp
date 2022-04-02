@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
+﻿using Foo;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Foo;
-using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
@@ -26,7 +18,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
     [TestMethod]
@@ -34,7 +26,7 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var customer = new Customer();
-      
+
       Assert.IsTrue(customer.EntityAspect.EntityState.IsDetached());
       ((IEditableObject)customer).BeginEdit();
       try {

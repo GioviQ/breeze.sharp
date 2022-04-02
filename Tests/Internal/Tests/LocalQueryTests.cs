@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Foo;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
-using System.Linq;
-using Breeze.Sharp.Core;
-using Breeze.Sharp;
+using System;
 using System.Collections.Generic;
-using Foo;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
@@ -22,7 +20,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
     [TestMethod]
@@ -45,7 +43,7 @@ namespace Breeze.Sharp.Tests {
       var q1 = new EntityQuery<Customer>().Expand("Orders");
       var r1 = q1.ExecuteLocally(em1);
       Assert.IsTrue(r0.Count() == r1.Count());
-      
+
     }
 
     [TestMethod]
@@ -88,7 +86,7 @@ namespace Breeze.Sharp.Tests {
       var q = new EntityQuery<Customer>().Take(3);
       var r = await em1.ExecuteQuery(q);
       Assert.IsTrue(r.Count() == 3, "should be no results");
-      var q1 = new EntityQuery<Customer>().Where(c => c.CustomerID.Equals(Guid.NewGuid())); 
+      var q1 = new EntityQuery<Customer>().Where(c => c.CustomerID.Equals(Guid.NewGuid()));
       var r1 = q1.ExecuteLocally(em1);
       Assert.IsTrue(r1.Count() == 0);
 
@@ -101,7 +99,7 @@ namespace Breeze.Sharp.Tests {
       var q = new EntityQuery<Customer>().Take(3);
       var r = await em1.ExecuteQuery(q);
       Assert.IsTrue(r.Count() == 3, "should be no results");
-      
+
       var q1 = new EntityQuery<Order>().Where(o => o.CustomerID == Guid.NewGuid()); // && true);
       var r1 = q1.ExecuteLocally(em1);
       Assert.IsTrue(r1.Count() == 0);
@@ -188,7 +186,7 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task WhereOrderByTake() {
       var em1 = await TestFns.NewEm(_serviceName);
-      
+
       var q = new EntityQuery<Foo.Customer>("Customers");
       // to fill the cache
       var r = await em1.ExecuteQuery(q.Take(5));
@@ -217,12 +215,12 @@ namespace Breeze.Sharp.Tests {
 
       // This only works because we insure that the order exists in cache before the query
       var r1Local = q1.ExecuteLocally(em1);
-      
+
       Assert.IsTrue(r1Local.Count() == r1.Count());
       ok = r1Local.All(r => r.Customer.Orders.Count >= 1);
       Assert.IsTrue(ok, "Order's per customer should be >= one for now because that's what we cached");
       ok = r1Local.All(r => r.Customer.GetType() == typeof(Customer));
-      Assert.IsTrue(ok );
+      Assert.IsTrue(ok);
 
     }
 
@@ -297,7 +295,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(r2.Cast<Customer>().First() == customer);
       var r2Local = em1.ExecuteQueryLocally((EntityQuery<Customer>)q2);
       Assert.IsTrue(r2Local.First() == customer);
-      
+
     }
 
     [TestMethod]
@@ -307,13 +305,13 @@ namespace Breeze.Sharp.Tests {
 
       var r = await em1.ExecuteQuery(q);
       Assert.IsTrue(r.Any());
-      
+
     }
 
-    
 
-    
+
+
   }
 }
 
-  
+

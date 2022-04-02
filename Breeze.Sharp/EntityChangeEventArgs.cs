@@ -1,9 +1,5 @@
-﻿
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breeze.Sharp {
 
@@ -20,7 +16,7 @@ namespace Breeze.Sharp {
     /// <param name="entity"></param>
     /// <param name="entityAction"></param>
     /// <param name="actionEventArgs"></param>
-    protected EntityChangeEventArgs(IEntity entity, EntityAction entityAction, EventArgs actionEventArgs = null) 
+    protected EntityChangeEventArgs(IEntity entity, EntityAction entityAction, EventArgs actionEventArgs = null)
       : base() {
       Entity = entity;
       Action = entityAction;
@@ -46,7 +42,7 @@ namespace Breeze.Sharp {
     /// Action that caused this change.
     /// </summary>
     public EntityAction Action {
-      get; 
+      get;
       private set;
     }
 
@@ -54,13 +50,13 @@ namespace Breeze.Sharp {
     /// The EventArgs ( if any) that are associated with this specified EntityAction.
     /// </summary>
     public EventArgs ActionEventArgs {
-      get; 
+      get;
       private set;
     }
 
   }
 
-  
+
   /// <summary>
   /// Provides information to the <see cref="E:Breeze.Sharp.EntityGroup.EntityChanging"/> event.
   /// </summary>
@@ -92,7 +88,7 @@ namespace Breeze.Sharp {
 
 
   }
-  
+
 
   /// <summary>
   /// Provides information to the <see cref="E:Breeze.Sharp.EntityGroup.EntityChanged"/> event.
@@ -110,11 +106,11 @@ namespace Breeze.Sharp {
     /// <param name="action"></param>
     /// <param name="actionEventArgs"></param>
     public EntityChangedEventArgs(IEntity entity, EntityAction action, EventArgs actionEventArgs)
-      : base(entity, action, actionEventArgs ) {
-      
+      : base(entity, action, actionEventArgs) {
+
     }
 
-    
+
   }
 
   #endregion

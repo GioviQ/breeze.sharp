@@ -7,12 +7,12 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class StandaloneTests {
 
-    
+
 
     [TestInitialize]
     public void TestInitializeMethod() {
       Configuration.__Reset();
-      
+
     }
 
     [TestCleanup]
@@ -23,7 +23,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestMethod]
     public async Task NoClrTypes() {
-      
+
       var serviceName = TestFns.serviceName;
       var ds = new DataService(serviceName);
       try {
@@ -36,17 +36,16 @@ namespace Breeze.Sharp.Tests {
       try {
         var em = new EntityManager(ds);
         await em.FetchMetadata();
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         Assert.IsTrue(e.Message.Contains("Configuration.Instance"), e.Message);
       }
     }
 
-    
 
-    
+
+
   }
 
 
-    
+
 }

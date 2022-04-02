@@ -1,11 +1,9 @@
-using System.Collections.ObjectModel;
-
 using Breeze.Sharp.Core;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-
-using Newtonsoft.Json;
 
 namespace Breeze.Sharp {
 
@@ -31,7 +29,7 @@ namespace Breeze.Sharp {
     /// <param name="serverNameInfo"></param>
     /// <returns></returns>
     public virtual TypeNameInfo ServerTypeNameToClient(TypeNameInfo serverNameInfo) {
-      
+
       string clientNs;
       if (_serverClientNamespaceMap == null) {
         _serverClientNamespaceMap = _clientServerNamespaceMap.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
@@ -59,7 +57,7 @@ namespace Breeze.Sharp {
     /// <param name="clientNameInfo"></param>
     /// <returns></returns>
     public virtual TypeNameInfo ClientTypeNameToServer(TypeNameInfo clientNameInfo) {
-      
+
       string serverNs;
       if (_clientServerNamespaceMap.TryGetValue(clientNameInfo.Namespace, out serverNs)) {
         return new TypeNameInfo(clientNameInfo.ShortName, serverNs);
@@ -104,7 +102,7 @@ namespace Breeze.Sharp {
     }
 
     protected virtual NamingConvention Clone() {
-      return (NamingConvention) ToJNode().ToObject(GetType(), true);
+      return (NamingConvention)ToJNode().ToObject(GetType(), true);
     }
 
     [JsonIgnore]
@@ -151,13 +149,13 @@ namespace Breeze.Sharp {
   /// If a more complicated version is needed then another type should be created that 
   /// inherits from NamingConvention.
   /// </summary>
-  public class CamelCasePropertiesNamingConvention : NamingConvention  {
+  public class CamelCasePropertiesNamingConvention : NamingConvention {
     public CamelCasePropertiesNamingConvention() {
-      
+
     }
-    
+
     public override string ServerPropertyNameToClient(string serverName, StructuralType parentType) {
-      return serverName.Substring(0,1).ToLower() + serverName.Substring(1);
+      return serverName.Substring(0, 1).ToLower() + serverName.Substring(1);
     }
     public override string ClientPropertyNameToServer(string clientName, StructuralType parentType) {
       return clientName.Substring(0, 1).ToUpper() + clientName.Substring(1);

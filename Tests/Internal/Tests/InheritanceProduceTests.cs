@@ -1,13 +1,10 @@
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
-using System.Linq;
-using Breeze.Sharp.Core;
 using Breeze.Sharp;
-using System.Collections.Generic;
-
+using Breeze.Sharp.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.Inheritance.Produce;
-using System.Collections;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
@@ -31,7 +28,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
     [TestMethod]
@@ -46,7 +43,7 @@ namespace Breeze.Sharp.Tests {
       var r1 = await em1.ExecuteQuery(ek.ToQuery());
       var fruits = r1.Cast<Fruit>();
       Assert.IsTrue(fruits.First() == fruit1);
-      
+
     }
 
     [TestMethod]
@@ -113,7 +110,7 @@ namespace Breeze.Sharp.Tests {
     public async Task FetchEntityByKeyItemOfProduce() {
       var em1 = await TestFns.NewEm(_serviceName);
       var appleId = new Guid("13f1c9f5-3189-45fa-ba6e-13314fafaa92");
-      
+
       // var appleId = new Guid("D35E9669-2BAE-4D69-A27A-252B31800B74");
 
       var ek = new EntityKey(typeof(ItemOfProduce), em1.MetadataStore, appleId);
@@ -207,4 +204,4 @@ namespace Breeze.Sharp.Tests {
   }
 }
 
-  
+

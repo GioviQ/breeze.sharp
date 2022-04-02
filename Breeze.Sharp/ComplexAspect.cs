@@ -1,13 +1,10 @@
+using Breeze.Sharp.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp.Core;
 
 namespace Breeze.Sharp {
 
@@ -17,7 +14,7 @@ namespace Breeze.Sharp {
   /// <remarks>
   /// The <b>ComplexAspect</b> provides verification and change tracking capaibilities to the ComplexObject.
   /// </remarks>
-  public sealed class ComplexAspect : StructuralAspect, INotifyDataErrorInfo  {
+  public sealed class ComplexAspect : StructuralAspect, INotifyDataErrorInfo {
 
     #region Ctors
 
@@ -96,7 +93,7 @@ namespace Breeze.Sharp {
         if (parentEntity != null) {
           return parentEntity;
         } else {
-          return ((IComplexObject) Parent).ComplexAspect.ParentEntity;
+          return ((IComplexObject)Parent).ComplexAspect.ParentEntity;
         }
       }
     }
@@ -155,7 +152,7 @@ namespace Breeze.Sharp {
       }
     }
 
-  
+
 
     #endregion
 
@@ -257,7 +254,7 @@ namespace Breeze.Sharp {
       }
 
       SetDpValue(dp, newValue);
-      
+
     }
 
 

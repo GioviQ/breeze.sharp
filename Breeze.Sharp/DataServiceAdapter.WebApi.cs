@@ -1,4 +1,4 @@
-﻿using Breeze.Sharp.Core;
+using Breeze.Sharp.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -62,7 +62,7 @@ namespace Breeze.Sharp {
         var complexAspect = ((IComplexObject)so).ComplexAspect;
         jn = DataToJNode(complexAspect);
       }
-      return jn;      
+      return jn;
     }
 
     private JNode DataToJNode(StructuralAspect aspect) {
@@ -86,7 +86,7 @@ namespace Breeze.Sharp {
       var nc = entityAspect.EntityManager.MetadataStore.NamingConvention;
       var jn = new JNode();
       var entityType = entityAspect.EntityType;
-        
+
       jn.AddPrimitive("entityTypeName", entityType.NameOnServer);
       jn.AddEnum("entityState", entityAspect.EntityState);
       jn.AddPrimitive("defaultResourceName", entityType.DefaultResourceName);
@@ -104,17 +104,17 @@ namespace Breeze.Sharp {
     private JNode BuildOriginalValuesMapNode(StructuralAspect aspect, NamingConvention nc) {
       var stType = aspect.StructuralType;
       var ovMap = aspect.OriginalValuesMap.ToDictionary(
-        kvp => stType.GetProperty(kvp.Key).NameOnServer, 
-        kvp => kvp.Value);      
-      var cps = stType.ComplexProperties;        
+        kvp => stType.GetProperty(kvp.Key).NameOnServer,
+        kvp => kvp.Value);
+      var cps = stType.ComplexProperties;
       cps.ForEach(cp => {
         var co = aspect.GetValue(cp.Name);
         var serverName = cp.NameOnServer;
         if (cp.IsScalar) {
-          var ovmNode = BuildOriginalValuesMapNode( ((IComplexObject) co).ComplexAspect, nc);
+          var ovmNode = BuildOriginalValuesMapNode(((IComplexObject)co).ComplexAspect, nc);
           ovMap[serverName] = ovmNode;
         } else {
-          var ovmNodes = ((IEnumerable) co).Cast<IComplexObject>().Select(co2 => BuildOriginalValuesMapNode(co2.ComplexAspect, nc));
+          var ovmNodes = ((IEnumerable)co).Cast<IComplexObject>().Select(co2 => BuildOriginalValuesMapNode(co2.ComplexAspect, nc));
           ovMap[serverName] = JNode.ToJArray(ovmNodes);
         }
       });
@@ -213,8 +213,8 @@ namespace Breeze.Sharp {
     }
   }
 
-  
 
 
- 
+
+
 }

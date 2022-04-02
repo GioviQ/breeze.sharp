@@ -89,7 +89,7 @@ namespace Breeze.Sharp {
     //public string ToStructualTypeName() {
     //  return ToStructuralTypeName(ShortName, Namespace);
     //}
-    
+
 
     public TypeNameInfo ToClient(MetadataStore metadataStore) {
       return metadataStore.NamingConvention.ServerTypeNameToClient(this);

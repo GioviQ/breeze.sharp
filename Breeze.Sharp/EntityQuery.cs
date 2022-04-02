@@ -1,18 +1,15 @@
-using System.Reflection;
-
 using Breeze.Sharp.Core;
-
+using Breeze.Sharp.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using System.Threading;
 using System.Data.Services.Client;
 using System.Data.Services.Common;
-using Newtonsoft.Json;
-using Breeze.Sharp.Json;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp {
 

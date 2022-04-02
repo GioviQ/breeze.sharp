@@ -1,15 +1,13 @@
-﻿using Breeze.Sharp.Core;
+using Breeze.Sharp.Core;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Breeze.Sharp {
   /// <summary>
   /// Represents the primary key for an <see cref="IEntity"/>.
   /// </summary>
-  public class EntityKey : IComparable, IJsonSerializable  {
+  public class EntityKey : IComparable, IJsonSerializable {
 
     // used by EntityKey.Create
     private EntityKey() {
@@ -73,16 +71,16 @@ namespace Breeze.Sharp {
       }
     }
 
-    
 
-     JNode IJsonSerializable.ToJNode(object config) {
+
+    JNode IJsonSerializable.ToJNode(object config) {
       var jn = new JNode();
       jn.AddPrimitive("entityType", EntityType.Name);
       jn.AddArray("values", Values);
 
       return jn;
     }
-   
+
     public Type ClrType {
       get;
       private set;
@@ -118,11 +116,11 @@ namespace Breeze.Sharp {
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     public EntityQuery<T> ToQuery<T>() {
-      return (EntityQuery<T>) EntityQueryBuilder.BuildQuery(this);
+      return (EntityQuery<T>)EntityQueryBuilder.BuildQuery(this);
     }
 
     internal bool IsEmpty() {
-      return Values == null || Values.Length == 0 || Values.Any(v => v==null) ;
+      return Values == null || Values.Length == 0 || Values.Any(v => v == null);
     }
 
     private void Coerce() {
@@ -239,9 +237,9 @@ namespace Breeze.Sharp {
     //  return parentEntityKey;
     //}
 
-   
 
-  
+
+
   }
 
 }

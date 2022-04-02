@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-
-using Breeze.Sharp;
+﻿using Breeze.Sharp;
+using System;
 using System.Spatial;
 
 namespace Foo {
@@ -54,19 +48,19 @@ namespace Foo {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public string ContactName  {
+    public string ContactName {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public string ContactTitle  {
+    public string ContactTitle {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public string Address  {
+    public string Address {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public string City  {
+    public string City {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
@@ -82,7 +76,7 @@ namespace Foo {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public string Phone  {
+    public string Phone {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
@@ -90,7 +84,7 @@ namespace Foo {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public int? RowVersion  {
+    public int? RowVersion {
       get { return GetValue<int?>(); }
       set { SetValue(value); }
     }
@@ -110,7 +104,7 @@ namespace Foo {
   }
 
 
-  public partial class Employee :BaseEntity {
+  public partial class Employee : BaseEntity {
     public int EmployeeID {
       get { return GetValue<int>(); }
       set { SetValue(value); }
@@ -402,7 +396,7 @@ namespace Foo {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public string PostalCode{
+    public string PostalCode {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
@@ -426,7 +420,7 @@ namespace Foo {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public string PhotoPath{
+    public string PhotoPath {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
@@ -441,7 +435,7 @@ namespace Foo {
     public int ProductID {
       get { return GetValue<int>(); }
       set { SetValue(value); }
-    } 
+    }
     public string ProductName {
       get { return GetValue<string>(); }
       set { SetValue(value); }
@@ -554,7 +548,7 @@ namespace Foo {
 
   }
 
-  
+
   public enum RoleType {
     Guest = 0,
     Restricted = 1,
@@ -608,7 +602,7 @@ namespace Foo {
       set { SetValue(value); }
     }
   }
-  
+
   public partial class Location : BaseComplexObject {
     public Location() {
       Country = "USA";
@@ -820,7 +814,7 @@ namespace Foo {
       get { return GetValue<NavigationSet<TimeLimit>>(); }
       set { SetValue(value); }
     }
-    
+
   }
 
 

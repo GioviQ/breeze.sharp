@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Breeze.Sharp {
 
@@ -182,8 +179,8 @@ namespace Breeze.Sharp {
   public enum EntityAction {
 
     Attach = 1, // isAttach
-        
-    
+
+
     /// <summary>
     /// Entity was attached as a result of a query.
     /// </summary>
@@ -193,7 +190,7 @@ namespace Breeze.Sharp {
     /// AttachOnImport - Entity was attached as a result of an import.
     /// </summary>
     AttachOnImport = 4,  // isAttach
-        
+
     /// <summary>
     /// AttachOnQuery - Entity was detached.
     /// </summary>
@@ -202,37 +199,37 @@ namespace Breeze.Sharp {
     /// <summary>
     /// Delete - Entity was marked for deletion
     /// </summary>
-    Delete = 16, 
-    
+    Delete = 16,
+
     // MergeOnQuery - Properties on the entity were merged as a result of a query.
     /// <summary>
     /// MergeOnQuery - Properties on the entity were merged as a result of a query.
     /// </summary>
     MergeOnQuery = 32, // isModification
-        
+
 
     // MergeOnImport - Properties on the entity were merged as a result of an import.
     MergeOnImport = 64, // isModification: true 
-        
-    
+
+
     // MergeOnSave - Properties on the entity were merged as a result of a save
     MergeOnSave = 128, // isModification: true 
-        
-    
+
+
     // PropertyChange - A property on the entity was changed.
     PropertyChange = 256, // isModification: true
-        
-    
+
+
     // EntityStateChange - The EntityState of the entity was changed.
     EntityStateChange = 512,
 
     // AcceptChanges - AcceptChanges was called on the entity, or its entityState was set to Unmodified.
     AcceptChanges = 1024,
-    
+
     // RejectChanges - RejectChanges was called on the entity.
     RejectChanges = 2048, // isModification
-        
-    
+
+
     // Clear - The EntityManager was cleared.  All entities detached.
     Clear = 2048, //  isDetach: true
 

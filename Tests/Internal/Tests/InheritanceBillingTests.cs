@@ -1,13 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
-using System.Linq;
-using Breeze.Sharp.Core;
-using Breeze.Sharp;
-using System.Collections.Generic;
-
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.Inheritance.Billing;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
@@ -20,11 +17,11 @@ namespace Breeze.Sharp.Tests {
     [TestInitialize]
     public void TestInitializeMethod() {
       // Note: the NamingConvention.Add method MUST come before the ProbeAssemblies call.
-      
-      _metadataStore.NamingConvention = 
+
+      _metadataStore.NamingConvention =
         _metadataStore.NamingConvention.WithClientServerNamespaceMapping("Model.Inheritance.Billing", "Inheritance.Models");
       Configuration.Instance.ProbeAssemblies(typeof(BillingDetailTPC).Assembly);
-      
+
       _serviceName = TestFns.serviceRoot + "breeze/Inheritance/";
     }
 
@@ -34,7 +31,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
     [TestMethod]
@@ -115,20 +112,20 @@ namespace Breeze.Sharp.Tests {
       var r = await CreateBillingDetail<BankAccountTPH>(em1);
     }
 
-    private async Task<IEnumerable<T>> QueryBillingBase<T>(EntityManager em, string typeName) where T: IBillingDetail {
+    private async Task<IEnumerable<T>> QueryBillingBase<T>(EntityManager em, string typeName) where T : IBillingDetail {
       var q0 = new EntityQuery<T>(typeName + "s").With(em);
       var r0 = await q0.Execute();
       if (r0.Count() == 0) {
         Assert.Inconclusive("Please restart the server - inheritance data was deleted by prior tests");
       }
-      
+
       Assert.IsTrue(r0.All(r => typeof(T).IsAssignableFrom(r.GetType())));
       Assert.IsTrue(r0.All(r => r.Owner == r.Owner.ToUpper()), "all owners should be uppercase (from initializer)");
       Assert.IsTrue(r0.All(r => r.MiscData == "asdf"), "all 'MiscData' should be 'asdf' (from initializer)");
       return r0;
     }
 
-    private async Task<IEnumerable<T>> CanDeleteBillingBase<T>(EntityManager em, string typeName, string expandPropName = null) where T:IEntity {
+    private async Task<IEnumerable<T>> CanDeleteBillingBase<T>(EntityManager em, string typeName, string expandPropName = null) where T : IEntity {
       //    // Registering resource names for each derived type
       //    // because these resource names are not in metadata
       //    // because there are no corresponding DbSets in the DbContext
@@ -165,7 +162,7 @@ namespace Breeze.Sharp.Tests {
       return r1;
     }
 
-    private async Task<SaveResult> CreateBillingDetail<T>(EntityManager em) where T:IBillingDetail, IEntity {
+    private async Task<SaveResult> CreateBillingDetail<T>(EntityManager em) where T : IBillingDetail, IEntity {
       var bd = em.CreateEntity<T>(EntityState.Detached);
       var ba = bd as IBankAccount;
       if (ba != null) {
@@ -192,7 +189,7 @@ namespace Breeze.Sharp.Tests {
       //try {
       //  sr = await em.SaveChanges();
       //  Assert.IsTrue(bd.EntityAspect.EntityState.IsUnchanged());
-        
+
       //} catch (Exception e) {
       //  var x = e;
       //  throw;
@@ -200,10 +197,10 @@ namespace Breeze.Sharp.Tests {
       //return sr;
     }
 
- 
+
 
 
   }
 }
 
-  
+

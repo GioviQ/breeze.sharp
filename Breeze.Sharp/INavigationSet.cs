@@ -1,14 +1,8 @@
-﻿using System;
+﻿using Breeze.Sharp.Core;
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp.Core;
-using System.ComponentModel;
 using System.Collections.Specialized;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Breeze.Sharp {
 
@@ -57,13 +51,13 @@ namespace Breeze.Sharp {
   /// as the return type for all nonscalar navigation properties.
   /// </summary>
   /// <typeparam name="T"></typeparam>
-  public class NavigationSet<T> : NotifiableCollection<T>, INavigationSet where T:IEntity {
+  public class NavigationSet<T> : NotifiableCollection<T>, INavigationSet where T : IEntity {
 
     /// <summary>
     /// Ctor.
     /// </summary>
     public NavigationSet() {
-    }   
+    }
 
 
     #region Public props
@@ -91,7 +85,7 @@ namespace Breeze.Sharp {
     #region INavigationSet imp
 
     void INavigationSet.Add(IEntity entity) {
-      Add((T) entity);
+      Add((T)entity);
     }
 
 
@@ -110,7 +104,7 @@ namespace Breeze.Sharp {
     protected override void InsertItem(int index, T entity) {
       // contains in next line is needed
       if (_inProcess || Contains(entity)) return;
-      
+
       var parentAspect = ParentEntity == null ? null : ParentEntity.EntityAspect;
       if (parentAspect == null
         || parentAspect.IsDetached
@@ -134,7 +128,7 @@ namespace Breeze.Sharp {
       if (parentAspect == null
         || parentAspect.IsDetached
         || parentAspect.EntityManager.IsLoadingEntity) {
-          base.RemoveItem(index);
+        base.RemoveItem(index);
         return;
       }
       using (new BooleanUsingBlock(b => _inProcess = b)) {
@@ -205,7 +199,7 @@ namespace Breeze.Sharp {
     #endregion
 
 
-    
+
   }
 }
 

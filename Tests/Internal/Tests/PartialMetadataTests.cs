@@ -1,22 +1,16 @@
+using Breeze.Sharp.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PartialFoo;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
-  
+
 
   [TestClass]
   public class PartialMetadataTests {
@@ -30,17 +24,17 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
     [TestMethod]
     public void NamingConventionSerialization() {
-      
+
       var nc = new MorphedClassNamingConvention();
       var nc2 = new MorphedClassNamingConvention();
       Assert.IsTrue(nc.Equals(nc2));
       var nc3 = nc.WithClientServerNamespaceMapping("PartialBar", "Bar");
-      var jn = ((IJsonSerializable) nc3).ToJNode(null);
+      var jn = ((IJsonSerializable)nc3).ToJNode(null);
       var nc4 = jn.ToObject(nc3.GetType(), true);
       Assert.IsTrue(nc3.Equals(nc4));
     }
@@ -53,13 +47,13 @@ namespace Breeze.Sharp.Tests {
 
     [TestMethod]
     public async Task MetadataMissingClrProperty() {
-      
+
       var ms = new MetadataStore();
       ms.NamingConvention = new MorphedClassNamingConvention();
       var em = new EntityManager(_serviceName, ms);
 
       em.MetadataStore.AllowedMetadataMismatchTypes = MetadataMismatchTypes.AllAllowable;
-        
+
       var mmargs = new List<MetadataMismatchEventArgs>();
       em.MetadataStore.MetadataMismatch += (s, e) => {
         mmargs.Add(e);
@@ -85,7 +79,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestMethod]
     public async Task MetadataMissingClrType() {
-      
+
       //Configuration.Instance.AllowedMetadataMismatchTypes = MetadataMismatchTypes.AllAllowable;
       var serviceName = "http://sampleservice.breezejs.com/api/todos/";
 
@@ -103,14 +97,14 @@ namespace Breeze.Sharp.Tests {
       var errors = em.MetadataStore.GetMessages(MessageType.Error);
       Assert.IsTrue(errors.Count() == 0, "should be 0 errors: " + errors.ToAggregateString("..."));
       Assert.IsTrue(em.MetadataStore.GetMessages().Count() == 1, "should be 1 message");
-      
-      
+
+
     }
-      
-    
+
+
     [TestMethod]
     public async Task MetadataWithEmbeddedQuotes() {
-      
+
       // this is a legacy service that has quoted metadata.
       var serviceName = "http://sampleservice.breezejs.com/api/todos/";
       var ds = new DataService(serviceName);
@@ -118,16 +112,15 @@ namespace Breeze.Sharp.Tests {
       var metadata = await ds.GetAsync("Metadata", new CancellationToken(false));
 
       var metadata2 = System.Text.RegularExpressions.Regex.Unescape(metadata).Trim('"');
-      var jo = (JObject) JsonConvert.DeserializeObject(metadata2);
+      var jo = (JObject)JsonConvert.DeserializeObject(metadata2);
       var em = new EntityManager(ds);
       try {
         var x = await em.FetchMetadata();
         Assert.Fail("should not get here - CLR types for this metadata are not available");
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         Assert.IsTrue(e.Message.Contains("CLR Entity"));
       }
-      
+
     }
 
 

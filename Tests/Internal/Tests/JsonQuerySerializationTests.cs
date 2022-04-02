@@ -1,9 +1,8 @@
+using Breeze.Sharp.Json;
+using Foo;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Foo;
-using Breeze.Sharp.Json;
 
 namespace Breeze.Sharp.Tests {
   /// <summary> Test whether EntityQuery is serialized to JSON correctly </summary>

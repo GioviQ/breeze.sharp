@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using Breeze.Sharp.Core;
+﻿using Breeze.Sharp.Core;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Breeze.Sharp {
-  
+
 
   /// <summary>
   /// The result of an  <see cref="EntityManager.SaveChanges(SaveOptions)"/>  call
@@ -13,7 +13,7 @@ namespace Breeze.Sharp {
 
     internal SaveResult(IEnumerable<IEntity> entities, Dictionary<EntityKey, EntityKey> keyMappings) {
       _savedEntities = new SafeList<IEntity>(entities);
-      _keyMappings = new SafeDictionary<EntityKey,EntityKey>(keyMappings);
+      _keyMappings = new SafeDictionary<EntityKey, EntityKey>(keyMappings);
     }
 
     /// <summary>
@@ -22,7 +22,7 @@ namespace Breeze.Sharp {
     /// cache that have been updated as a result of the save.
     /// </summary>
     public ReadOnlyCollection<IEntity> Entities {
-      get { return _savedEntities.ReadOnlyValues;  }
+      get { return _savedEntities.ReadOnlyValues; }
     }
 
     /// <summary>
@@ -36,8 +36,8 @@ namespace Breeze.Sharp {
     private SafeList<IEntity> _savedEntities;
     private SafeDictionary<EntityKey, EntityKey> _keyMappings;
 
-    public static SaveResult Empty = new SaveResult(Enumerable.Empty<IEntity>(), new Dictionary<EntityKey, EntityKey>() );
-    
+    public static SaveResult Empty = new SaveResult(Enumerable.Empty<IEntity>(), new Dictionary<EntityKey, EntityKey>());
+
   }
 
 

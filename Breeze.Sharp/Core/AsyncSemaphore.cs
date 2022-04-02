@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 
 // Source from: http://blogs.msdn.com/b/pfxteam/archive/2012/02/12/10266983.aspx
 namespace Breeze.Sharp.Core {
 
   public class AsyncSemaphore {
-    
+
     public AsyncSemaphore(int initialCount) {
       if (initialCount < 0) throw new ArgumentOutOfRangeException("initialCount");
       m_currentCount = initialCount;
@@ -41,9 +38,9 @@ namespace Breeze.Sharp.Core {
         toRelease.SetResult(true);
     }
 
-    private readonly static Task s_completed = Task.FromResult(true); 
-    private readonly Queue<TaskCompletionSource<bool>> m_waiters = new Queue<TaskCompletionSource<bool>>(); 
-    private int m_currentCount; 
+    private readonly static Task s_completed = Task.FromResult(true);
+    private readonly Queue<TaskCompletionSource<bool>> m_waiters = new Queue<TaskCompletionSource<bool>>();
+    private int m_currentCount;
 
 
   }

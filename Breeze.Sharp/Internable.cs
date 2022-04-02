@@ -1,14 +1,11 @@
-﻿
-using System;
+﻿namespace Breeze.Sharp {
 
-namespace Breeze.Sharp {
 
-  
   public abstract class Internable : IJsonSerializable {
 
-  
+
     protected Internable() {
-      
+
     }
 
     public string Name {

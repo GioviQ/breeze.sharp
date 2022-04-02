@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Breeze.Sharp.Core;
 using Foo;
-using System.Collections.Specialized;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
@@ -26,7 +22,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
     // create entity with complexType property
@@ -40,10 +36,10 @@ namespace Breeze.Sharp.Tests {
 
       Assert.IsTrue(location.GetType() == typeof(Location));
       var city = location.City;
-    
+
     }
 
-    
+
     [TestMethod]
     public async Task AttachEntityWithComplexPropsSet() {
       var em1 = await TestFns.NewEm(_serviceName);
@@ -65,7 +61,7 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var supplier = em1.CreateEntity<Supplier>();
-      
+
       supplier.Location.City = "San Francisco";
       var location = supplier.Location;
       location.PostalCode = "91333";
@@ -132,7 +128,7 @@ namespace Breeze.Sharp.Tests {
       var q = new EntityQuery<Supplier>().Where(s => s.CompanyName.StartsWith("P"));
       var suppliers = await em1.ExecuteQuery(q);
       Assert.IsTrue(suppliers.Count() > 0, "should be some suppliers");
-      
+
 
       suppliers.ForEach(s => s.Location.Region = "Foo");
       Assert.IsTrue(suppliers.All(s => s.EntityAspect.EntityState.IsModified()), "should have been modified");
@@ -191,7 +187,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(!s0.Location.StructuralEquals(s1.Location), "should not be equal");
       s0.Location = s1.Location;
       Assert.IsTrue(s0.Location.StructuralEquals(s1.Location), "should be equal");
-      
+
     }
 
     [TestMethod]
@@ -288,7 +284,7 @@ namespace Breeze.Sharp.Tests {
         var location = s.Location;
         Assert.IsTrue(location.Address.StartsWith("Foo"), "address should start with 'Foo'");
         Assert.IsTrue(location.ComplexAspect.OriginalValuesMap.ContainsKey("Address"), "ComplexAspect originalValues should contain address");
-        var oldAddress = (string) location.ComplexAspect.OriginalValuesMap["Address"];
+        var oldAddress = (string)location.ComplexAspect.OriginalValuesMap["Address"];
         if (oldAddress == null) {
           Assert.IsTrue(location.Address == "Foo:", "should have a null old address");
         } else {
@@ -351,9 +347,9 @@ namespace Breeze.Sharp.Tests {
       var supplier = new Supplier();
       supplier.CompanyName = "Test-" + TestFns.RandomSuffix(5);
       var companyName = supplier.CompanyName;
-      supplier.Location = new Location() { Region = "USA", Address = "123 Main Street", City = "San Diego", PostalCode = "12345" } ;
+      supplier.Location = new Location() { Region = "USA", Address = "123 Main Street", City = "San Diego", PostalCode = "12345" };
       em1.AddEntity(supplier);
-      
+
       var sr = await em1.SaveChanges();
       Assert.IsTrue(sr.Entities.Count == 1);
       var ek = sr.Entities.First().EntityAspect.EntityKey;
@@ -380,7 +376,7 @@ namespace Breeze.Sharp.Tests {
 
       var sr = await em1.SaveChanges();
 
-      Assert.IsTrue(sr.Entities.Count ==1);
+      Assert.IsTrue(sr.Entities.Count == 1);
       var q1 = new EntityQuery<Supplier>().Where(s => s.CompanyName.StartsWith("Test"));
       var r1 = await em1.ExecuteQuery(q1);
       Assert.IsTrue(r1.Count() > 0);
@@ -400,7 +396,7 @@ namespace Breeze.Sharp.Tests {
         var supplier = new Supplier();
         var valErrors = supplier.EntityAspect.ValidationErrors;
         var errors = new List<DataErrorsChangedEventArgs>();
-        ((INotifyDataErrorInfo) supplier).ErrorsChanged += (se, e) => {
+        ((INotifyDataErrorInfo)supplier).ErrorsChanged += (se, e) => {
           errors.Add(e);
         };
         em1.AddEntity(supplier);
@@ -412,26 +408,26 @@ namespace Breeze.Sharp.Tests {
         s = s + s + s + s + s + s + s + s + s + s + s + s + s;
         supplier.CompanyName = s;
         Assert.IsTrue(errors.Count == 3);
-          // setting the companyName will remove the requiredError but add the maxLenght error
+        // setting the companyName will remove the requiredError but add the maxLenght error
         Assert.IsTrue(errors.Last().PropertyName == "CompanyName");
         Assert.IsTrue(valErrors.Count == 1);
-        Assert.IsTrue(((INotifyDataErrorInfo) supplier).HasErrors);
+        Assert.IsTrue(((INotifyDataErrorInfo)supplier).HasErrors);
         var location = supplier.Location;
         location.City = s;
         Assert.IsTrue(errors.Last().PropertyName == "Location.City", "location.city should have been the propertyName");
         Assert.IsTrue(errors.Count == 4);
-        Assert.IsTrue((string) valErrors.Last().Context.PropertyPath == "Location.City");
+        Assert.IsTrue((string)valErrors.Last().Context.PropertyPath == "Location.City");
         Assert.IsTrue(valErrors.Count == 2); // companyName_required and location.city_maxLength
-        Assert.IsTrue(((INotifyDataErrorInfo) supplier).HasErrors);
+        Assert.IsTrue(((INotifyDataErrorInfo)supplier).HasErrors);
         location.City = "much shorter";
         Assert.IsTrue(errors.Last().PropertyName == "Location.City", "location.city should have changed again");
         Assert.IsTrue(errors.Count == 5);
         Assert.IsTrue(valErrors.Count == 1);
-        Assert.IsTrue(((INotifyDataErrorInfo) supplier).HasErrors);
+        Assert.IsTrue(((INotifyDataErrorInfo)supplier).HasErrors);
         supplier.CompanyName = "shortName";
         Assert.IsTrue(errors.Count == 6);
         Assert.IsTrue(valErrors.Count == 0);
-        Assert.IsTrue(((INotifyDataErrorInfo) supplier).HasErrors == false);
+        Assert.IsTrue(((INotifyDataErrorInfo)supplier).HasErrors == false);
       }
     }
 
@@ -453,13 +449,13 @@ namespace Breeze.Sharp.Tests {
 
     }
 
-    
+
     private void ClearAndRevalidate(IEntity entity, int count) {
       var valErrors = entity.EntityAspect.ValidationErrors;
       Assert.IsTrue(valErrors.Count == count, "should be " + count + " validation errors");
       entity.EntityAspect.ValidationErrors.Clear();
       Assert.IsTrue(valErrors.Count == 0, "validationErrors should have been cleared");
-      var errs= entity.EntityAspect.Validate();
+      var errs = entity.EntityAspect.Validate();
       Assert.IsTrue(errs.SequenceEqual(valErrors));
       Assert.IsTrue(valErrors.Count == count, "should be " + count + " validation errors - again");
 
@@ -489,7 +485,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(supplier.EntityAspect.HasChanges());
       supplier.EntityAspect.RejectChanges();
       Assert.IsTrue(supplier.Location.City == "LA");
-      
+
     }
 
 

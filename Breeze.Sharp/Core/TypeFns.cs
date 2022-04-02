@@ -89,14 +89,14 @@ namespace Breeze.Sharp.Core {
       return Activator.CreateInstance(finalType);
     }
 
-  
+
     /// <summary>
     /// Gets a single generic argument from a specified type.
     /// </summary>
     /// <param name="type"></param>
     /// <returns>null if it can't find one or result is ambiguous</returns>
     public static Type GetGenericArgument(Type type) {
-      var ti =  IntrospectionExtensions.GetTypeInfo(type);
+      var ti = IntrospectionExtensions.GetTypeInfo(type);
       if (!ti.IsGenericType) return null;
       var genArgs = ti.GenericTypeArguments;
       if (genArgs.Length != 1) return null;
@@ -166,7 +166,7 @@ namespace Breeze.Sharp.Core {
         if (ex is System.Reflection.ReflectionTypeLoadException) {
           msg = ((ReflectionTypeLoadException)ex).LoaderExceptions.ToAggregateString(". ");
         }
-        
+
         Debug.WriteLine("Error: Unable to execute Assembly.DefinedTypes for "
           + assembly.ToString() + "." + msg);
         lock (__invalidAssemblies) {

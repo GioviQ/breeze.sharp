@@ -1,15 +1,12 @@
 ﻿using Breeze.Sharp.Core;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breeze.Sharp {
-  
-  internal static class EntityQueryBuilder  {
+
+  internal static class EntityQueryBuilder {
 
     /// <summary>
     /// Builds an <see cref="EntityQuery"/> based on a collection of <see cref="EntityKey"/>s.
@@ -18,7 +15,7 @@ namespace Breeze.Sharp {
     /// <param name="keys"></param>
     /// <returns></returns>
     public static EntityQuery BuildQuery(params EntityKey[] keys) {
-      return BuildQuery((IEnumerable<EntityKey>) keys);
+      return BuildQuery((IEnumerable<EntityKey>)keys);
     }
 
     /// <summary>
@@ -46,15 +43,13 @@ namespace Breeze.Sharp {
     /// <summary>
     /// Builds an <see cref="EntityQuery"/> to load the entities for the navigation property of the entity.
     /// </summary>
-    public static EntityQuery BuildQuery(IEntity entity, NavigationProperty np)
-    {
+    public static EntityQuery BuildQuery(IEntity entity, NavigationProperty np) {
       if (np.IsScalar) {
         if (np.ForeignKeyNames.Count == 0) return null;
         var relatedKeyValues = np.ForeignKeyNames.Select(fk => entity.EntityAspect.GetValue(fk)).ToArray();
         var entityKey = new EntityKey(np.EntityType, relatedKeyValues);
         return BuildQuery(entityKey);
-      }
-      else {
+      } else {
         var inverseNp = np.Inverse;
         var fkNames = inverseNp != null ? inverseNp.ForeignKeyNames : np.InvForeignKeyNames;
         if (fkNames.Count == 0) return null;
@@ -120,7 +115,7 @@ namespace Breeze.Sharp {
 
       var parameterExpr = Expression.Parameter(entityType.ClrType, "t");
       // get list of propExpressions for entity type's primary key properties
-      var propExpressions =  entityType.KeyProperties.Select(
+      var propExpressions = entityType.KeyProperties.Select(
        property => Expression.Property(parameterExpr, property.Name));
 
       var pkExpressions = keys.Select(key => BuildMultiEqualExpr(propExpressions, key.Values));
@@ -265,6 +260,6 @@ namespace Breeze.Sharp {
     //    parameterExpr);
     //  return selectLambda;
     //}
-  
+
   }
 }

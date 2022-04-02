@@ -1,11 +1,9 @@
+using Breeze.Sharp.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-
-using System.Reflection;
-using Breeze.Sharp.Core;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Breeze.Sharp {
 
@@ -33,7 +31,7 @@ namespace Breeze.Sharp {
 
     public MetadataStore MetadataStore { get; private set; }
 
-    public string Name { 
+    public string Name {
       get { return TypeNameInfo.ToStructuralTypeName(ShortName, Namespace); }
       internal set {
         var parts = TypeNameInfo.FromStructuralTypeName(value);
@@ -57,7 +55,7 @@ namespace Breeze.Sharp {
       internal set {
         _clrType = value;
         Name = TypeNameInfo.FromClrTypeName(_clrType.FullName).StructuralTypeName;
-      }  
+      }
     }
 
     internal abstract void UpdateFromJNode(JNode jNode, bool isFromServer);
@@ -74,15 +72,15 @@ namespace Breeze.Sharp {
 
     private Type _clrType;
     public string ShortName { get; private set; }
-    public string Namespace { get; private set;}
+    public string Namespace { get; private set; }
     public dynamic Custom { get; set; }
     public bool IsAbstract { get; internal set; }
     // TODO: determine if this is  still needed;
     public bool IsAnonymous { get; internal set; }
     public List<string> Warnings { get; internal set; }
-    public abstract bool IsEntityType { get;  }
-    
-    public virtual  IEnumerable<StructuralProperty> Properties {
+    public abstract bool IsEntityType { get; }
+
+    public virtual IEnumerable<StructuralProperty> Properties {
       get { return _dataProperties.Cast<StructuralProperty>(); }
     }
 
@@ -103,14 +101,14 @@ namespace Breeze.Sharp {
       _dataProperties.Add(dp);
       dp.UpdateClientServerNames();
       return dp;
-    } 
+    }
 
     public ReadOnlyCollection<DataProperty> ComplexProperties {
       get { return _complexProperties.ReadOnlyValues; }
     }
 
     public ReadOnlyCollection<DataProperty> UnmappedProperties {
-      get { return _unmappedProperties.ReadOnlyValues;  }
+      get { return _unmappedProperties.ReadOnlyValues; }
     }
 
     public ICollection<Validator> Validators {
@@ -118,11 +116,11 @@ namespace Breeze.Sharp {
     }
 
     internal void UpdateComplexProperties(DataProperty dp) {
-      UpdateCollection( _complexProperties, dp, dp.IsComplexProperty);
+      UpdateCollection(_complexProperties, dp, dp.IsComplexProperty);
     }
 
     internal void UpdateUnmappedProperties(DataProperty dp) {
-      UpdateCollection( _unmappedProperties, dp, dp.IsUnmapped);
+      UpdateCollection(_unmappedProperties, dp, dp.IsUnmapped);
     }
 
     internal string FormatDpName(string propertyName) {
@@ -133,7 +131,7 @@ namespace Breeze.Sharp {
     internal string FormatNpName(string propertyName) {
       return string.Format("Navigation Property: '{0}' on the EntityType: '{1}'", propertyName, Name);
     }
-    
+
     protected void UpdateCollection(SafeList<DataProperty> list, DataProperty dp, bool add) {
       var isSet = list.Contains(dp);
       if (add) {
@@ -151,11 +149,11 @@ namespace Breeze.Sharp {
     internal readonly DataPropertyCollection _dataProperties = new DataPropertyCollection();
     protected readonly SafeList<DataProperty> _complexProperties = new SafeList<DataProperty>();
     protected readonly SafeList<DataProperty> _unmappedProperties = new SafeList<DataProperty>();
-    internal  ValidatorCollection _validators = new ValidatorCollection();
+    internal ValidatorCollection _validators = new ValidatorCollection();
 
   }
 
-  
+
 
 
 }

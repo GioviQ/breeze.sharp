@@ -2,14 +2,13 @@ using Breeze.Sharp;
 using Breeze.Sharp.Core;
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
   public static class TestFns {
 
-      public static string serviceRoot = "http://localhost:7149/breezeTests/";
-      public static string serviceName = serviceRoot + "breeze/NorthwindIBModel/";
+    public static string serviceRoot = "http://localhost:7149/breezeTests/";
+    public static string serviceName = serviceRoot + "breeze/NorthwindIBModel/";
 
     public static void RunInWpfSyncContext(Func<Task> function) {
 #if NETFRAMEWORK
@@ -55,7 +54,7 @@ namespace Breeze.Sharp.Tests {
       var em = new EntityManager(serviceName, metadataStore);
       if (metadataStore.GetDataService(serviceName) == null) {
         await em.FetchMetadata();
-      } 
+      }
 
       return em;
     }

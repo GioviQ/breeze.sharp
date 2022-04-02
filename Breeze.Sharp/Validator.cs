@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Resources;
 
 namespace Breeze.Sharp {
 
@@ -90,7 +89,7 @@ namespace Breeze.Sharp {
     }
 
     private string _localizedKey;
-    
+
 
     private static object __lock = new object();
 
@@ -149,11 +148,11 @@ namespace Breeze.Sharp {
   /// </summary>
   public static class ValidatorExtensions {
 
-    public static T WithMessage<T>(this T validator, string message) where T: Validator {
+    public static T WithMessage<T>(this T validator, string message) where T : Validator {
       return WithMessage(validator, new LocalizedMessage(message));
     }
 
-    public static T WithMessage<T>(this T validator, Type resourceType) where T:Validator {
+    public static T WithMessage<T>(this T validator, Type resourceType) where T : Validator {
       return WithMessage(validator, new LocalizedMessage(key: validator.LocalizedKey, resourceType: resourceType));
     }
 
@@ -162,15 +161,15 @@ namespace Breeze.Sharp {
     }
 
     // returns a new Validator cloned from the original with a new localizedMessage;
-    public static T WithMessage<T>(this T validator, LocalizedMessage localizedMessage) where T:Validator {
+    public static T WithMessage<T>(this T validator, LocalizedMessage localizedMessage) where T : Validator {
       // Deserialize the object - poor mans clone;
-      var vr = (Validator) validator.ToJNode().ToObject(validator.GetType(), true);
+      var vr = (Validator)validator.ToJNode().ToObject(validator.GetType(), true);
       vr.LocalizedMessage = localizedMessage;
-      return (T) vr;
+      return (T)vr;
     }
 
     public static T Intern<T>(this T validator) where T : Validator {
-      return (T) Configuration.Instance.InternValidator(validator);
+      return (T)Configuration.Instance.InternValidator(validator);
     }
   }
 

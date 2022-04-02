@@ -21,10 +21,10 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
-    
+
 
     [TestMethod]
     public async Task SimplePred() {
@@ -35,7 +35,7 @@ namespace Breeze.Sharp.Tests {
       var query = new EntityQuery<Order>().Where(pred);
       var orders300 = await entityManager.ExecuteQuery(query);
       Assert.IsTrue(orders300.Any(), "There should be orders with freight cost > 300");
-      
+
     }
 
     [TestMethod]
@@ -55,7 +55,7 @@ namespace Breeze.Sharp.Tests {
       var query = baseQuery.Where(pred);
       var orders = await entityManager.ExecuteQuery(query);
       Assert.IsTrue(orders.Any(), "There should be orders");
-      Assert.IsTrue(orders.All(o => o.Freight > 100 && o.OrderDate > new DateTime(1998,3,1)), 
+      Assert.IsTrue(orders.All(o => o.Freight > 100 && o.OrderDate > new DateTime(1998, 3, 1)),
         "There should be the right orders");
 
       // Yet another way to ask the same question
@@ -93,7 +93,7 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task PredAny() {
       var em1 = await TestFns.NewEm(_serviceName);
-      
+
       var pred = PredicateBuilder.Create<Customer>(emp => emp.Orders.Any(order => order.ShipName != null));
       var q = new EntityQuery<Customer>().Where(pred);
       var r = await q.Execute(em1);
@@ -106,7 +106,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(r2.Any());
     }
 
-    
+
 
     // Need more work on PredicateBuilder for this to work.
     //[TestMethod]
@@ -123,4 +123,4 @@ namespace Breeze.Sharp.Tests {
   }
 }
 
-  
+

@@ -1,26 +1,18 @@
+using Breeze.Sharp;
+using Foo;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Foo;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
   [TestClass]
   public class MetadataTests {
 
-    
+
 
     private string _serviceName;
 
@@ -28,7 +20,7 @@ namespace Breeze.Sharp.Tests {
     public void TestInitializeMethod() {
       Configuration.Instance.ProbeAssemblies(typeof(Customer).Assembly);
       _serviceName = TestFns.serviceName;
-      
+
     }
 
     [TestCleanup]
@@ -36,22 +28,22 @@ namespace Breeze.Sharp.Tests {
 
     }
 
-    
+
 
     [TestMethod]
     public async Task SelfAndSubtypes() {
       var em = await TestFns.NewEm(_serviceName);
       var allOrders = em.GetEntities(typeof(Order), typeof(InternationalOrder));
-      var orderEntityType = em.MetadataStore.GetEntityType(typeof (Order));
+      var orderEntityType = em.MetadataStore.GetEntityType(typeof(Order));
       var allOrders2 = em.GetEntities(orderEntityType.SelfAndSubEntityTypes.Select(et => et.ClrType));
       Assert.IsTrue(allOrders.Count() == allOrders2.Count());
-      
+
     }
 
 
     [TestMethod]
     public async Task HttpClientHandler() {
-      var  httpClient = new HttpClient(new HttpClientHandler() {
+      var httpClient = new HttpClient(new HttpClientHandler() {
         UseDefaultCredentials = true
       });
       var ds = new DataService(_serviceName, httpClient);
@@ -91,8 +83,8 @@ namespace Breeze.Sharp.Tests {
     }
   }
 
-   
-  
+
+
 
 
 }

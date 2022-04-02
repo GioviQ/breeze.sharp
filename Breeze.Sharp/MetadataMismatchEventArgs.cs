@@ -1,8 +1,4 @@
-using Breeze.Sharp.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Breeze.Sharp {
@@ -11,7 +7,7 @@ namespace Breeze.Sharp {
     public string StructuralTypeName { get; internal set; }
 
     public TypeNameInfo StructuralTypeInfo {
-      get { return TypeNameInfo.FromStructuralTypeName(StructuralTypeName); } 
+      get { return TypeNameInfo.FromStructuralTypeName(StructuralTypeName); }
     }
 
     public string PropertyName { get; internal set; }

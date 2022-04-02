@@ -15,7 +15,7 @@ namespace Breeze.Sharp {
     }
 
     public ReadOnlyCollection<IEntity> ImportedEntities {
-      get { return _importedEntities.ReadOnlyValues;  }
+      get { return _importedEntities.ReadOnlyValues; }
     }
 
     public ReadOnlyDictionary<EntityKey, EntityKey> TempKeyMap {
@@ -26,5 +26,5 @@ namespace Breeze.Sharp {
     private ReadOnlyDictionary<EntityKey, EntityKey> _tempKeyMap;
   }
 
- 
+
 }

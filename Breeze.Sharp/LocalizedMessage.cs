@@ -6,7 +6,7 @@ using System.Resources;
 
 namespace Breeze.Sharp {
 
-  
+
   /// <summary>
   /// Describes a localized message. Each localized message instance is immutable. 
   /// </summary>
@@ -153,7 +153,7 @@ namespace Breeze.Sharp {
     private Func<ResourceManager> _resourceManagerFn;
     private string _message;
     private bool _isLocalized;
-    
+
     private static object __lock = new object();
     private static Dictionary<Type, ResourceManager> __resourceManagerTypeMap = new Dictionary<Type, ResourceManager>();
     private static Dictionary<Tuple<string, Assembly>, ResourceManager> __resourceManagerFileMap = new Dictionary<Tuple<string, Assembly>, ResourceManager>();

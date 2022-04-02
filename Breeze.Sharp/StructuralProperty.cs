@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Breeze.Sharp {
 
@@ -17,10 +16,10 @@ namespace Breeze.Sharp {
   /// <summary>
   /// Base class for both the <see cref="DataProperty"/> and the <see cref="NavigationProperty"/> classes.
   /// </summary>
-  public abstract class StructuralProperty  {
+  public abstract class StructuralProperty {
     protected StructuralProperty(string name) {
       Name = name;
-    
+
     }
 
     protected StructuralProperty(StructuralProperty prop) {
@@ -46,13 +45,13 @@ namespace Breeze.Sharp {
       set {
         if (_isUnmapped == value) return;
         if (IsNavigationProperty) {
-          if (value) { 
+          if (value) {
             throw new Exception("Cannot set IsUnmapped on a NavigationProperty");
           }
           return;
         }
         _isUnmapped = value;
-        ParentType.UpdateUnmappedProperties((DataProperty) this);
+        ParentType.UpdateUnmappedProperties((DataProperty)this);
       }
     }
 
@@ -92,7 +91,7 @@ namespace Breeze.Sharp {
     }
     public object Custom { get; internal set; }
 
-    public abstract bool IsDataProperty { get;  }
+    public abstract bool IsDataProperty { get; }
     public abstract bool IsNavigationProperty { get; }
 
     private bool _isUnmapped = false;

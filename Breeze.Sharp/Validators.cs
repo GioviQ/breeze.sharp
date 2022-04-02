@@ -4,8 +4,6 @@ using System.Globalization;
 using System.Resources;
 using System.Text.RegularExpressions;
 
-using Microsoft.Data.OData.Query.SemanticAst;
-
 namespace Breeze.Sharp {
 
   /// <summary>
@@ -19,7 +17,7 @@ namespace Breeze.Sharp {
     /// <param name="treatEmptyStringAsNull">Whether to treat empty string as null.  If not set, then the static 
     /// <see cref="RequiredValidator.DefaultTreatEmptyStringAsNull" /> is used instead.</param>
     public RequiredValidator(bool? treatEmptyStringAsNull = null) : base() {
-      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager) null);
+      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager)null);
       TreatEmptyStringAsNull = treatEmptyStringAsNull.HasValue
         ? treatEmptyStringAsNull.Value
         : DefaultTreatEmptyStringAsNull;
@@ -34,7 +32,7 @@ namespace Breeze.Sharp {
     protected override bool ValidateCore(ValidationContext context) {
       var value = context.PropertyValue;
       if (value == null) return false;
-      if (value.GetType() == typeof (string) && string.IsNullOrEmpty((string) value) && TreatEmptyStringAsNull) {
+      if (value.GetType() == typeof(string) && string.IsNullOrEmpty((string)value) && TreatEmptyStringAsNull) {
         return false;
       }
       return true;
@@ -59,7 +57,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="maxLength"></param>
     public MaxLengthValidator(int maxLength) : base() {
-      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager) null);
+      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager)null);
       MaxLength = maxLength;
     }
 
@@ -67,7 +65,7 @@ namespace Breeze.Sharp {
     protected override bool ValidateCore(ValidationContext context) {
       var value = context.PropertyValue;
       if (value == null) return true;
-      return ((string) value).Length <= MaxLength;
+      return ((string)value).Length <= MaxLength;
     }
 
     /// <inheritdoc />
@@ -84,7 +82,7 @@ namespace Breeze.Sharp {
   /// </summary>
   public class StringLengthValidator : Validator {
     public StringLengthValidator(int minLength, int maxLength) : base() {
-      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager) null);
+      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager)null);
       MinLength = minLength;
       MaxLength = maxLength;
     }
@@ -93,7 +91,7 @@ namespace Breeze.Sharp {
     protected override bool ValidateCore(ValidationContext context) {
       var value = context.PropertyValue;
       if (value == null) return true;
-      var length = ((string) value).Length;
+      var length = ((string)value).Length;
       return length <= MaxLength & length >= MinLength;
     }
 
@@ -113,7 +111,7 @@ namespace Breeze.Sharp {
   /// <typeparam name="T"></typeparam>
   public class RangeValidator<T> : Validator where T : struct {
     public RangeValidator(T min, T max, bool includeMinEndpoint = true, bool includeMaxEndpoint = true) : base() {
-      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager) null);
+      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager)null);
       Min = min;
       Max = max;
       IncludeMinEndpoint = includeMinEndpoint;
@@ -123,7 +121,7 @@ namespace Breeze.Sharp {
     /// <inheritdoc />
     protected override bool ValidateCore(ValidationContext context) {
       var val = context.PropertyValue;
-      T value = (T) Convert.ChangeType(val, typeof (T), CultureInfo.CurrentCulture);
+      T value = (T)Convert.ChangeType(val, typeof(T), CultureInfo.CurrentCulture);
 
       bool ok = true;
 
@@ -194,7 +192,7 @@ namespace Breeze.Sharp {
       if (patternName != null) {
         LocalizedKey = "Val_regexNamed";
       }
-      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager) null);
+      LocalizedMessage = new LocalizedMessage(LocalizedKey, (ResourceManager)null);
 
       Regex = regex;
       PatternName = patternName;
@@ -203,7 +201,7 @@ namespace Breeze.Sharp {
     /// <inheritdoc />
     protected override bool ValidateCore(ValidationContext context) {
       var value = context.PropertyValue;
-      return value == null || Regex.IsMatch((string) value);
+      return value == null || Regex.IsMatch((string)value);
     }
 
     /// <inheritdoc />

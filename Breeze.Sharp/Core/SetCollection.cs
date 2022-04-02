@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace Breeze.Sharp.Core {
@@ -9,7 +8,7 @@ namespace Breeze.Sharp.Core {
   // has the ability to add/remove items.
   public abstract class SetCollection<U> : ICollection<U> {
     public SetCollection() {
-      
+
     }
 
     public SetCollection(IEnumerable<U> values) {
@@ -17,7 +16,7 @@ namespace Breeze.Sharp.Core {
     }
 
     public virtual void Add(U value) {
-      _set.Add( value);
+      _set.Add(value);
     }
 
     public virtual void Clear() {
@@ -27,7 +26,7 @@ namespace Breeze.Sharp.Core {
     public virtual bool Contains(U item) {
       return _set.Contains(item);
     }
-    
+
     public void CopyTo(U[] array, int arrayIndex) {
       _set.CopyTo(array, arrayIndex);
     }

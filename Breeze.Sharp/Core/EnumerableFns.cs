@@ -139,7 +139,7 @@ namespace Breeze.Sharp.Core {
         remainingItems = remainingItems.Skip(batchSize);
       }
     }
-    
+
 
     /// <summary>
     ///  Returns distinct elements from a sequence by using a specified selector function to project objects to compare.
@@ -300,7 +300,7 @@ namespace Breeze.Sharp.Core {
     //}
 
 
-   
+
 
     // TODO: Think about it.
     ///// <summary>

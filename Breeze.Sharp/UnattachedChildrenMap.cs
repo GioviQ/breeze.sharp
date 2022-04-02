@@ -1,10 +1,6 @@
-﻿using System;
+﻿using Breeze.Sharp.Core;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp.Core;
 
 namespace Breeze.Sharp {
 
@@ -36,25 +32,25 @@ namespace Breeze.Sharp {
     public HashSet<IEntity> GetNavChildren(EntityKey entityKey, NavigationProperty navProp, bool createIfNotFound) {
       List<NavChildren> navChildrenList = GetNavChildrenList(entityKey, createIfNotFound);
       if (navChildrenList == null) return null;
-      
+
       var navChildren = navChildrenList.FirstOrDefault(uc => uc.NavigationProperty == navProp);
       if (navChildren == null && createIfNotFound) {
-        navChildren = new NavChildren() {NavigationProperty = navProp, Children = new HashSet<IEntity>() };
+        navChildren = new NavChildren() { NavigationProperty = navProp, Children = new HashSet<IEntity>() };
         navChildrenList.Add(navChildren);
       }
 
       var children = navChildren.Children;
-      children.RemoveWhere( entity => entity.EntityAspect.EntityState.IsDetached());
+      children.RemoveWhere(entity => entity.EntityAspect.EntityState.IsDetached());
 
       return children;
     }
 
-    
+
 
     public void AddChild(EntityKey parentEntityKey, NavigationProperty navProp, IEntity child) {
       var navChildren = GetNavChildren(parentEntityKey, navProp, true);
       navChildren.Add(child);
-    
+
     }
 
     public void RemoveChildren(EntityKey parentEntityKey, NavigationProperty navProp) {

@@ -1,5 +1,4 @@
 using Breeze.Sharp.Core;
-using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -22,7 +21,7 @@ namespace Breeze.Sharp {
       if (!Contains(item)) {
         base.Add(item);
         EntityAspect.OnErrorsChanged(item);
-      } 
+      }
     }
 
     public override bool Remove(ValidationError item) {
@@ -103,7 +102,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    private string _key; 
+    private string _key;
     private string _message;
 
 

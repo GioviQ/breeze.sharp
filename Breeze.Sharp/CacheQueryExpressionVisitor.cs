@@ -17,14 +17,14 @@ namespace Breeze.Sharp {
     /// <summary>
     /// For internal use only.
     /// </summary>
-    private  CacheQueryExpressionVisitor(EntityQuery query, CacheQueryOptions cacheQueryOptions )
+    private CacheQueryExpressionVisitor(EntityQuery query, CacheQueryOptions cacheQueryOptions)
       : base() {
-        _query = query;
-        _cacheQueryOptions = cacheQueryOptions;
-        _entityManagerParameterExpr = Expression.Parameter(typeof(EntityManager));
+      _query = query;
+      _cacheQueryOptions = cacheQueryOptions;
+      _entityManagerParameterExpr = Expression.Parameter(typeof(EntityManager));
     }
 
-    public static Expression<Func<EntityManager, IEnumerable>> Visit(EntityQuery query, CacheQueryOptions cacheQueryOptions)  {
+    public static Expression<Func<EntityManager, IEnumerable>> Visit(EntityQuery query, CacheQueryOptions cacheQueryOptions) {
       var visitor = new CacheQueryExpressionVisitor(query, cacheQueryOptions);
       return visitor.VisitRoot(query.Expression);
     }
@@ -40,7 +40,7 @@ namespace Breeze.Sharp {
       return lambda;
     }
 
-    
+
 
     private ParameterExpression _entityManagerParameterExpr;
     private CacheQueryOptions _cacheQueryOptions;
@@ -63,14 +63,14 @@ namespace Breeze.Sharp {
 
     protected override Expression VisitBinary(BinaryExpression be) {
       // handle entity == null expressions
-      if ( be.NodeType == ExpressionType.Equal || be.NodeType == ExpressionType.NotEqual) {
+      if (be.NodeType == ExpressionType.Equal || be.NodeType == ExpressionType.NotEqual) {
         //if (  IsEntityExpr(be.Left) && IsConstantNullExpr(be.Right)) {
         //  return CreateIsNullEntityExpr(be.Left, be.NodeType);
         //}
         //if (  IsEntityExpr(be.Right) && IsConstantNullExpr(be.Left)) {
         //  return CreateIsNullEntityExpr(be.Right, be.NodeType);
         //}
-        if ( IsStringEqualityExpr(be)) {
+        if (IsStringEqualityExpr(be)) {
           return HandleCacheQueryOptions(be);
         }
       }
@@ -103,14 +103,14 @@ namespace Breeze.Sharp {
         } else {
           return base.Visit(operand);
         }
-      } 
-      
+      }
+
       if (objectExpr != null && mce.Method.DeclaringType == typeof(string)) {
         // gracefully handle methods on String where string is null - by coalescing to string.Empty
         objectExpr = Expression.Coalesce(objectExpr, Expression.Constant(string.Empty));
-      } 
+      }
 
-     
+
       if (objectExpr != null) {
         newMce = Expression.Call(objectExpr, method, args);
       } else {
@@ -118,11 +118,11 @@ namespace Breeze.Sharp {
       }
 
       // process Guid ordering and String comparisions 
-      newMce =  ProcessOrderBy(newMce);
+      newMce = ProcessOrderBy(newMce);
 
-      newMce =  HandleCacheQueryOptions(newMce);
-      
-    
+      newMce = HandleCacheQueryOptions(newMce);
+
+
       return base.VisitMethodCall(newMce);
     }
 
@@ -235,8 +235,8 @@ namespace Breeze.Sharp {
     }
 
     private static object GetStringComparer(StringComparison stringComparison) {
-      var stringComparers = new StringComparer[] { 
-        StringComparer.CurrentCulture, 
+      var stringComparers = new StringComparer[] {
+        StringComparer.CurrentCulture,
         StringComparer.CurrentCultureIgnoreCase,
         StringComparer.Ordinal,
         StringComparer.OrdinalIgnoreCase
@@ -286,10 +286,10 @@ namespace Breeze.Sharp {
     }
 
     private Expression GetEntitiesAsParameterExpr(Type entityType) {
-      
+
       var getEntitiesMi = MethodReflector.Get<EntityManager, Type, EntityState>((em, t, es) => em.GetEntities(t, es));
       var entityTypeExpr = Expression.Constant(entityType, typeof(Type));
-      var entityStateExpr = Expression.Constant(EntityState.AllButDetached, typeof (EntityState));
+      var entityStateExpr = Expression.Constant(EntityState.AllButDetached, typeof(EntityState));
       var egExpr = Expression.Call(_entityManagerParameterExpr, getEntitiesMi, entityTypeExpr, entityStateExpr);
 
       var methExpr = Expression.Call(typeof(Enumerable), "Cast", new Type[] { entityType }, egExpr);

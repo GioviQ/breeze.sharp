@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Breeze.Sharp {
   // TODO: make immutable later
@@ -12,7 +11,7 @@ namespace Breeze.Sharp {
     public ValidationOptions() {
       ValidationApplicability = ValidationApplicability.Default;
       // ValidationNotificationMode = NetClient.ValidationNotificationMode.Notify;
-      
+
     }
     public ValidationApplicability ValidationApplicability { get; set; }
 

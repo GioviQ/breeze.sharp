@@ -1,8 +1,7 @@
 ﻿
-using System.Linq;
-using System.Threading;
 using Breeze.Sharp.Core;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -28,10 +27,10 @@ namespace Breeze.Sharp {
       }
     }
 
-    internal EntityType CreateEntityType(Type clrType ) {
+    internal EntityType CreateEntityType(Type clrType) {
       var typeInfo = clrType.GetTypeInfo();
       var baseEntityType = (typeInfo.BaseType == typeof(object)) ? null : MetadataStore.GetEntityType(typeInfo.BaseType);
-      
+
       var entityType = new EntityType(MetadataStore) {
         ClrType = clrType,
         BaseEntityType = baseEntityType
@@ -40,7 +39,7 @@ namespace Breeze.Sharp {
       MetadataStore.AddEntityType(entityType);
 
       if (baseEntityType != null) {
-        if (typeof (IEntity).IsAssignableFrom(typeInfo.BaseType) && typeInfo.BaseType != typeof (BaseEntity)) {
+        if (typeof(IEntity).IsAssignableFrom(typeInfo.BaseType) && typeInfo.BaseType != typeof(BaseEntity)) {
           UpdateBaseProperties(entityType, baseEntityType);
         }
       }
@@ -50,15 +49,15 @@ namespace Breeze.Sharp {
         if (pi.Name == "EntityAspect") continue;
 
         if (pi.PropertyType.GenericTypeArguments.Any() &&
-            pi.PropertyType.GetGenericTypeDefinition() == typeof (NavigationSet<>)) {
+            pi.PropertyType.GetGenericTypeDefinition() == typeof(NavigationSet<>)) {
           CreateNavigationProperty(entityType, pi);
-        } else if (typeof (IEntity).IsAssignableFrom(pi.PropertyType)) {
+        } else if (typeof(IEntity).IsAssignableFrom(pi.PropertyType)) {
           CreateNavigationProperty(entityType, pi);
         } else {
           CreateDataProperty(entityType, pi);
         }
       }
-      
+
       return entityType;
     }
 
@@ -72,9 +71,9 @@ namespace Breeze.Sharp {
 
       var baseComplexType = (typeInfo.BaseType == typeof(object)) ? null : MetadataStore.GetComplexType(typeInfo.BaseType);
       if (baseComplexType != null)
-      if (typeof(IComplexObject).IsAssignableFrom(typeInfo.BaseType) && typeInfo.BaseType != typeof(BaseComplexObject)) {
-        UpdateBaseProperties(complexType, baseComplexType);
-      }
+        if (typeof(IComplexObject).IsAssignableFrom(typeInfo.BaseType) && typeInfo.BaseType != typeof(BaseComplexObject)) {
+          UpdateBaseProperties(complexType, baseComplexType);
+        }
 
       foreach (var pi in typeInfo.DeclaredProperties) {
         if (!pi.GetMethod.IsPublic) {
@@ -82,7 +81,7 @@ namespace Breeze.Sharp {
         }
         CreateDataProperty(complexType, pi);
       }
-      
+
       return complexType;
     }
 
@@ -92,8 +91,8 @@ namespace Breeze.Sharp {
         structuralType.AddDataProperty(newDp);
       });
       if (baseStructuralType.IsEntityType) {
-        var entityType = (EntityType) structuralType;
-        var baseEntityType = (EntityType) baseStructuralType;
+        var entityType = (EntityType)structuralType;
+        var baseEntityType = (EntityType)baseStructuralType;
         baseEntityType.NavigationProperties.ForEach(np => {
           var newNp = new NavigationProperty(np);
           entityType.AddNavigationProperty(newNp);
@@ -127,7 +126,7 @@ namespace Breeze.Sharp {
       return dp;
     }
 
-    private NavigationProperty CreateNavigationProperty(EntityType entityType, PropertyInfo pInfo ) {
+    private NavigationProperty CreateNavigationProperty(EntityType entityType, PropertyInfo pInfo) {
       Type targetType;
       bool isScalar;
       if (pInfo.PropertyType.GenericTypeArguments.Any()) {
@@ -139,7 +138,7 @@ namespace Breeze.Sharp {
       }
 
       var np = new NavigationProperty(pInfo.Name);
-      
+
       np.IsScalar = isScalar;
       // np.EntityTypeName = TypeNameInfo.FromClrTypeName(targetType.FullName).Name;
       np.EntityType = MetadataStore.GetEntityType(targetType);
@@ -150,18 +149,18 @@ namespace Breeze.Sharp {
       return np;
     }
 
-    
+
 
   }
 
   /// <summary>
   /// Provides a fluent interface for configuring an EntityType within the MetadataStore.
   /// </summary>
-  public class EntityTypeBuilder<TEntity> : StructuralTypeBuilder where TEntity:IEntity  {
+  public class EntityTypeBuilder<TEntity> : StructuralTypeBuilder where TEntity : IEntity {
 
     // TODO: also need a ComplexTypeBuilder;
     public EntityTypeBuilder(MetadataStore metadataStore, bool checkOnly = false) : base(metadataStore) {
-      EntityType = MetadataStore.GetEntityType(typeof (TEntity));
+      EntityType = MetadataStore.GetEntityType(typeof(TEntity));
       CheckOnly = checkOnly;
     }
 
@@ -192,13 +191,13 @@ namespace Breeze.Sharp {
 
 
     public NavigationPropertyBuilder<TEntity, TTarget> NavigationProperty<TTarget>(
-      Expression<Func<TEntity, TTarget>> propExpr) where TTarget:IEntity {
+      Expression<Func<TEntity, TTarget>> propExpr) where TTarget : IEntity {
       var pInfo = GetPropertyInfo(propExpr);
       return GetNavPropBuilder<TTarget>(pInfo);
     }
 
     public NavigationPropertyBuilder<TEntity, TTarget> NavigationProperty<TTarget>(
-      Expression<Func<TEntity, NavigationSet<TTarget>>> propExpr) where TTarget: IEntity {
+      Expression<Func<TEntity, NavigationSet<TTarget>>> propExpr) where TTarget : IEntity {
       var pInfo = GetPropertyInfo(propExpr);
       return GetNavPropBuilder<TTarget>(pInfo);
     }
@@ -230,10 +229,10 @@ namespace Breeze.Sharp {
   /// Provides a fluent interface for configuring an DataProperty within the MetadataStore.
   /// </summary>
   public class DataPropertyBuilder {
-    internal DataPropertyBuilder(DataProperty dp ) {
+    internal DataPropertyBuilder(DataProperty dp) {
       DataProperty = dp;
     }
-    
+
     /// <summary>
     /// Used to defined that this DataProperty is nullable.
     /// </summary>
@@ -314,7 +313,7 @@ namespace Breeze.Sharp {
   /// </summary>
   /// <typeparam name="TEntity"></typeparam>
   /// <typeparam name="TTarget"></typeparam>
-  public class NavigationPropertyBuilder<TEntity, TTarget> where TEntity: IEntity where TTarget: IEntity {
+  public class NavigationPropertyBuilder<TEntity, TTarget> where TEntity : IEntity where TTarget : IEntity {
 
     internal NavigationPropertyBuilder(EntityTypeBuilder<TEntity> etb, NavigationProperty np) {
       _etb = etb;
@@ -338,7 +337,7 @@ namespace Breeze.Sharp {
       return this;
     }
 
-    
+
     /// <summary>
     /// Used to define the 'inverse' foreign key property associated with this NavigationProperty. This method will only
     /// be needed in unusual cases.
@@ -350,7 +349,7 @@ namespace Breeze.Sharp {
       var invEtb = new EntityTypeBuilder<TTarget>(NavigationProperty.EntityType.MetadataStore);
       var invDpBuilder = invEtb.DataProperty(propExpr);
       var invFkProp = invDpBuilder.DataProperty;
-      
+
       invFkProp.InverseNavigationProperty = NavigationProperty;
       return this;
     }

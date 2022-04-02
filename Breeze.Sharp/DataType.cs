@@ -48,7 +48,7 @@ namespace Breeze.Sharp {
     public string Name { get; internal set; }
     public Type ClrType { get; internal set; }
     public object DefaultValue { get; internal set; }
-    
+
     public virtual object Parse(object val) {
       if (val == null) return null;
       return Convert.ChangeType(val, ClrType);

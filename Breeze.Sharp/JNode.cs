@@ -1,16 +1,15 @@
 
+using Breeze.Sharp.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-
-using Breeze.Sharp.Core;
-using Newtonsoft.Json.Serialization;
-using System.Globalization;
 using System.Reflection;
 
 namespace Breeze.Sharp {

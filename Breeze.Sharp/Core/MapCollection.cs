@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace Breeze.Sharp.Core {
@@ -11,10 +10,10 @@ namespace Breeze.Sharp.Core {
   /// </summary>
   /// <typeparam name="T"></typeparam>
   /// <typeparam name="U"></typeparam>
-  public abstract class MapCollection<T,U> : ICollection<U> {
+  public abstract class MapCollection<T, U> : ICollection<U> {
 
     public MapCollection() {
-      
+
     }
 
     public MapCollection(IEnumerable<U> values) {

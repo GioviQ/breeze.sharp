@@ -22,17 +22,17 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
     [TestMethod]
     public async Task WhereTypeWithTimeSpan() {
       var em = await TestFns.NewEm(_serviceName);
-      
+
       var q1 = EntityQuery.From<TimeLimit>();
       var tls = await em.ExecuteQuery(q1);
       Assert.IsTrue(tls.Any());
-      Assert.IsTrue(tls.All(tl => tl.MaxTime.Ticks >= 0)) ;
+      Assert.IsTrue(tls.All(tl => tl.MaxTime.Ticks >= 0));
 
     }
 
@@ -68,10 +68,10 @@ namespace Breeze.Sharp.Tests {
       var q2 =
         EntityQuery.From<Role>()
           .Where(r => r.RoleType == RoleType.Guest && r.Description.StartsWith("G"))
-          .Select(r => new {r.Description});
+          .Select(r => new { r.Description });
       var rp2 = q2.GetResourcePath(em.MetadataStore);
 
-      
+
 
       var r0 = await em.ExecuteQuery(q0);
       Assert.IsTrue(r0.Any());
@@ -88,7 +88,7 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task WherePropertyPath() {
       var em = await TestFns.NewEm(_serviceName);
-      
+
       // Products in a Category whose name starts with "S"
       var query1 = EntityQuery.From<Product>()
         .Where(product => product.Category.CategoryName.StartsWith("S"));
@@ -142,7 +142,7 @@ namespace Breeze.Sharp.Tests {
       var results = await em1.ExecuteQuery(q);
 
       Assert.IsTrue(results.Any());
-      
+
     }
 
 
@@ -150,7 +150,7 @@ namespace Breeze.Sharp.Tests {
     public async Task SelectScalarNpNoAnon() {
       Assert.Inconclusive("Known issue with OData - use an anon projection instead");
       var em1 = await TestFns.NewEm(_serviceName);
-      
+
       var q1 = new EntityQuery<Order>().Where(o => true).Select(o => o.Customer).Take(5);
       var r1 = await q1.Execute(em1);
       Assert.IsTrue(r1.Count() == 5);
@@ -197,20 +197,20 @@ namespace Breeze.Sharp.Tests {
       var results = await em1.ExecuteQuery(q3);
 
       Assert.IsTrue(results.Cast<object>().Count() == 3);
-      
+
     }
 
     [TestMethod]
     public async Task InlineCount() {
       var em1 = await TestFns.NewEm(_serviceName);
       var q = new EntityQuery<Foo.Customer>("Customers");
-      var q2 = q.Where(c => c.CompanyName.StartsWith("C")) ;
+      var q2 = q.Where(c => c.CompanyName.StartsWith("C"));
       var q3 = q2.InlineCount();
 
       var results = await q3.Execute(em1);
 
-      var count = ((IHasInlineCount) results).InlineCount;
-      
+      var count = ((IHasInlineCount)results).InlineCount;
+
       Assert.IsTrue(results.Count() > 0);
       Assert.IsTrue(results.Count() == count, "counts should be the same");
       Assert.IsTrue(results.All(r1 => r1.GetType() == typeof(Foo.Customer)), "should all get customers");
@@ -245,7 +245,7 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task WhereOrderByPropertyPath() {
       var em1 = await TestFns.NewEm(_serviceName);
-     
+
       // Products sorted by their Category names (in descending order)
       var query1 = EntityQuery.From<Product>()
         .OrderByDescending(p => p.Category.CategoryName);
@@ -275,13 +275,13 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
       var query1 = new EntityQuery<Customer>()
         .Where(c => c.Orders.Any(o => o.OrderDetails.All(od => od.UnitPrice > 200)));
-      
+
       var results = await query1.Execute(em1);
       Assert.IsTrue(results.Any());
 
     }
 
-    
+
 
     [TestMethod]
     public async Task WhereAnyOrderBy() {
@@ -304,7 +304,7 @@ namespace Breeze.Sharp.Tests {
     public async Task WithOverwriteChanges() {
       var em1 = await TestFns.NewEm(_serviceName);
       var q = new EntityQuery<Foo.Customer>("Customers");
-      var q2 = q.Where(c => c.CompanyName.StartsWith("C")) ;
+      var q2 = q.Where(c => c.CompanyName.StartsWith("C"));
       var q3 = q2.OrderBy(c => c.CompanyName).Take(2);
       var results = await q3.Execute(em1);
 
@@ -328,7 +328,7 @@ namespace Breeze.Sharp.Tests {
       var results = await q3.With(em1).Execute();
 
       Assert.IsTrue(results.Count() == 2);
-      
+
     }
 
     [TestMethod]
@@ -349,7 +349,7 @@ namespace Breeze.Sharp.Tests {
       var q = new EntityQuery<Customer>("Customers")
         .Where(c => c.CompanyName.StartsWith("C"))
         .Select(c => new { c.CompanyName });
-      
+
       var results = await q.Execute(em1);
 
       Assert.IsTrue(results.Any());
@@ -365,8 +365,8 @@ namespace Breeze.Sharp.Tests {
       var query = new EntityQuery<Order>()
         .Where(o => o.Customer.CompanyName.StartsWith("C"))
         .OrderBy(o => o.Customer.CompanyName)
-        .Select(o => new { o.Customer.CompanyName});
-       
+        .Select(o => new { o.Customer.CompanyName });
+
 
       var results = await query.Execute(em1);
 
@@ -374,7 +374,7 @@ namespace Breeze.Sharp.Tests {
 
     }
 
-    
+
 
     [TestMethod]
     public async Task SelectAnonWithEntityCollection() {
@@ -385,7 +385,7 @@ namespace Breeze.Sharp.Tests {
       var results = await q3.Execute(em1);
 
       Assert.IsTrue(results.Count() > 0);
-      var ok = results.All(r1 => ( r1.Orders.Count() > 0 ) && r1.Orders.All(o => o.GetType() == typeof(Foo.Order)));
+      var ok = results.All(r1 => (r1.Orders.Count() > 0) && r1.Orders.All(o => o.GetType() == typeof(Foo.Order)));
       Assert.IsTrue(ok, "every item of anon should contain a collection of Orders");
     }
 
@@ -394,7 +394,7 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
       var q = new EntityQuery<Foo.Customer>("Customers");
       var q2 = q.Where(c => c.CompanyName.StartsWith("C"));
-      var q3 = q2.Select(c => new { c.CompanyName, c.Orders});
+      var q3 = q2.Select(c => new { c.CompanyName, c.Orders });
       var results = await q3.Execute(em1);
 
       Assert.IsTrue(results.Count() > 0);
@@ -402,7 +402,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(ok, "every item of anon should contain a collection of Orders");
       ok = results.All(r1 => r1.CompanyName.Length > 0);
       Assert.IsTrue(ok, "anon type should have a populated company name");
-      
+
     }
 
     [TestMethod]
@@ -450,9 +450,9 @@ namespace Breeze.Sharp.Tests {
       var results = await q3.Execute(em1);
 
       Assert.IsTrue(results.Count() > 0);
-      var ok = results.All(r1 => 
-        r1.GetType() == typeof(Foo.Customer) && 
-        r1.Orders.Count() > 0 && 
+      var ok = results.All(r1 =>
+        r1.GetType() == typeof(Foo.Customer) &&
+        r1.Orders.Count() > 0 &&
         r1.Orders.All(o => o.GetType() == typeof(Foo.Order)) &&
         r1.Orders.All(o => o.Customer == r1));
       Assert.IsTrue(ok, "every Customer should contain a collection of Orders");
@@ -483,7 +483,7 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
       var q = new EntityQuery<Foo.Customer>("Customers");
       var q2 = q.Where(c => c.CompanyName.StartsWith("C"));
-      var q3 = q2.Select(c => new Dummy() { CompanyName = c.CompanyName, Orders = c.Orders}  );
+      var q3 = q2.Select(c => new Dummy() { CompanyName = c.CompanyName, Orders = c.Orders });
       var results = await q3.Execute(em1);
 
       Assert.IsTrue(results.Count() > 0);
@@ -510,7 +510,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(r.Count() == 0, "should be no results");
 
     }
-    
+
     [TestMethod]
     public async Task WhereGuid2() {
       var em1 = await TestFns.NewEm(_serviceName);
@@ -555,7 +555,7 @@ namespace Breeze.Sharp.Tests {
       var r0 = await q0.Execute(em1);
       Assert.IsTrue(r0.Count() == 3);
       Assert.IsTrue(r0.All(r => r.InternationalOrder != null));
-      
+
     }
 
     [TestMethod]
@@ -567,10 +567,10 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(r0.Any());
       Assert.IsTrue(r0.All(c => c.CompanyName.ToLower().StartsWith("c")));
 
-      var q1 = EntityQuery.From<Customer>().Where(c => c.CompanyName.Substring(1,2).ToUpper() == "OM");
+      var q1 = EntityQuery.From<Customer>().Where(c => c.CompanyName.Substring(1, 2).ToUpper() == "OM");
       var r1 = await q1.Execute(em1);
       Assert.IsTrue(r1.Any());
-      Assert.IsTrue(r1.All(c => c.CompanyName.Substring(1,2).ToUpper() == "OM"));
+      Assert.IsTrue(r1.All(c => c.CompanyName.Substring(1, 2).ToUpper() == "OM"));
     }
 
     [TestMethod]
@@ -620,7 +620,7 @@ namespace Breeze.Sharp.Tests {
       } catch (Exception e) {
         Assert.IsTrue(e.Message.ToLower().Contains("not found"), "should be the right message");
       }
-      
+
     }
 
     [TestMethod]
@@ -628,7 +628,7 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var q0 = new EntityQuery<Customer>().Take(0);
-      
+
       var r0 = await q0.Execute(em1);
       Assert.IsTrue(r0.Count() == 0);
 
@@ -642,7 +642,7 @@ namespace Breeze.Sharp.Tests {
 
       var r0 = await q0.Execute(em1);
       Assert.IsTrue(r0.Count() == 0);
-      var count = ((IHasInlineCount) r0).InlineCount;
+      var count = ((IHasInlineCount)r0).InlineCount;
       Assert.IsTrue(count > 0);
     }
 
@@ -655,7 +655,7 @@ namespace Breeze.Sharp.Tests {
       var r0 = await q0.Execute(em1);
       Assert.IsTrue(r0.Count() > 0, "should have returned some orderDetails");
       Assert.IsTrue(r0.All(od => od.Order != null && od.Order.Customer != null));
-      
+
     }
 
     [TestMethod]
@@ -738,12 +738,12 @@ namespace Breeze.Sharp.Tests {
     //        var r = em.executeQueryLocally(q);
     //        ok(r.length === data.results.length, "local query should return same subset");
     //    }).fail(testFns.handleFail).fin(start);
-            
+
     //});
 
     //test("bad query test", function () {
     //    var em = newEm();
-        
+
     //    var q = EntityQuery.from("EntityThatDoesnotExist")
     //        .using(em);
     //    stop();
@@ -757,7 +757,7 @@ namespace Breeze.Sharp.Tests {
     //    });
     //});
 
-   
+
 
 
     //test("OData predicate - add combined with regular predicate", function () {
@@ -767,7 +767,7 @@ namespace Breeze.Sharp.Tests {
     //    }
     //    var manager = newEm();
     //    var predicate = Predicate.create("EmployeeID add ReportsToEmployeeID gt 3").and("employeeID", "<", 9999);
-        
+
     //    var query = new breeze.EntityQuery()
     //        .from("Employees")
     //        .where(predicate);
@@ -784,7 +784,7 @@ namespace Breeze.Sharp.Tests {
     //});
 
 
-    
+
     //test("select with inlinecount", function () {
     //    var manager = newEm();
     //    var query = new breeze.EntityQuery()
@@ -794,7 +794,7 @@ namespace Breeze.Sharp.Tests {
     //    stop();
     //    manager.executeQuery(query).then(function (data) {
     //        ok(data.results.length == data.inlineCount, "inlineCount should match return count");
-            
+
     //    }).fail(testFns.handleFail).fin(start);
     //});
 
@@ -864,7 +864,7 @@ namespace Breeze.Sharp.Tests {
     //});
 
     //test("test date in projection", function () {
-        
+
     //    var manager = newEm();
     //    var query = new breeze.EntityQuery()
     //        .from("Orders")
@@ -900,8 +900,8 @@ namespace Breeze.Sharp.Tests {
     //    }).fail(testFns.handleFail).fin(start);
 
     //});
-    
+
   }
 }
 
-  
+

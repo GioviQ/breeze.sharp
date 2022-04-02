@@ -1,5 +1,4 @@
 using Breeze.Sharp.Core;
-using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -10,9 +9,9 @@ namespace Breeze.Sharp {
   /// Metadata information about a complex type.
   /// </summary>
   [DebuggerDisplay("{Name}")]
-  public sealed class ComplexType: StructuralType, IJsonSerializable {
+  public sealed class ComplexType : StructuralType, IJsonSerializable {
 
-    public ComplexType(MetadataStore metadataStore) :base(metadataStore) {
+    public ComplexType(MetadataStore metadataStore) : base(metadataStore) {
 
     }
 
@@ -28,7 +27,7 @@ namespace Breeze.Sharp {
       // validators
       // custom
     }
-    
+
     public override bool IsEntityType {
       get { return false; }
     }
@@ -46,8 +45,8 @@ namespace Breeze.Sharp {
       return jo;
     }
 
-  
-   
+
+
   }
 
   /// <summary>

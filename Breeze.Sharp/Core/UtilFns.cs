@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Breeze.Sharp.Core {
   public class UtilFns {
 
-    public static bool DictionariesEqual<K,V>(Dictionary<K,V> d1, Dictionary<K, V> d2)  {
+    public static bool DictionariesEqual<K, V>(Dictionary<K, V> d1, Dictionary<K, V> d2) {
       return d1.Keys.Count == d2.Keys.Count
         && d1.Keys.All(k => d2.ContainsKey(k) && object.Equals(d1[k], d2[k]));
     }

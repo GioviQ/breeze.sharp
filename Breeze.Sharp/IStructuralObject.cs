@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breeze.Sharp {
 
   /// <summary>
   /// Interface that describes an Entity.
   /// </summary>
-  public interface IEntity : IStructuralObject, INotifyDataErrorInfo, INotifyPropertyChanged, IEditableObject, 
+  public interface IEntity : IStructuralObject, INotifyDataErrorInfo, INotifyPropertyChanged, IEditableObject,
     IChangeTracking, IRevertibleChangeTracking, IComparable {
     /// <summary>
     /// Returns the <see cref="EntityAspect"/> associated with this IEntity.

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Breeze.Sharp {
+﻿namespace Breeze.Sharp {
 
   /// <summary>
   /// The context under which a validation operation will occur. 
@@ -17,7 +15,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public ValidationContext(IStructuralObject so, StructuralProperty property, object propertyValue) 
+    public ValidationContext(IStructuralObject so, StructuralProperty property, object propertyValue)
       : this(so) {
       Property = property;
       PropertyValue = propertyValue;
@@ -36,7 +34,7 @@ namespace Breeze.Sharp {
     // May be null
     public StructuralProperty Property { get; set; }
     public IComplexObject ComplexObject { get; set; }
-    
+
 
     public string PropertyPath {
       get {

@@ -27,19 +27,19 @@ namespace Breeze.Sharp {
     // TODO: what about IsNullable on a scalar navigation property
 
     internal NavigationProperty(string name) : base(name) {
-      
+
     }
 
-    internal NavigationProperty(NavigationProperty np) 
-      : base( np) {
-      
+    internal NavigationProperty(NavigationProperty np)
+      : base(np) {
+
       EntityType = np.EntityType;
       AssociationName = np.AssociationName;
       // ok for next two var to ref the base class collections because these should be shared.
       // and other code assumes that if the base class collection is updated then so will the subclass.
-      _fkNames = np._fkNames;  
+      _fkNames = np._fkNames;
       _invFkNames = np._invFkNames;
-      
+
     }
 
     internal void UpdateFromJNode(JNode jNode, bool isFromServer) {
@@ -48,7 +48,7 @@ namespace Breeze.Sharp {
       IsScalar = jNode.Get<bool>("isScalar", true);
       AssociationName = jNode.Get<string>("associationName");
       _validators = new ValidatorCollection(jNode.GetJNodeArray("validators"));
-      SetFkNames(jNode.GetArray<string>( isFromServer ? "foreignKeyNamesOnServer" : "foreignKeyNames"));
+      SetFkNames(jNode.GetArray<string>(isFromServer ? "foreignKeyNamesOnServer" : "foreignKeyNames"));
       SetInvFkNames(jNode.GetArray<string>(isFromServer ? "invForeignKeyNamesOnServer" : "invForeignKeyNames"));
       // custom
     }
@@ -76,22 +76,22 @@ namespace Breeze.Sharp {
     /// </summary>
     public override Type ClrType {
       get { return EntityType.ClrType; }
-      internal set {  throw new NotSupportedException("Cannot set the ClrType on a NavigationProperty directly - set the EntityType"); }
+      internal set { throw new NotSupportedException("Cannot set the ClrType on a NavigationProperty directly - set the EntityType"); }
     }
-       
+
     /// <summary>
     /// The name of the association to which that this property belongs. 
     /// This associationName will be shared with this properties 'Inverse', if it exists.
     /// </summary>
     public string AssociationName { get; internal set; }
-    
+
     /// <summary>
     /// The inverse of this NavigationProperty. The NavigationProperty that 
     /// represents a navigation in the opposite direction to this NavigationProperty.
     /// </summary>
     public NavigationProperty Inverse { get; internal set; }
 
-    
+
     /// <summary>
     /// The 'foreign key' DataProperties associated with this NavigationProperty. 
     /// There will usually only be a single DataProperty associated with a Navigation property
@@ -102,14 +102,14 @@ namespace Breeze.Sharp {
       // AsReadOnly doesn't seem to exist in the PCL
       get { return _relatedDataProperties.ReadOnlyValues; }
     }
-    
+
     /// <summary>
     /// The client side names of the foreign key DataProperties associated with this NavigationProperty. 
     /// There will usually only be a single DataProperty associated with a Navigation property
     /// except in the case of entities with multipart keys.
     /// </summary>
     public ReadOnlyCollection<string> ForeignKeyNames {
-      get { return _fkNames.ReadOnlyValues;  }
+      get { return _fkNames.ReadOnlyValues; }
     }
 
     /// <summary>
@@ -182,11 +182,11 @@ namespace Breeze.Sharp {
     private readonly SafeList<DataProperty> _relatedDataProperties = new SafeList<DataProperty>();
     private readonly SafeList<string> _fkNames = new SafeList<string>();
     private readonly SafeList<string> _invFkNames = new SafeList<string>();
-    
+
 
     private SafeList<DataProperty> _fkProps = null;
     private SafeList<DataProperty> _invfkProps = null;
-    
+
 
   }
 

@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Core {
 
@@ -21,14 +18,14 @@ namespace Breeze.Sharp.Core {
     /// Initializes a new instance of the class.
     /// </summary>
     public NotifiableCollection() {
-      
+
     }
 
     /// <summary>
     /// Initializes a new instance of the class.
     /// </summary>
     /// <param name="collection">The collection whose elements are copied to the new set.</param>
-    public NotifiableCollection(IEnumerable<T> collection)  {
+    public NotifiableCollection(IEnumerable<T> collection) {
       collection.ForEach(item => Add(item));
     }
 
@@ -37,7 +34,7 @@ namespace Breeze.Sharp.Core {
     /// </summary>
     /// <param name="comparer">The IEqualityComparer&lt;T&gt; implementation to use when comparing values in the set, or null to use the default EqualityComparer&lt;T&gt; implementation for the set type.</param>
     public NotifiableCollection(IEqualityComparer<T> comparer) : base(comparer) {
-      
+
     }
 
     /// <summary>
@@ -45,7 +42,7 @@ namespace Breeze.Sharp.Core {
     /// </summary>
     /// <param name="collection">The collection whose elements are copied to the new set.</param>
     /// <param name="comparer">The IEqualityComparer&lt;T&gt; implementation to use when comparing values in the set, or null to use the default EqualityComparer&lt;T&gt; implementation for the set type.</param>
-    public NotifiableCollection(IEnumerable<T> collection, IEqualityComparer<T> comparer) :base(comparer) {
+    public NotifiableCollection(IEnumerable<T> collection, IEqualityComparer<T> comparer) : base(comparer) {
       collection.ForEach(item => Add(item));
     }
 
@@ -56,12 +53,12 @@ namespace Breeze.Sharp.Core {
     protected override T GetKeyForItem(T item) {
       return item;
     }
-    
+
     protected override void InsertItem(int index, T item) {
       CheckReentrancy();
-      
+
       base.InsertItem(index, item);
-        
+
       RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
       RaisePropertyChanged("Count");
     }

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Core {
   /// <summary>
@@ -66,7 +64,7 @@ namespace Breeze.Sharp.Core {
     }
 
     class ParameterRebinder : ExpressionVisitor {
-      
+
       private ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map) {
         _map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
       }

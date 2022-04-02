@@ -11,13 +11,13 @@ namespace Breeze.Sharp {
   /// </summary>
   public class SaveException : Exception {
 
-	private static readonly ReadOnlyCollection<EntityError> emptyErrors = new ReadOnlyCollection<EntityError>(new EntityError[0]); 
+    private static readonly ReadOnlyCollection<EntityError> emptyErrors = new ReadOnlyCollection<EntityError>(new EntityError[0]);
 
-    public SaveException(EntityManager em, string json) : 
+    public SaveException(EntityManager em, string json) :
       this(em, JNode.DeserializeFrom(json)) {
     }
-    
-    internal SaveException(EntityManager em, JNode jn) 
+
+    internal SaveException(EntityManager em, JNode jn)
       : base() {
       _message = jn.Get<string>("ExceptionMessage") ?? "see EntityErrors";
       var entityErrors = jn.GetArray<EntityError>("Errors", "errors", "EntityErrors", "entityErrors");
@@ -38,16 +38,15 @@ namespace Breeze.Sharp {
     }
 
     public override string Message {
-	    get { return _message; }
+      get { return _message; }
     }
 
     public ReadOnlyCollection<EntityError> EntityErrors {
-	    get
-	    {
-		    if (_entityErrors == null)
-			    return emptyErrors;
-		    return _entityErrors.ReadOnlyValues;
-	    }
+      get {
+        if (_entityErrors == null)
+          return emptyErrors;
+        return _entityErrors.ReadOnlyValues;
+      }
     }
 
     public IEnumerable<ValidationError> ValidationErrors {
@@ -90,7 +89,7 @@ namespace Breeze.Sharp {
           Entity = em.GetEntityByKey(ek);
         }
 
-        
+
         if (entityType != null) {
           if (PropertyName != null) {
             Property = entityType.Properties.FirstOrDefault(p => p.NameOnServer == PropertyName);
@@ -98,7 +97,7 @@ namespace Breeze.Sharp {
               PropertyName = Property.Name;
             }
           }
-          
+
           var vc = new ValidationContext(Entity);
           vc.Property = Property;
           var veKey = (ErrorName ?? ErrorMessage) + (PropertyName ?? "");
@@ -107,10 +106,10 @@ namespace Breeze.Sharp {
           Entity.EntityAspect.ValidationErrors.Add(ve);
         }
       } catch (Exception e) {
-        ErrorMessage = ( ErrorMessage ?? "") + ":  Unable to Resolve this error: " + e.Message;
+        ErrorMessage = (ErrorMessage ?? "") + ":  Unable to Resolve this error: " + e.Message;
       }
       return this;
     }
- }
- 
+  }
+
 }

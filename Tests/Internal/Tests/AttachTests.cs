@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
+﻿using Foo;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Foo;
+using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
@@ -25,11 +21,11 @@ namespace Breeze.Sharp.Tests {
       _serviceName = TestFns.serviceName;
     }
 
-    
+
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
 
@@ -37,7 +33,7 @@ namespace Breeze.Sharp.Tests {
     public async Task CreateEntityWithInitializer() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var cust = (Customer) em1.CreateEntity(typeof (Customer), new {CompanyName = "Testzzz", City = "Los Angeles", RowVersion = 3});
+      var cust = (Customer)em1.CreateEntity(typeof(Customer), new { CompanyName = "Testzzz", City = "Los Angeles", RowVersion = 3 });
       Assert.IsTrue(cust.EntityAspect.EntityState.IsAdded());
       Assert.IsTrue(cust.CompanyName == "Testzzz");
       Assert.IsTrue(cust.City == "Los Angeles");
@@ -48,7 +44,7 @@ namespace Breeze.Sharp.Tests {
     public async Task CreateEntityWithInitializer2() {
       var em1 = await TestFns.NewEm(_serviceName);
       var order = new Order();
-      var cust = (Customer)em1.CreateEntity(typeof(Customer), new { CompanyName = "Testzzz", Orders = new Order[] {order}, RowVersion = 3 });
+      var cust = (Customer)em1.CreateEntity(typeof(Customer), new { CompanyName = "Testzzz", Orders = new Order[] { order }, RowVersion = 3 });
       Assert.IsTrue(cust.EntityAspect.EntityState.IsAdded());
       Assert.IsTrue(cust.CompanyName == "Testzzz");
       Assert.IsTrue(cust.Orders.Count == 1 && cust.Orders.First() == order);
@@ -68,7 +64,7 @@ namespace Breeze.Sharp.Tests {
       em1.AttachEntity(prod1, EntityState.Unchanged);
       prod1.Discontinued = false;
       prod1.EntityAspect.RejectChanges();
-      
+
       Assert.IsTrue(prod1.Discontinued == true, "should have returned to initial state");
     }
 
@@ -93,7 +89,7 @@ namespace Breeze.Sharp.Tests {
       var emp1 = new Employee();
       em1.AttachEntity(emp1);
       var emp2 = em1.CreateEntity<Employee>();
-      
+
       var order1 = new Order();
       emp1.Orders.Add(order1);
       Assert.IsTrue(order1.EntityAspect.EntityState.IsAdded());
@@ -130,7 +126,7 @@ namespace Breeze.Sharp.Tests {
     public async Task NullForeignKey() {
       var em1 = await TestFns.NewEm(_serviceName);
       var prod1 = new Product();
-      
+
       em1.AttachEntity(prod1);
       prod1.ProductName = "Test";
       prod1.SupplierID = null;
@@ -148,13 +144,13 @@ namespace Breeze.Sharp.Tests {
       p0.Supplier = null;
       Assert.IsTrue(p0.SupplierID == null);
       Assert.IsTrue(!s0.Products.Contains(p0));
-      
+
       Assert.IsTrue(s1.Products.Contains(p1));
       p1.SupplierID = null;
       Assert.IsTrue(p1.Supplier == null);
       Assert.IsTrue(!s1.Products.Contains(p1));
     }
-   
+
 
     [TestMethod]
     public async Task CreateEntity() {
@@ -191,24 +187,24 @@ namespace Breeze.Sharp.Tests {
 
     [TestMethod]
     public async Task AddToNavSet() {
-        var em1 = await TestFns.NewEm(_serviceName);
-        
-        var customer = new Customer();
-        var order = new Order();
-        em1.AttachEntity(customer);
-        var origOrders = customer.Orders;
-        Assert.IsTrue(origOrders.Count == 0);
-        origOrders.Add(order);
-        // next line won't compile - this is good!
-        // customer.Orders = new NavigationSet<Order>();
-        Assert.IsTrue(origOrders.Count == 1);
-        Assert.IsTrue(customer.Orders == origOrders, "should be same collection");
-        Assert.IsTrue(order.EntityAspect.IsAttached, "should be attached");
-        Assert.IsTrue(order.Customer == customer, "order.Customer should = customer");
-    }
-    
+      var em1 = await TestFns.NewEm(_serviceName);
 
-     // can attach a detached entity to a different manager via attach/detach
+      var customer = new Customer();
+      var order = new Order();
+      em1.AttachEntity(customer);
+      var origOrders = customer.Orders;
+      Assert.IsTrue(origOrders.Count == 0);
+      origOrders.Add(order);
+      // next line won't compile - this is good!
+      // customer.Orders = new NavigationSet<Order>();
+      Assert.IsTrue(origOrders.Count == 1);
+      Assert.IsTrue(customer.Orders == origOrders, "should be same collection");
+      Assert.IsTrue(order.EntityAspect.IsAttached, "should be attached");
+      Assert.IsTrue(order.Customer == customer, "order.Customer should = customer");
+    }
+
+
+    // can attach a detached entity to a different manager via attach/detach
     [TestMethod]
     public async Task AttachToDifferentManager() {
       var em1 = await TestFns.NewEm(_serviceName);
@@ -232,28 +228,28 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(cust.EntityAspect.EntityManager == em2);
 
     }
-    
+
     // can attach a detached entity to a different manager via clear
     [TestMethod]
     public async Task AttachEmViaDetach() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-        var cust = new Customer();
-        cust.EntityAspect.SetValue(TestFns.CustomerKeyName, Guid.NewGuid());
-        Assert.IsTrue(cust.EntityAspect.IsDetached, "should be detached");
-        em1.AttachEntity(cust);
-        Assert.IsTrue(cust.EntityAspect.IsAttached, "should be attached");
-        em1.Clear(); // will detach cust
+      var cust = new Customer();
+      cust.EntityAspect.SetValue(TestFns.CustomerKeyName, Guid.NewGuid());
+      Assert.IsTrue(cust.EntityAspect.IsDetached, "should be detached");
+      em1.AttachEntity(cust);
+      Assert.IsTrue(cust.EntityAspect.IsAttached, "should be attached");
+      em1.Clear(); // will detach cust
 
-        Assert.IsTrue(cust.EntityAspect.IsDetached, "should be detached - again");
-        Assert.IsTrue(cust.EntityAspect.EntityManager == em1, "should still be associated with em1");
-        // therefore this should be ok
-        var em2 = new EntityManager(em1);
-        em2.AttachEntity(cust);
-        Assert.IsTrue(cust.EntityAspect.EntityManager == em2, "should be on em2");
+      Assert.IsTrue(cust.EntityAspect.IsDetached, "should be detached - again");
+      Assert.IsTrue(cust.EntityAspect.EntityManager == em1, "should still be associated with em1");
+      // therefore this should be ok
+      var em2 = new EntityManager(em1);
+      em2.AttachEntity(cust);
+      Assert.IsTrue(cust.EntityAspect.EntityManager == em2, "should be on em2");
     }
 
-    
+
     // setting child's parent entity null removes it from old parent
     [TestMethod]
     public async Task SetParentEntityToNull() {
@@ -263,10 +259,10 @@ namespace Breeze.Sharp.Tests {
       var order = em1.CreateEntity<Order>();
       order.Customer = cust;
       Assert.IsTrue(order.Customer == cust, "should be set");
-      Assert.IsTrue(cust.Orders.First() == order, "should be part of collection" );
+      Assert.IsTrue(cust.Orders.First() == order, "should be part of collection");
       order.Customer = null;
       Assert.IsTrue(order.Customer == null, "should not be set");
-      Assert.IsTrue(cust.Orders.Count == 0, "should not be part of collection" );
+      Assert.IsTrue(cust.Orders.Count == 0, "should not be part of collection");
 
     }
 
@@ -299,7 +295,7 @@ namespace Breeze.Sharp.Tests {
       od2.ProductID = 3;
       // should now have an unresolved parent.
       prod2.ProductID = 3;
-      
+
       Assert.IsTrue(od2.Product == prod2, "should now point to product - again");
     }
 
@@ -310,21 +306,21 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
       if (TestFns.DEBUG_MONGO || TestFns.DEBUG_ODATA) {
-        Assert.Inconclusive( "NA for Mongo or OData - TimeList and Timegroup not yet added");
+        Assert.Inconclusive("NA for Mongo or OData - TimeList and Timegroup not yet added");
       }
-      
+
       var tl1 = em1.CreateEntity<TimeLimit>();
       var tl2 = em1.CreateEntity<TimeLimit>();
       var tg1 = em1.CreateEntity<TimeGroup>();
       var id1 = tg1.Id;
       tl1.TimeGroupId = id1;
-      Assert.IsTrue(tg1.TimeLimits.Count == 1 
+      Assert.IsTrue(tg1.TimeLimits.Count == 1
         && tg1.TimeLimits.Contains(tl1), "should be connected");
       tl2.TimeGroupId = id1;
-      Assert.IsTrue(tg1.TimeLimits.Count == 2 
+      Assert.IsTrue(tg1.TimeLimits.Count == 2
         && tg1.TimeLimits.Contains(tl2), "another should be connected");
 
-    
+
     }
 
     // unidirectional attach - 1->n
@@ -333,23 +329,23 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
       if (TestFns.DEBUG_MONGO || TestFns.DEBUG_ODATA) {
-        Assert.Inconclusive( "NA for Mongo or OData - TimeList and Timegroup not yet added");
+        Assert.Inconclusive("NA for Mongo or OData - TimeList and Timegroup not yet added");
       }
-      
+
       var tl1 = em1.CreateEntity<TimeLimit>();
       var tl2 = em1.CreateEntity<TimeLimit>();
       var tg1 = em1.CreateEntity<TimeGroup>();
       Assert.IsTrue(tg1.TimeLimits.Count == 0, "should be no Timelimits");
       tg1.TimeLimits.Add(tl1);
-      Assert.IsTrue(tg1.TimeLimits.Count == 1 
+      Assert.IsTrue(tg1.TimeLimits.Count == 1
         && tg1.TimeLimits.Contains(tl1), "should be connected");
       tg1.TimeLimits.Add(tl2);
-      Assert.IsTrue(tg1.TimeLimits.Count == 2 
+      Assert.IsTrue(tg1.TimeLimits.Count == 2
         && tg1.TimeLimits.Contains(tl2), "another should be connected");
 
       // add 1 that is already there
       tg1.TimeLimits.Add(tl1);
-      Assert.IsTrue(tg1.TimeLimits.Count == 2 
+      Assert.IsTrue(tg1.TimeLimits.Count == 2
         && tg1.TimeLimits.Contains(tl1), "length should not change when adding a dup");
     }
 
@@ -372,7 +368,7 @@ namespace Breeze.Sharp.Tests {
       var sameProd3 = em1.GetEntityByKey(prod.EntityAspect.EntityKey);
       Assert.IsTrue(prod == sameProd2, "should be the same product-again 2");
     }
-    
+
     // changing FK to null removes it from old parent
     [TestMethod]
     public async Task FkSetToNull() {
@@ -396,7 +392,7 @@ namespace Breeze.Sharp.Tests {
 
     }
 
-    
+
     // add, detach and readd
     [TestMethod]
     public async Task AddDetachReadd() {
@@ -428,10 +424,10 @@ namespace Breeze.Sharp.Tests {
     public async Task AttachDetachReattachNavProps() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var cust1 = new Customer() {  CustomerID = Guid.NewGuid() };
+      var cust1 = new Customer() { CustomerID = Guid.NewGuid() };
       em1.AttachEntity(cust1);
-      var cust2 = new Customer() {  CustomerID =  Guid.NewGuid() };
-      em1.AttachEntity(cust2); 
+      var cust2 = new Customer() { CustomerID = Guid.NewGuid() };
+      em1.AttachEntity(cust2);
       var order = em1.CreateEntity<Order>(null, EntityState.Unchanged);
       Assert.IsTrue(order.EntityAspect.IsAttached && order.EntityAspect.EntityState.IsUnchanged());
       cust1.Orders.Add(order);
@@ -474,7 +470,7 @@ namespace Breeze.Sharp.Tests {
       em1.DetachEntity(cust1);
       Assert.IsTrue(cust1.EntityAspect.IsDetached);
       Assert.IsTrue(cust1.ContactName == "new foo");
-      
+
       em1.AttachEntity(cust1);
       Assert.IsTrue(cust1.ContactName == "new foo");
       Assert.IsTrue(cust1.EntityAspect.IsAttached && cust1.EntityAspect.EntityState.IsUnchanged());
@@ -483,14 +479,14 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(cust1.ContactName == "new foo");
       Assert.IsTrue(cust1.EntityAspect.IsAttached && cust1.EntityAspect.EntityState.IsUnchanged());
     }
-    
+
     // exception if set nav to entity with different manager
     [TestMethod]
     public async Task ErrorOnNavAttach() {
       var em1 = await TestFns.NewEm(_serviceName);
-    
+
       var order = em1.CreateEntity<Order>(null, EntityState.Unchanged);
-    
+
       var em2 = new EntityManager(em1);
       var cust = em2.CreateEntity<Customer>(null, EntityState.Unchanged);
       Assert.IsTrue(order.EntityAspect.EntityManager != cust.EntityAspect.EntityManager, "should not be the same manager");
@@ -510,7 +506,7 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task ErrorOnAttachMultiple() {
       var em1 = await TestFns.NewEm(_serviceName);
-    
+
       var order = em1.CreateEntity<Order>(null, EntityState.Unchanged);
       var em2 = new EntityManager(em1);
       try {
@@ -520,8 +516,8 @@ namespace Breeze.Sharp.Tests {
         Assert.IsTrue(e.Message.Contains("EntityManager"), "message should mention 'EntityManager'");
       }
     }
-      
-       
+
+
     // rejectChanges on added entity
     [TestMethod]
     public async Task RejectChangesOnAdd() {
@@ -538,7 +534,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(ents.Count() == 0);
 
     }
-    
+
     // delete added entity
     [TestMethod]
     public async Task DeleteAdded() {
@@ -576,7 +572,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(od.EntityAspect.EntityState.IsAdded());
 
       try {
-        var od2 =em1.CreateEntity<OrderDetail>(EntityState.Added);
+        var od2 = em1.CreateEntity<OrderDetail>(EntityState.Added);
         Assert.Fail("should not get here");
       } catch (Exception e) {
         Assert.IsTrue(e.Message.Contains("key"), "error message should contain 'key'");
@@ -630,7 +626,7 @@ namespace Breeze.Sharp.Tests {
         propChangedList.Add(e);
       };
       supp0.EntityAspect.PropertyChanged += (s, e) => {
-        
+
         aspectPropChangedList.Add(e);
       };
 
@@ -641,10 +637,10 @@ namespace Breeze.Sharp.Tests {
       var pcArgs = ecPcArg.ActionEventArgs as PropertyChangedEventArgs;
       Assert.IsTrue(pcArgs.PropertyName == "CompanyName", "ActionEventArgs should be set");
       Assert.IsTrue(lastEc.EntityAspect == supp0.EntityAspect, "ec should have been fired");
-      
+
       Assert.IsTrue(entityChangedList[0].Action == EntityAction.PropertyChange && entityChangedList[0].Entity == supp0);
       Assert.IsTrue(entityChangedList[1].Action == EntityAction.EntityStateChange && entityChangedList[1].Entity == supp0);
-      
+
       Assert.IsTrue(aspectPropChangedList.Count == 2, "2 aspects should have changed"); // isChanged and EntityState.
 
       Assert.IsTrue(propChangedList[0].PropertyName == "CompanyName");
@@ -671,7 +667,7 @@ namespace Breeze.Sharp.Tests {
       var orders = cust1.Orders;
       orders.Add(order1);
       orders.Add(order2);
-      
+
       var collectionChangedList = new List<NotifyCollectionChangedEventArgs>();
       orders.CollectionChanged += (s, e) => {
         collectionChangedList.Add(e);
@@ -683,7 +679,7 @@ namespace Breeze.Sharp.Tests {
       orders.Remove(order1);
       Assert.IsTrue(collectionChangedList.Last().Action == NotifyCollectionChangedAction.Remove);
       Assert.IsTrue(collectionChangedList.Last().OldItems.Contains(order1), "change event should contain order1");
-      
+
       Assert.IsTrue(propChangedList.Any(args => args.PropertyName == "Customer"), "propChange should mention Customer");
       Assert.IsTrue(propChangedList.Any(args => args.PropertyName == "CustomerID"), "propChange should mention CustomerID");
 
@@ -734,7 +730,7 @@ namespace Breeze.Sharp.Tests {
         entityChangedList.Add(e);
       };
       order1.EntityAspect.Detach();
-      
+
       Assert.IsTrue(collectionChangedList.Last().Action == NotifyCollectionChangedAction.Remove);
       Assert.IsTrue(collectionChangedList.Last().OldItems.Contains(order1), "change event should contain order1");
 
@@ -764,8 +760,7 @@ namespace Breeze.Sharp.Tests {
     }
 
     [TestMethod]
-    public async Task DeleteFromNavCollection()
-    {
+    public async Task DeleteFromNavCollection() {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var cust1 = new Customer();
@@ -778,18 +773,15 @@ namespace Breeze.Sharp.Tests {
       em1.AcceptChanges();
 
       var collectionChangedList = new List<NotifyCollectionChangedEventArgs>();
-      orders.CollectionChanged += (s, e) =>
-      {
+      orders.CollectionChanged += (s, e) => {
         collectionChangedList.Add(e);
       };
       var propChangedList = new List<PropertyChangedEventArgs>();
-      ((INotifyPropertyChanged)order1).PropertyChanged += (s, e) =>
-      {
+      ((INotifyPropertyChanged)order1).PropertyChanged += (s, e) => {
         propChangedList.Add(e);
       };
       var entityChangedList = new List<EntityChangedEventArgs>();
-      em1.EntityChanged += (s, e) =>
-      {
+      em1.EntityChanged += (s, e) => {
         entityChangedList.Add(e);
       };
       order1.EntityAspect.Delete();
@@ -823,8 +815,7 @@ namespace Breeze.Sharp.Tests {
     }
 
     [TestMethod]
-    public async Task DeleteFromNavCollection2()
-    {
+    public async Task DeleteFromNavCollection2() {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var emp1 = new Employee();
@@ -851,18 +842,15 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(ter1.EmployeeTerritories.Count == 1, "Territory has EmployeeTerritories");
 
       var collectionChangedList = new List<NotifyCollectionChangedEventArgs>();
-      empterrs.CollectionChanged += (s, e) =>
-      {
+      empterrs.CollectionChanged += (s, e) => {
         collectionChangedList.Add(e);
       };
       var propChangedList = new List<PropertyChangedEventArgs>();
-      ((INotifyPropertyChanged)et1).PropertyChanged += (s, e) =>
-      {
+      ((INotifyPropertyChanged)et1).PropertyChanged += (s, e) => {
         propChangedList.Add(e);
       };
       var entityChangedList = new List<EntityChangedEventArgs>();
-      em1.EntityChanged += (s, e) =>
-      {
+      em1.EntityChanged += (s, e) => {
         entityChangedList.Add(e);
       };
       et1.EntityAspect.Delete();
@@ -889,7 +877,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(propChangedList.Any(args => args.PropertyName == "Territory"), "propChange should mention Territory");
       // Not needed because CustomerID is not cleared.
       // Assert.IsTrue(propChangedList.Any(args => args.PropertyName == "CustomerID"), "propChange should mention CustomerID");
-      
+
       Assert.IsTrue(empterrs.Contains(et1), "et1 should be back");
       Assert.IsTrue(et1.Employee == emp1, "Employee should be back");
       Assert.IsTrue(et1.Territory == ter1, "Territory should be back");
@@ -905,12 +893,12 @@ namespace Breeze.Sharp.Tests {
 
       var cust1 = new Customer();
       var cust2 = new Customer();
-      
+
       var order1 = new Order();
       var order2 = new Order();
       em1.AddEntity(cust1);
       em1.AddEntity(cust2);
-      
+
       cust1.Orders.Add(order1);
       cust1.Orders.Add(order2);
 
@@ -935,7 +923,7 @@ namespace Breeze.Sharp.Tests {
 
       Assert.IsTrue(cust2CollChangedList.Last().Action == NotifyCollectionChangedAction.Add);
       Assert.IsTrue(cust2CollChangedList.Last().NewItems.Contains(order1), "change event should contain order1");
-      
+
       Assert.IsTrue(propChangedList.Any(args => args.PropertyName == "Customer"), "propChange should mention Customer");
       Assert.IsTrue(propChangedList.Any(args => args.PropertyName == "CustomerID"), "propChange should mention CustomerID");
 
@@ -954,7 +942,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(cust1CollChangedList.Last().NewItems.Contains(order1), "change event should contain order1");
       Assert.IsTrue(propChangedList.Any(args => args.PropertyName == "Customer"), "propChange should mention Customer");
       Assert.IsTrue(propChangedList.Any(args => args.PropertyName == "CustomerID"), "propChange should mention CustomerID");
-      
+
       Assert.IsTrue(cust1.Orders.Count == 2, "count should be 2");
 
     }
@@ -970,17 +958,17 @@ namespace Breeze.Sharp.Tests {
       cust1.CustomerID = Guid.NewGuid();
       var order1 = new Order();
       order1.Customer = cust1;
-      
+
       em1.AddEntity(order1);
 
       Assert.IsTrue(order1.EntityAspect.EntityState.IsAdded());
-      
+
       Assert.IsTrue(cust1.EntityAspect.EntityState.IsAdded());
       var orders = cust1.Orders;
-      Assert.IsTrue(orders.Contains(order1) , "should contain order1");
+      Assert.IsTrue(orders.Contains(order1), "should contain order1");
       Assert.IsTrue(order1.Customer == cust1, "Customer should be cust2");
       Assert.IsTrue(order1.CustomerID == cust1.CustomerID, "CustomerID should be cust2's id");
-      
+
 
     }
 
@@ -1005,7 +993,7 @@ namespace Breeze.Sharp.Tests {
 
     }
 
-    
+
     [TestMethod]
     public async Task GraphAttachMultipartKey() {
       var em1 = await TestFns.NewEm(_serviceName);
@@ -1028,7 +1016,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(order.OrderDetails.Count == 3, "should be 3 ods");
       Assert.IsTrue(order.OrderDetails.All(od => od.Order == order), "should all point to order");
       Assert.IsTrue(order.OrderDetails.All(od => od.OrderID == 999), "should all have correct orderId");
-      
+
     }
 
     [TestMethod]
@@ -1056,7 +1044,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(order.OrderDetails.All(od => od.OrderID == order.OrderID), "should all have correct orderId");
 
     }
-    
+
     [TestMethod]
     public async Task DuplicateKeysError() {
       var em1 = await TestFns.NewEm(_serviceName);
@@ -1072,7 +1060,7 @@ namespace Breeze.Sharp.Tests {
         Assert.IsTrue(e.Message.Contains("key"), "message should mention 'key'");
       }
     }
-    
+
     // fk fixup - fk to nav - attached"
     [TestMethod]
     public async Task FkFixup() {
@@ -1106,7 +1094,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(order1.EntityAspect.EntityState.IsUnchanged(), "fixup should not change entityState");
     }
 
-    
+
 
     // recursive navigation fixup
     [TestMethod]

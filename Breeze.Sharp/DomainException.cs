@@ -5,7 +5,7 @@ namespace Breeze.Sharp {
     public string Description { get; }
 
     public DomainException(string message) : base(message) {
-      
+
     }
 
     public DomainException(string description, string message) : base(message) {

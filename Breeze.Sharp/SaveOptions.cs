@@ -1,5 +1,3 @@
-using System;
-
 namespace Breeze.Sharp {
 
   /// <summary>

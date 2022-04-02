@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-
 namespace Model.Inheritance.Produce {
   using System;
-  using System.Collections.Generic;
 
   public partial class Vegetable : ItemOfProduce {
     public string Name {

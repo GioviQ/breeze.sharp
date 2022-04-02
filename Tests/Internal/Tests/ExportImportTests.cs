@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp;
+﻿using Breeze.Sharp;
 using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Foo;
-using System.Collections.Specialized;
-using System.ComponentModel;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using System.Reflection;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
@@ -23,8 +16,7 @@ namespace Breeze.Sharp.Tests {
     private string _serviceName;
 
     [TestInitialize]
-    public void TestInitializeMethod()
-    {
+    public void TestInitializeMethod() {
       Configuration.Instance.ProbeAssemblies(typeof(Customer).Assembly);
       _serviceName = TestFns.serviceName;
     }
@@ -45,7 +37,7 @@ namespace Breeze.Sharp.Tests {
 
       var ms = Configuration.Instance;
 
-      
+
       Assert.IsTrue(ms != Configuration.Instance);
       var ms2 = new MetadataStore();
       ms2.ImportMetadata(metadata);
@@ -70,9 +62,8 @@ namespace Breeze.Sharp.Tests {
 
     }
 
-	[TestMethod]
-	public async Task ExpImpEntitiesWithEnum()
-	{
+    [TestMethod]
+    public async Task ExpImpEntitiesWithEnum() {
       var em1 = await TestFns.NewEm(_serviceName);
 
       var q = new EntityQuery<Foo.Role>("Roles").Take(5);
@@ -89,8 +80,8 @@ namespace Breeze.Sharp.Tests {
       em2.ImportEntities(exportedEntities);
       var roleTypes = em2.GetEntities<Role>().Select(x => x.RoleType).ToList();
 
-	  Assert.IsTrue(roleTypes.Count == 5, "should have imported 5 entities");
-	}
+      Assert.IsTrue(roleTypes.Count == 5, "should have imported 5 entities");
+    }
 
     [TestMethod]
     public async Task ExpEntitiesWithChanges() {
@@ -381,8 +372,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(c2x.CompanyName == c2.CompanyName, "company names should match");
     }
 
-    private void ResetTempKeyGeneratorSeed()
-    {
+    private void ResetTempKeyGeneratorSeed() {
       // A relaunch of the client would reset the temporary key generator
       // Simulate that for test purposes ONLY with an internal seed reset
       // that no one should know about or ever use.
@@ -392,8 +382,7 @@ namespace Breeze.Sharp.Tests {
     }
 
     [TestMethod]
-    public async Task TemporaryKeyNotPreservedOnImport()
-    {
+    public async Task TemporaryKeyNotPreservedOnImport() {
       // If an earlier test has already created an entity, a new entity will not be assigned a key value of -1
       // Simulate initial launch of the client app
       ResetTempKeyGeneratorSeed();
@@ -441,8 +430,7 @@ namespace Breeze.Sharp.Tests {
     }
 
     [TestMethod]
-    public async Task TemporaryKeyGeneratedAfterImport()
-    {
+    public async Task TemporaryKeyGeneratedAfterImport() {
       // If an earlier test has already created an entity, a new entity will not be assigned a key value of -1
       // Simulate initial launch of the client app
       ResetTempKeyGeneratorSeed();
@@ -484,6 +472,6 @@ namespace Breeze.Sharp.Tests {
       var isSameId = beta.OrderID == acme2.OrderID;
       Assert.IsFalse(isSameId, "OrderIDs (temporary keys) should not be the same");
     }
-    
+
   }
 }

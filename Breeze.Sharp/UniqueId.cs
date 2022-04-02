@@ -1,10 +1,7 @@
+using Breeze.Sharp.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp.Core;
 
 namespace Breeze.Sharp {
   /// <summary>
@@ -40,7 +37,7 @@ namespace Breeze.Sharp {
     /// <summary>
     /// Returns the Value associated with this UniqueId.
     /// </summary>
-    
+
     public object Value {
       get;
       set;  // public for deserialization in SL

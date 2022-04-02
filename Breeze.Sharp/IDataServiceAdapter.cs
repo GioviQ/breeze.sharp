@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Breeze.Sharp {
@@ -11,7 +9,7 @@ namespace Breeze.Sharp {
   /// </summary>
   public interface IDataServiceAdapter {
     String Name { get; }
-    IJsonResultsAdapter JsonResultsAdapter { get;  }
+    IJsonResultsAdapter JsonResultsAdapter { get; }
     Task<SaveResult> SaveChanges(IEnumerable<IEntity> entitiesToSave, SaveOptions saveOptions);
   }
 }

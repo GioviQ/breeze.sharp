@@ -1,18 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Foo;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Breeze.Sharp.Tests {
 
@@ -37,7 +24,7 @@ namespace Breeze.Sharp.Tests {
 
 
     // [TestMethod]
-    
+
     public void SimpleCall() {
       var metadataStore = new MetadataStore();
       var orderBuilder = new EntityTypeBuilder<Order>(metadataStore);
@@ -65,7 +52,7 @@ namespace Breeze.Sharp.Tests {
 
     }
 
-    
+
   }
 
   //function initialize(metadataStore) {
@@ -107,5 +94,5 @@ namespace Breeze.Sharp.Tests {
   //              }
   //          }
   //      });
-    
+
 }

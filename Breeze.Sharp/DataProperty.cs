@@ -1,9 +1,9 @@
-using System.Reflection;
 using Breeze.Sharp.Core;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Collections.Generic;
+using System.Reflection;
 
 namespace Breeze.Sharp {
 
@@ -76,7 +76,7 @@ namespace Breeze.Sharp {
       // EnumType is best determined on the client and not from the server
       // so for now just ignore the 'enumType'
       // var enumTypeName = jNode.Get<string>("enumType");
-      
+
       _validators = new ValidatorCollection(jNode.GetJNodeArray("validators"));
     }
 
@@ -97,7 +97,7 @@ namespace Breeze.Sharp {
       jn.AddPrimitive("enumType", EnumTypeName);
       // jo.AddProperty("rawTypeName").isOptional()
       // jo.AddProperty("custom", Custom.ToJObject)
-      return jn;           
+      return jn;
     }
 
     /// <summary>

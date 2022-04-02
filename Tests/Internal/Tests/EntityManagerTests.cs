@@ -1,17 +1,11 @@
+using Breeze.Sharp;
+using Breeze.Sharp.Core;
+using Foo;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Foo;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
 namespace Breeze.Sharp.Tests {
 
@@ -28,7 +22,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
     [TestMethod]
@@ -119,7 +113,7 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task LoadNavigationPropertyNonscalar() {
       var em1 = await TestFns.NewEm(_serviceName);
-      TestFns.RunInWpfSyncContext( async () =>  {
+      TestFns.RunInWpfSyncContext(async () => {
         var q0 = new EntityQuery<Customer>().Where(c => c.Orders.Any()).Take(3);
         var r0 = await q0.Execute(em1);
         var arr = r0.ToArray();
@@ -143,7 +137,7 @@ namespace Breeze.Sharp.Tests {
         Assert.IsTrue(r0.All(o => o.Customer != null));
       });
     }
-    
+
 
   }
 }

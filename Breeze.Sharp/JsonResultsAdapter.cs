@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json.Linq;
 
 namespace Breeze.Sharp {
@@ -15,7 +11,7 @@ namespace Breeze.Sharp {
     public string NodeRefId { get; set; }
     public bool Ignore { get; set; }
     public JObject Node { get; set; }
-  } 
+  }
 
   /// <summary>
   ///  Instances of this interface are used to provide custom extraction and parsing logic

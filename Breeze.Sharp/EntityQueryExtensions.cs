@@ -1,10 +1,6 @@
-﻿using Breeze.Sharp.Core;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Breeze.Sharp {
 
@@ -37,7 +33,7 @@ namespace Breeze.Sharp {
       return (EntityQuery<TSource>)Queryable.Where(source1, predicate);
     }
 
-    
+
     /// <summary>
     /// Sorts the elements of a sequence in ascending order.
     /// </summary>

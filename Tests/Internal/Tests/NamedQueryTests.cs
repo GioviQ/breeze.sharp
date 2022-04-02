@@ -1,20 +1,11 @@
-﻿using System;
+﻿using Foo;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Foo;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using Newtonsoft.Json.Linq;
-using System.Dynamic;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Breeze.Sharp.Tests {
 
@@ -31,10 +22,10 @@ namespace Breeze.Sharp.Tests {
 
     [TestCleanup]
     public void TearDown() {
-      
+
     }
 
-    
+
     [TestMethod]
     public async Task CustomersStartingWith() {
       var em1 = await TestFns.NewEm(_serviceName);
@@ -60,7 +51,7 @@ namespace Breeze.Sharp.Tests {
 
     [TestMethod]
     public async Task LookupsScalar() {
-      
+
       var entityManager = await TestFns.NewEm(_serviceName);
 
       var query = EntityQuery.From("Lookups", new {
@@ -147,7 +138,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(companyNamesAndIds.All(x => {
         return x.CompanyName.Length > 0 && x.CustomerID != null;
       }));
-      
+
     }
 
     [TestMethod]
@@ -158,10 +149,10 @@ namespace Breeze.Sharp.Tests {
       var rp = q.GetResourcePath(em1.MetadataStore);
       var results = await q.Execute(em1);
       Assert.IsTrue(results.Count() > 0, "should be some results");
-      
+
       Assert.IsTrue(em1.GetEntities<Customer>().Count() > 0, "should have some customers");
       Assert.IsTrue(em1.GetEntities<Order>().Count() > 0, "should have some orders");
-      Assert.IsTrue(results.All(r => 
+      Assert.IsTrue(results.All(r =>
         r.Customer.GetType() == typeof(Customer) && r.BigOrders.GetType() == typeof(List<Order>)
       ));
     }
@@ -169,7 +160,7 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task CustomersWithBigOrders2() {
       var em1 = await TestFns.NewEm(_serviceName);
-      
+
       var q = new EntityQuery<CustomerAndBigOrders>("CustomersWithBigOrders");
       var rp = q.GetResourcePath(em1.MetadataStore);
       var results = await q.Execute(em1);
@@ -210,9 +201,9 @@ namespace Breeze.Sharp.Tests {
 
 
       var q = EntityQuery.From<Employee>("SearchEmployees")
-        .WithParameter("employeeIds", new int[] {1, 4});
-        // .WithParameter("employeeIds", 1)
-        // .WithParameter("employeeIds", 4);
+        .WithParameter("employeeIds", new int[] { 1, 4 });
+      // .WithParameter("employeeIds", 1)
+      // .WithParameter("employeeIds", 4);
       var rp = q.GetResourcePath(em1.MetadataStore);
       var results = await q.Execute(em1);
       Assert.IsTrue(results.Any());
@@ -231,11 +222,11 @@ namespace Breeze.Sharp.Tests {
       var rp = q.GetResourcePath(em1.MetadataStore);
       var results = await q.Execute(em1);
       Assert.IsTrue(results.Any());
-      
+
 
     }
 
-      
+
 
 
     [TestMethod]
@@ -253,8 +244,8 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(results.Count() == 3, "should be 3 results");
 
       Assert.IsTrue(em1.GetEntities<Customer>().Count() > 0, "should have some customers");
-      
-      
+
+
 
     }
 
@@ -266,7 +257,7 @@ namespace Breeze.Sharp.Tests {
       //      .withParameters( { CompanyName: "A", ContactNames: ["B", "C"] , City: "Los Angeles"  } );
       var q = new EntityQuery<Customer>("SearchCustomers")
         .WithParameters(new Dictionary<string, object> {
-          { "CompanyName", "A" }, 
+          { "CompanyName", "A" },
           { "ContactNames", new string[] { "B", "C" }},
           { "City", "LosAngeles" }
       });
@@ -288,17 +279,15 @@ namespace Breeze.Sharp.Tests {
       try {
         var results = await q.Execute(em1);
         Assert.Fail("shouldn't get here");
-      }
-      catch (DataServiceRequestException e) {
+      } catch (DataServiceRequestException e) {
         Assert.IsTrue(e.ResponseContent.Contains("Custom error message"));
         Assert.IsTrue(e.Message.ToLower().Contains("custom reason"));
-      } 
-      catch (HttpRequestException) {
+      } catch (HttpRequestException) {
         Assert.Fail("should not get here");
       }
-      
+
     }
-    
-    
+
+
   }
 }

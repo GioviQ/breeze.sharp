@@ -9,17 +9,17 @@ namespace Breeze.Sharp {
     public QueryOptions() {
 
     }
-    
+
     public QueryOptions(JNode jNode) {
       FetchStrategy = jNode.GetNullableEnum<FetchStrategy>("fetchStrategy");
       MergeStrategy = jNode.GetNullableEnum<MergeStrategy>("mergeStrategy");
-      
+
     }
 
     JNode IJsonSerializable.ToJNode(object config) {
       var jn = new JNode();
-      jn.AddEnum("fetchStrategy", FetchStrategy );
-      jn.AddEnum("mergeStrategy", MergeStrategy );
+      jn.AddEnum("fetchStrategy", FetchStrategy);
+      jn.AddEnum("mergeStrategy", MergeStrategy);
       return jn;
     }
 
@@ -50,8 +50,8 @@ namespace Breeze.Sharp {
 
     public FetchStrategy? FetchStrategy { get; internal set; }
     public MergeStrategy? MergeStrategy { get; internal set; }
-    
+
   }
 
- 
+
 }

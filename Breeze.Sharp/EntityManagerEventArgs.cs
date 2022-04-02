@@ -33,7 +33,7 @@ namespace Breeze.Sharp {
     /// </summary>
     public EntityManagerHasChangesChangedEventArgs(EntityManager entityManager) {
       EntityManager = entityManager;
-      
+
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ namespace Breeze.Sharp {
       get { return EntityManager.HasChanges(); }
     }
 
-    
+
 
   }
 }

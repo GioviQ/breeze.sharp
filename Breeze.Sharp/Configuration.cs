@@ -17,7 +17,7 @@ namespace Breeze.Sharp {
   /// <summary>
   /// A singleton class that provides basic registration mechanisms for a Breeze application.
   /// </summary>
-  public class Configuration  {
+  public class Configuration {
 
     #region Ctor related 
 
@@ -33,7 +33,7 @@ namespace Breeze.Sharp {
       RegisterTypeDiscoveryActionCore(typeof(Validator), (t) => RegisterValidator(t), true);
       RegisterTypeDiscoveryActionCore(typeof(NamingConvention), (t) => RegisterNamingConvention(t), true);
     }
-  
+
     /// <summary>
     /// The Singleton instance.
     /// </summary>
@@ -110,7 +110,7 @@ namespace Breeze.Sharp {
       return typeof(IStructuralObject).IsAssignableFrom(clrType);
     }
 
-   
+
     /// <summary>
     /// Allows for custom actions to be performed as a result of any ProbeAssemblies call.
     /// </summary>
@@ -123,7 +123,7 @@ namespace Breeze.Sharp {
 
     #endregion
 
-    
+
 
     // includeThisAssembly = whether to probe the assembly where 'type' is defined
     private void RegisterTypeDiscoveryActionCore(Type type, Action<Type> action, bool includeThisAssembly) {
@@ -135,7 +135,7 @@ namespace Breeze.Sharp {
       }
     }
 
-   
+
 
     #region Validator & NamingConvention methods
 
@@ -166,20 +166,20 @@ namespace Breeze.Sharp {
       }
     }
 
-    
+
     private void RegisterValidator(Type validatorType) {
-       // locking is handled internally
+      // locking is handled internally
       _validatorCache.Register(validatorType, Validator.Suffix);
-      
+
     }
 
     private void RegisterNamingConvention(Type namingConventionType) {
       // locking is handled internally
       _namingConventionCache.Register(namingConventionType, NamingConvention.Suffix);
-    }   
+    }
 
     #endregion
-    
+
     #region Inner classes 
 
     private class InternCache<T> where T : Internable {
@@ -247,7 +247,7 @@ namespace Breeze.Sharp {
 
 
     }
-    
+
     #endregion
 
     #region Private and Internal vars
@@ -256,7 +256,7 @@ namespace Breeze.Sharp {
 
     private static Configuration __instance = new Configuration();
     private static readonly object __lock = new object();
-    
+
     private readonly AsyncSemaphore _asyncSemaphore = new AsyncSemaphore(1);
     private readonly object _lock = new object();
 
@@ -264,7 +264,7 @@ namespace Breeze.Sharp {
 
     private readonly HashSet<Assembly> _probedAssemblies = new HashSet<Assembly>();
     private readonly List<Tuple<Type, Action<Type>, Func<Assembly, bool>>> _typeDiscoveryActions = new List<Tuple<Type, Action<Type>, Func<Assembly, bool>>>();
-    
+
     private readonly Dictionary<string, string> _shortNameMap = new Dictionary<string, string>();
 
     private InternCache<Validator> _validatorCache = new InternCache<Validator>();
@@ -272,7 +272,7 @@ namespace Breeze.Sharp {
 
     #endregion
 
-  
+
   }
 
 }

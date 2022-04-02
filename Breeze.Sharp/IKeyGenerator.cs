@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Breeze.Sharp {
 
@@ -76,7 +76,7 @@ namespace Breeze.Sharp {
 
     /// <inheritdoc />
     public UniqueIdCollection TempIds {
-      get; private set; 
+      get; private set;
     }
 
     /// <inheritdoc />
