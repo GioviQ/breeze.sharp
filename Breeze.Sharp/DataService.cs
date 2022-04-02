@@ -180,11 +180,11 @@ namespace Breeze.Sharp {
 
     JNode IJsonSerializable.ToJNode(Object config) {
       var jo = new JNode();
-      jo.AddPrimitive("serviceName", this.ServiceName);
-      jo.AddPrimitive("adapterName", this.Adapter == null ? null : this.Adapter.Name);
-      jo.AddPrimitive("hasServerMetadata", this.HasServerMetadata);
-      jo.AddPrimitive("jsonResultsAdapter", this.JsonResultsAdapter == null ? null : this.JsonResultsAdapter.Name);
-      jo.AddPrimitive("useJsonp", this.UseJsonP);
+      jo.AddPrimitive("serviceName", ServiceName);
+      jo.AddPrimitive("adapterName", Adapter == null ? null : Adapter.Name);
+      jo.AddPrimitive("hasServerMetadata", HasServerMetadata);
+      jo.AddPrimitive("jsonResultsAdapter", JsonResultsAdapter == null ? null : JsonResultsAdapter.Name);
+      jo.AddPrimitive("useJsonp", UseJsonP);
       return jo;
     }
 

@@ -179,7 +179,7 @@ namespace Breeze.Sharp {
       get { return _changeNotificationEnabled; }
       set {
         _changeNotificationEnabled = value;
-        this.EntityGroups.ForEach(eg => eg.ChangeNotificationEnabled = value);
+        EntityGroups.ForEach(eg => eg.ChangeNotificationEnabled = value);
       }
     }
 
@@ -204,7 +204,7 @@ namespace Breeze.Sharp {
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public async Task<DataService> FetchMetadata(CancellationToken cancellationToken, DataService dataService = null) {
-      dataService = dataService != null ? dataService : this.DataService;
+      dataService = dataService != null ? dataService : DataService;
       if (!dataService.HasServerMetadata) {
         throw new Exception("This DataService does not provide metadata: " + dataService.ServiceName);
       }
@@ -255,19 +255,19 @@ namespace Breeze.Sharp {
       if (query.ElementType == null) {
         throw new Exception("Cannot execute a query with a null TargetType");
       }
-      var fetchStrategy = query.QueryOptions.FetchStrategy ?? this.DefaultQueryOptions.FetchStrategy ?? QueryOptions.Default.FetchStrategy;
+      var fetchStrategy = query.QueryOptions.FetchStrategy ?? DefaultQueryOptions.FetchStrategy ?? QueryOptions.Default.FetchStrategy;
       if (fetchStrategy == FetchStrategy.FromLocalCache) {
         return query.ExecuteLocally(query.EntityManager ?? this);
         //var tcs = new TaskCompletionSource<IEnumerable>();
         //tcs.SetResult(query.ExecuteLocally());
         //return tcs.Task;
       }
-      var dataService = query.DataService ?? this.DataService;
+      var dataService = query.DataService ?? DataService;
       if (dataService.HasServerMetadata) {
         await FetchMetadata(dataService);
         CheckAuthorizedThreadId();
       }
-      var resourcePath = query.GetResourcePath(this.MetadataStore);
+      var resourcePath = query.GetResourcePath(MetadataStore);
       // HACK
       resourcePath = resourcePath.Replace("/*", "");
 
@@ -277,7 +277,7 @@ namespace Breeze.Sharp {
 
       CheckAuthorizedThreadId();
 
-      var mergeStrategy = query.QueryOptions.MergeStrategy ?? this.DefaultQueryOptions.MergeStrategy ?? QueryOptions.Default.MergeStrategy;
+      var mergeStrategy = query.QueryOptions.MergeStrategy ?? DefaultQueryOptions.MergeStrategy ?? QueryOptions.Default.MergeStrategy;
 
       var mappingContext = new MappingContext() {
         EntityManager = this,
@@ -333,7 +333,7 @@ namespace Breeze.Sharp {
     public async Task<SaveResult> SaveChanges(IEnumerable<IEntity> entities = null, SaveOptions saveOptions = null) {
       List<IEntity> entitiesToSave;
       if (entities == null) {
-        entitiesToSave = this.GetChanges().ToList();
+        entitiesToSave = GetChanges().ToList();
       } else {
         entitiesToSave =
           entities.Where(e => !e.EntityAspect.IsDetached && e.EntityAspect.EntityManager == this).ToList();
@@ -342,7 +342,7 @@ namespace Breeze.Sharp {
         return SaveResult.Empty;
       }
 
-      if ((this.ValidationOptions.ValidationApplicability & ValidationApplicability.OnSave) > 0) {
+      if ((ValidationOptions.ValidationApplicability & ValidationApplicability.OnSave) > 0) {
         var errs = entitiesToSave.SelectMany(ent => {
           var errors = ent.EntityAspect.ValidationErrors;
           // updates errors
@@ -362,9 +362,9 @@ namespace Breeze.Sharp {
           throw new SaveException(errs);
         };
       }
-      saveOptions = new SaveOptions(saveOptions ?? this.DefaultSaveOptions ?? SaveOptions.Default);
+      saveOptions = new SaveOptions(saveOptions ?? DefaultSaveOptions ?? SaveOptions.Default);
       if (saveOptions.ResourceName == null) saveOptions.ResourceName = "SaveChanges";
-      if (saveOptions.DataService == null) saveOptions.DataService = this.DataService;
+      if (saveOptions.DataService == null) saveOptions.DataService = DataService;
       var dataServiceAdapter = saveOptions.DataService.Adapter;
       var saveResult = await dataServiceAdapter.SaveChanges(entitiesToSave, saveOptions);
       if (entities == null) {
@@ -552,12 +552,12 @@ namespace Breeze.Sharp {
       }
       var entityGroupNodesMap = jn.GetJNodeArrayMap("entityGroupMap");
       // tempKeyMap will have a new values where collisions will occur
-      var tempKeyMap = jn.GetJNodeArray("tempKeys").Select(jnEk => new EntityKey(jnEk, this.MetadataStore)).ToDictionary(
+      var tempKeyMap = jn.GetJNodeArray("tempKeys").Select(jnEk => new EntityKey(jnEk, MetadataStore)).ToDictionary(
         ek => ek,
-        ek => this.GetEntityByKey(ek) == null ? ek : EntityKey.Create(ek.EntityType, KeyGenerator.GetNextTempId(ek.EntityType.KeyProperties.First()))
+        ek => GetEntityByKey(ek) == null ? ek : EntityKey.Create(ek.EntityType, KeyGenerator.GetNextTempId(ek.EntityType.KeyProperties.First()))
       );
 
-      var mergeStrategy = (importOptions.MergeStrategy ?? this.DefaultQueryOptions.MergeStrategy ?? QueryOptions.Default.MergeStrategy).Value;
+      var mergeStrategy = (importOptions.MergeStrategy ?? DefaultQueryOptions.MergeStrategy ?? QueryOptions.Default.MergeStrategy).Value;
       var importedEntities = new List<IEntity>();
       using (NewIsLoadingBlock()) {
         entityGroupNodesMap.ForEach(kvp => {
@@ -679,11 +679,11 @@ namespace Breeze.Sharp {
       var jn = ExportEntityGroupsAndTempKeys(entities);
 
       if (includeMetadata) {
-        jn.AddJNode("dataService", this.DataService);
-        jn.AddJNode("queryOptions", this.DefaultQueryOptions);
-        // jo.AddObject("saveOptions", this.SaveOptions);
-        // jo.AddObject("validationOptions", this.ValidationOptions);
-        jn.AddJNode("metadataStore", ((IJsonSerializable)this.MetadataStore).ToJNode(null));
+        jn.AddJNode("dataService", DataService);
+        jn.AddJNode("queryOptions", DefaultQueryOptions);
+        // jo.AddObject("saveOptions", SaveOptions);
+        // jo.AddObject("validationOptions", ValidationOptions);
+        jn.AddJNode("metadataStore", ((IJsonSerializable)MetadataStore).ToJNode(null));
       }
       return jn;
     }
@@ -696,8 +696,8 @@ namespace Breeze.Sharp {
         aspects = entities.Select(e => e.EntityAspect);
         map = aspects.GroupBy(ea => ea.EntityGroup.EntityType).ToDictionary(grp => grp.Key.Name, grp => ExportAspects(grp, grp.Key));
       } else {
-        aspects = this.EntityGroups.SelectMany(eg => eg.EntityAspects);
-        map = this.EntityGroups.ToDictionary(eg => eg.EntityType.Name, eg => ExportAspects(eg, eg.EntityType));
+        aspects = EntityGroups.SelectMany(eg => eg.EntityAspects);
+        map = EntityGroups.ToDictionary(eg => eg.EntityType.Name, eg => ExportAspects(eg, eg.EntityType));
       }
 
       var tempKeys = aspects.Where(ea => ea.HasTemporaryKey).Select(ea => ea.EntityKey);
@@ -816,7 +816,7 @@ namespace Breeze.Sharp {
     /// the EntityManager will have no pending changes.
     /// </summary>
     public void AcceptChanges() {
-      var entities = this.GetChanges().ToList();
+      var entities = GetChanges().ToList();
       using (NewIsLoadingBlock(false)) {
         entities.ForEach(e => e.AcceptChanges());
       }
@@ -828,7 +828,7 @@ namespace Breeze.Sharp {
     /// the EntityManager will have no pending changes.
     /// </summary>
     public void RejectChanges() {
-      var entities = this.GetChanges().ToList();
+      var entities = GetChanges().ToList();
       using (NewIsLoadingBlock(false)) {
         entities.ForEach(e => e.RejectChanges());
       }
@@ -905,8 +905,8 @@ namespace Breeze.Sharp {
     public IEnumerable<IEntity> GetEntities(Type type, EntityState entityState) {
       if (type.GetTypeInfo().IsAbstract) {
         var groups = type == typeof(IEntity)
-          ? this.EntityGroups
-          : this.EntityGroups.Where(eg => type.IsAssignableFrom(eg.ClrType));
+          ? EntityGroups
+          : EntityGroups.Where(eg => type.IsAssignableFrom(eg.ClrType));
         return groups.SelectMany(f => f.LocalEntityAspects)
           .Where(ea => ((ea.EntityState & entityState) > 0))
           .Select(ea => ea.Entity);
@@ -936,7 +936,7 @@ namespace Breeze.Sharp {
       if (entityTypes == null) {
         return GetEntities(EntityState.AnyAddedModifiedOrDeleted);
       }
-      var groups = entityTypes.SelectMany(et => this.EntityGroups.Where(eg => et.IsAssignableFrom(eg.ClrType)));
+      var groups = entityTypes.SelectMany(et => EntityGroups.Where(eg => et.IsAssignableFrom(eg.ClrType)));
       return groups.SelectMany(f => f.LocalEntityAspects)
         .Where(ea => ((ea.EntityState & EntityState.AnyAddedModifiedOrDeleted) > 0))
         .Select(ea => ea.Entity);
@@ -959,7 +959,7 @@ namespace Breeze.Sharp {
     /// <param name="values"></param>
     /// <returns></returns>
     public T GetEntityByKey<T>(params Object[] values) where T : IEntity {
-      var ek = new EntityKey(typeof(T), this.MetadataStore, values);
+      var ek = new EntityKey(typeof(T), MetadataStore, values);
       return (T)GetEntityByKey(ek);
     }
 
@@ -969,14 +969,14 @@ namespace Breeze.Sharp {
     /// <param name="entityKey"></param>
     /// <returns></returns>
     public IEntity GetEntityByKey(EntityKey entityKey) {
-      var eg = this.GetEntityGroup(entityKey.ClrType);
+      var eg = GetEntityGroup(entityKey.ClrType);
       var ea = (eg == null) ? null : eg.FindEntityAspect(entityKey, true);
       if (ea != null) return ea.Entity;
 
       var subtypes = entityKey.EntityType.SelfAndSubEntityTypes;
       if (subtypes.Count > 1) {
         ea = subtypes.Skip(1).Select(st => {
-          eg = this.GetEntityGroup(st.ClrType);
+          eg = GetEntityGroup(st.ClrType);
           return (eg == null) ? null : eg.FindEntityAspect(entityKey, true);
         }).FirstOrDefault(a => a != null);
       }
@@ -1120,7 +1120,7 @@ namespace Breeze.Sharp {
           aspect.ProcessNpValue(np, e => AttachEntity(e, entityState, mergeStrategy));
         });
 
-        if ((this.ValidationOptions.ValidationApplicability & ValidationApplicability.OnAttach) > 0) {
+        if ((ValidationOptions.ValidationApplicability & ValidationApplicability.OnAttach) > 0) {
           aspect.ValidateInternal();
         }
 
@@ -1149,7 +1149,7 @@ namespace Breeze.Sharp {
       aspect.EntityType = entityType;
       AttachEntityAspect(aspect, EntityState.Unchanged);
 
-      if ((this.ValidationOptions.ValidationApplicability & ValidationApplicability.OnQuery) > 0) {
+      if ((ValidationOptions.ValidationApplicability & ValidationApplicability.OnQuery) > 0) {
         aspect.ValidateInternal();
       }
 
@@ -1170,9 +1170,9 @@ namespace Breeze.Sharp {
     private EntityAspect PrepareForAttach(IEntity entity) {
       var aspect = entity.EntityAspect;
       if (aspect.EntityType.MetadataStore == MetadataStore.Detached) {
-        aspect.EntityType = this.MetadataStore.GetEntityType(entity.GetType());
+        aspect.EntityType = MetadataStore.GetEntityType(entity.GetType());
         aspect.EntityKey = null;
-      } else if (aspect.EntityType.MetadataStore != this.MetadataStore) {
+      } else if (aspect.EntityType.MetadataStore != MetadataStore) {
         throw new Exception("Cannot attach this entity because the EntityType (" + aspect.EntityType.Name + ") and MetadataStore associated with this entity does not match this EntityManager's MetadataStore.");
       }
 
@@ -1231,20 +1231,20 @@ namespace Breeze.Sharp {
     /// <exception cref="ArgumentException">Bad entity type</exception>
     /// <exception cref="EntityServerException"/>
     internal EntityGroup GetEntityGroup(Type clrEntityType) {
-      var eg = this.EntityGroups[clrEntityType];
+      var eg = EntityGroups[clrEntityType];
       if (eg != null) {
         return eg;
       }
 
-      lock (this.EntityGroups) {
+      lock (EntityGroups) {
         // check again just in case another thread got in.
-        eg = this.EntityGroups[clrEntityType];
+        eg = EntityGroups[clrEntityType];
         if (eg != null) {
           return eg;
         }
 
         eg = EntityGroup.Create(clrEntityType, this);
-        this.EntityGroups.Add(eg);
+        EntityGroups.Add(eg);
         // ensure that any entities placed into the table on initialization are 
         // marked so as not to be saved again
         eg.AcceptChanges();
@@ -1409,15 +1409,15 @@ namespace Breeze.Sharp {
     /// <param name="entityTypes"></param>
     /// <returns></returns>
     public bool HasChanges(IEnumerable<Type> entityTypes = null) {
-      if (!this._hasChanges) return false;
-      if (entityTypes == null) return this._hasChanges;
-      return this.HasChangesCore(entityTypes);
+      if (!_hasChanges) return false;
+      if (entityTypes == null) return _hasChanges;
+      return HasChangesCore(entityTypes);
     }
 
     // backdoor the "really" check for changes.
     private bool HasChangesCore(IEnumerable<Type> entityTypes) {
       var entityGroups = (entityTypes == null)
-        ? this.EntityGroups
+        ? EntityGroups
         : entityTypes.Select(et => GetEntityGroup(et));
       return entityGroups.Any(eg => eg != null && eg.HasChanges());
     }
@@ -1425,11 +1425,11 @@ namespace Breeze.Sharp {
     internal void CheckStateChange(EntityAspect entityAspect, bool wasUnchanged, bool isUnchanged) {
       if (wasUnchanged) {
         if (!isUnchanged) {
-          this.NotifyStateChange(entityAspect, true);
+          NotifyStateChange(entityAspect, true);
         }
       } else {
         if (isUnchanged) {
-          this.NotifyStateChange(entityAspect, false);
+          NotifyStateChange(entityAspect, false);
         }
       }
     }
@@ -1442,9 +1442,9 @@ namespace Breeze.Sharp {
       } else {
         // called when rejecting a change or merging an unchanged record.
         // NOTE: this can be slow with lots of entities in the cache.
-        if (this._hasChanges) {
-          if (this.IsLoadingEntity) {
-            this.HasChangesAction = this.HasChangesAction ?? (() => SetHasChanges(null));
+        if (_hasChanges) {
+          if (IsLoadingEntity) {
+            HasChangesAction = HasChangesAction ?? (() => SetHasChanges(null));
           } else {
             SetHasChanges(null);
           }
@@ -1453,9 +1453,9 @@ namespace Breeze.Sharp {
     }
 
     internal void SetHasChanges(bool? value) {
-      var hasChanges = value.HasValue ? value.Value : this.HasChangesCore(null);
-      if (hasChanges != this._hasChanges) {
-        this._hasChanges = hasChanges;
+      var hasChanges = value.HasValue ? value.Value : HasChangesCore(null);
+      if (hasChanges != _hasChanges) {
+        _hasChanges = hasChanges;
         OnHasChangesChanged();
       }
       HasChangesAction = null;
@@ -1468,7 +1468,7 @@ namespace Breeze.Sharp {
     #region Other internal 
 
     internal void UpdateFkVal(DataProperty fkProp, Object oldValue, Object newValue) {
-      var eg = this.EntityGroups[fkProp.ParentType.ClrType];
+      var eg = EntityGroups[fkProp.ParentType.ClrType];
       if (eg == null) return;
 
       eg.UpdateFkVal(fkProp, oldValue, newValue);

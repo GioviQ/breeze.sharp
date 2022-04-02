@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -206,8 +206,8 @@ namespace Breeze.Sharp {
       EntityAspect result;
       // this can occur when we are trying to find say EntityKey(Order, 3)
       // in a collection of InternationalOrder keys
-      if (entityKey.EntityType != this.EntityType) {
-        entityKey = new EntityKey(this.EntityType, entityKey.Values);
+      if (entityKey.EntityType != EntityType) {
+        entityKey = new EntityKey(EntityType, entityKey.Values);
       }
       if (_entityKeyMap.TryGetValue(entityKey, out result)) {
         if (result.EntityState.IsDeleted()) {
@@ -275,7 +275,7 @@ namespace Breeze.Sharp {
     #region explict interfaces
 
     Type IGrouping<Type, EntityAspect>.Key {
-      get { return this.EntityType.ClrType; }
+      get { return EntityType.ClrType; }
     }
 
     IEnumerator<EntityAspect> IEnumerable<EntityAspect>.GetEnumerator() {

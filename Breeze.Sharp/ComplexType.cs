@@ -17,12 +17,12 @@ namespace Breeze.Sharp {
     }
 
     internal override void UpdateFromJNode(JNode jNode, bool isFromServer) {
-      Name = this.MetadataStore.GetStructuralTypeNameFromJNode(jNode, isFromServer);
+      Name = MetadataStore.GetStructuralTypeNameFromJNode(jNode, isFromServer);
       // BaseTypeName = jnode.Get<String>("baseTypeName");
       // IsAbstract = jnode.Get<bool>("isAbstract");
       jNode.GetJNodeArray("dataProperties").ForEach(jn => {
         var dpName = GetPropertyNameFromJNode(jn);
-        var dp = this.GetDataProperty(dpName);
+        var dp = GetDataProperty(dpName);
         dp.UpdateFromJNode(jn, isFromServer);
       });
       // validators
@@ -35,14 +35,14 @@ namespace Breeze.Sharp {
 
     JNode IJsonSerializable.ToJNode(Object config) {
       var jo = new JNode();
-      jo.AddPrimitive("shortName", this.ShortName);
-      jo.AddPrimitive("namespace", this.Namespace);
+      jo.AddPrimitive("shortName", ShortName);
+      jo.AddPrimitive("namespace", Namespace);
       jo.AddPrimitive("isComplexType", true);
-      // jo.AddProperty("baseTypeName", this.BaseTypeName);
-      // jo.AddProperty("isAbstract", this.IsAbstract, false);
-      jo.AddArray("dataProperties", this.DataProperties.Where(dp => dp.IsInherited == false));
-      // jo.AddArrayProperty("validators", this.Validators);
-      // jo.AddProperty("custom", this.Custom.ToJObject)
+      // jo.AddProperty("baseTypeName", BaseTypeName);
+      // jo.AddProperty("isAbstract", IsAbstract, false);
+      jo.AddArray("dataProperties", DataProperties.Where(dp => dp.IsInherited == false));
+      // jo.AddArrayProperty("validators", Validators);
+      // jo.AddProperty("custom", Custom.ToJObject)
       return jo;
     }
 

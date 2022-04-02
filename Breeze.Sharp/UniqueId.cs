@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,9 +56,9 @@ namespace Breeze.Sharp {
       var other = obj as UniqueId;
       if (other == null) return false;
       return
-        other.Value.Equals(this.Value) &&
-        other.Property.Name.Equals(this.Property.Name) &&
-        other.Property.ParentType.Equals(this.Property.ParentType);
+        other.Value.Equals(Value) &&
+        other.Property.Name.Equals(Property.Name) &&
+        other.Property.ParentType.Equals(Property.ParentType);
     }
 
 
@@ -88,11 +88,11 @@ namespace Breeze.Sharp {
     public int CompareTo(Object obj) {
       UniqueId id = obj as UniqueId;
       if (id == null) return -1;
-      int result = this.Property.ParentType.Name.CompareTo(id.Property.ParentType.Name);
+      int result = Property.ParentType.Name.CompareTo(id.Property.ParentType.Name);
       if (result == 0) {
-        result = this.Property.Name.CompareTo(id.Property.Name);
+        result = Property.Name.CompareTo(id.Property.Name);
         if (result == 0) {
-          result = this.Value.ToString().CompareTo(id.Value.ToString());
+          result = Value.ToString().CompareTo(id.Value.ToString());
         }
       }
       return result;
@@ -127,7 +127,7 @@ namespace Breeze.Sharp {
     /// <param name="uniqueIds"></param>
     public void AddRange(IEnumerable<UniqueId> uniqueIds) {
       foreach (var id in uniqueIds) {
-        this.Add(id);
+        Add(id);
       }
     }
 
@@ -172,7 +172,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="maps"></param>
     public UniqueIdMap(IEnumerable<UniqueIdMap> maps) {
-      foreach (var map in maps) this.AddMap(map);
+      foreach (var map in maps) AddMap(map);
     }
 
     /// <summary>
@@ -182,7 +182,7 @@ namespace Breeze.Sharp {
     public void AddMap(UniqueIdMap map) {
       if (map == null) return;
       foreach (KeyValuePair<UniqueId, Object> entry in map) {
-        this.Add(entry.Key, entry.Value);
+        Add(entry.Key, entry.Value);
       }
     }
 
@@ -192,7 +192,7 @@ namespace Breeze.Sharp {
     /// <param name="collection"></param>
     public void AddCollection(UniqueIdCollection collection) {
       if (collection == null || collection.Count == 0) return;
-      collection.ForEach(u => this.Add(u, null));
+      collection.ForEach(u => Add(u, null));
     }
 
 
@@ -202,7 +202,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <returns></returns>
     public UniqueIdCollection ToCollection() {
-      return new UniqueIdCollection(this.Keys);
+      return new UniqueIdCollection(Keys);
     }
 
 

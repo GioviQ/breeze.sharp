@@ -57,9 +57,9 @@ namespace Breeze.Sharp {
             var rm = ResourceManager;
             // if rm isNull _message will have been set
             if (rm != null) {
-              _message = rm.GetString(this.Key);
+              _message = rm.GetString(Key);
               if (_message == null) {
-                _message = "Unable to locate a localized key named: " + this.Key;
+                _message = "Unable to locate a localized key named: " + Key;
               }
               _isLocalized = _message != null;
             }
@@ -67,7 +67,7 @@ namespace Breeze.Sharp {
             if (DefaultMessage != null) {
               _message = DefaultMessage;
             } else {
-              _message = "Unable to get resource for " + this.Key;
+              _message = "Unable to get resource for " + Key;
             }
           }
         }

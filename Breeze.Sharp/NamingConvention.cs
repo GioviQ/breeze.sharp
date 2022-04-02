@@ -21,7 +21,7 @@ namespace Breeze.Sharp {
     public static List<NamingConvention> __namingConventions = new List<NamingConvention>();
 
     public NamingConvention() {
-      Name = UtilFns.TypeToSerializationName(this.GetType(), Suffix);
+      Name = UtilFns.TypeToSerializationName(GetType(), Suffix);
       _clientServerNamespaceMap = new Dictionary<string, string>();
     }
 
@@ -104,7 +104,7 @@ namespace Breeze.Sharp {
     }
 
     protected virtual NamingConvention Clone() {
-      return (NamingConvention) this.ToJNode().ToObject(this.GetType(), true);
+      return (NamingConvention) ToJNode().ToObject(GetType(), true);
     }
 
     [JsonIgnore]
@@ -139,7 +139,7 @@ namespace Breeze.Sharp {
       var t1 = fn1(testVal, parentType);
       var t2 = fn2(t1, parentType);
       if (t2 != testVal) {
-        throw new Exception("NamingConvention: " + this.Name + " does not roundtrip the following value correctly: " + testVal);
+        throw new Exception("NamingConvention: " + Name + " does not roundtrip the following value correctly: " + testVal);
       }
       return t1;
     }

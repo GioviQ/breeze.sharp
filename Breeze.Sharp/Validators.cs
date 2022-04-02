@@ -209,7 +209,7 @@ namespace Breeze.Sharp {
     /// <inheritdoc />
     public override String GetErrorMessage(ValidationContext context) {
       // '{0}' must be a valid {1} pattern
-      return LocalizedMessage.Format(context.DisplayName, this.PatternName ?? this.Regex.ToString());
+      return LocalizedMessage.Format(context.DisplayName, PatternName ?? Regex.ToString());
     }
 
     /// <summary>

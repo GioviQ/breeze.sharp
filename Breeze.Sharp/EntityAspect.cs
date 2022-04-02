@@ -59,14 +59,14 @@ namespace Breeze.Sharp {
     /// Whether this entity is detached from an EntityManager. 
     /// </summary>
     public bool IsDetached {
-      get { return this.EntityState == EntityState.Detached; }
+      get { return EntityState == EntityState.Detached; }
     }
 
     /// <summary>
     /// Whether this entity is attached to an EntityManager. 
     /// </summary>
     public bool IsAttached {
-      get { return this.EntityState != EntityState.Detached; }
+      get { return EntityState != EntityState.Detached; }
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ namespace Breeze.Sharp {
     /// </remarks>
     public EntityManager EntityManager {
       get {
-        return (this.EntityGroup != null) ? this.EntityGroup.EntityManager : null;
+        return (EntityGroup != null) ? EntityGroup.EntityManager : null;
       }
     }
 
@@ -88,11 +88,11 @@ namespace Breeze.Sharp {
       get {
         // need to insure 
         if (_entityKey == null) {
-          Object[] values = GetValues(this.EntityType.KeyProperties);
-          var key = EntityKey.Create(this.EntityType, values);
+          Object[] values = GetValues(EntityType.KeyProperties);
+          var key = EntityKey.Create(EntityType, values);
           // do not cache _entityKey values that have not yet
           // gone thru a save
-          if (this.EntityState.IsAdded() | this.EntityState.IsDetached()) {
+          if (EntityState.IsAdded() | EntityState.IsDetached()) {
             return key;
           }
           _entityKey = key;
@@ -121,9 +121,9 @@ namespace Breeze.Sharp {
         } else if (value == EntityState.Unchanged) {
           AcceptChanges();
         } else if (value == EntityState.Deleted) {
-          this.Delete();
+          Delete();
         } else if (value == EntityState.Detached) {
-          this.Detach();
+          Detach();
         }
       }
     }
@@ -164,7 +164,7 @@ namespace Breeze.Sharp {
     /// </summary>
     public bool HasTemporaryKey {
       get {
-        var dp = this.EntityType.KeyProperties.First();
+        var dp = EntityType.KeyProperties.First();
         var uid = new UniqueId(dp, GetValue(dp));
         return EntityManager.KeyGenerator.IsTempId(uid);
       }
@@ -184,11 +184,11 @@ namespace Breeze.Sharp {
     /// The StructuralType associated with this Entity.
     /// </summary>
     public override StructuralType StructuralType {
-      get { return this.EntityType; }
+      get { return EntityType; }
     }
 
     protected override IStructuralObject StructuralObject {
-      get { return this.Entity; }
+      get { return Entity; }
     }
 
     #endregion
@@ -208,15 +208,15 @@ namespace Breeze.Sharp {
     /// </para>  
     /// </remarks>
     public void Delete() {
-      if (this.EntityState.IsDeletedOrDetached()) return;
+      if (EntityState.IsDeletedOrDetached()) return;
       if (!OnEntityChanging(EntityAction.Delete)) return;
-      var entity = this.Entity;
-      if (this.EntityState.IsAdded()) {
-        this.EntityManager.DetachEntity(entity);
+      var entity = Entity;
+      if (EntityState.IsAdded()) {
+        EntityManager.DetachEntity(entity);
       } else {
-        this.SetEntityStateCore(EntityState.Deleted);
+        SetEntityStateCore(EntityState.Deleted);
         RemoveFromRelations(EntityState.Deleted);
-        this.EntityManager.NotifyStateChange(this, true);
+        EntityManager.NotifyStateChange(this, true);
       }
       OnEntityChanged(EntityAction.Delete);
     }
@@ -233,9 +233,9 @@ namespace Breeze.Sharp {
     public override bool Equals(object obj) {
       var other = obj as EntityAspect;
       if ((object)other == null) {
-        return (obj == null && this.IsNullEntity);
+        return (obj == null && IsNullEntity);
       }
-      if (this.IsNullEntity && other.IsNullEntity) return true;
+      if (IsNullEntity && other.IsNullEntity) return true;
       return base.Equals(obj);
     }
 
@@ -245,7 +245,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public override int GetHashCode() {
       if (IsNullEntity) {
-        return this.GetType().GetHashCode();
+        return GetType().GetHashCode();
       } else {
         return base.GetHashCode();
       }
@@ -274,7 +274,7 @@ namespace Breeze.Sharp {
       if (em == null) {
         throw new InvalidOperationException("There is no EntityManager associated with this entity and none was passed in.");
       }
-      em.AttachEntity(this.Entity, entityState);
+      em.AttachEntity(Entity, entityState);
     }
 
 
@@ -297,22 +297,22 @@ namespace Breeze.Sharp {
       SetEntityStateCore(EntityState.Detached); // need to do this before RemoveFromRelations call
       RemoveFromRelations(EntityState.Detached);
       // TODO: determine if this is needed.
-      // this.OriginalValuesMap = null;
-      // this.PreproposedValuesMap = null;
+      // OriginalValuesMap = null;
+      // PreproposedValuesMap = null;
 
 
 
       EntityManager.NotifyStateChange(this, false);
-      if (this.EntityGroup.ChangeNotificationEnabled) {
+      if (EntityGroup.ChangeNotificationEnabled) {
         // only place that this gets called directly EXCEPT from EntityAspect.OnEntityChanged
-        EntityManager.OnEntityChanged(this.Entity, EntityAction.Detach);
+        EntityManager.OnEntityChanged(Entity, EntityAction.Detach);
       }
       return true;
     }
 
     internal void DetachOnClear() {
-      // this.OriginalValuesMap = null;
-      // this.PreproposedValuesMap = null;
+      // OriginalValuesMap = null;
+      // PreproposedValuesMap = null;
       _entityState = EntityState.Detached;
     }
 
@@ -321,12 +321,12 @@ namespace Breeze.Sharp {
     #region Accept/Reject/HasChanges and IChangeTracking/IReveribleChangeTracking
 
     public void AcceptChanges() {
-      if (this.IsDetached) return;
+      if (IsDetached) return;
       if (!OnEntityChanging(EntityAction.AcceptChanges)) return;
-      if (this.EntityState.IsDeleted()) {
-        this.EntityManager.DetachEntity(this.Entity);
+      if (EntityState.IsDeleted()) {
+        EntityManager.DetachEntity(Entity);
       } else {
-        this.SetUnchanged();
+        SetUnchanged();
       }
       OnEntityChanged(EntityAction.AcceptChanges);
 
@@ -346,17 +346,17 @@ namespace Breeze.Sharp {
     /// <seealso cref="M:Breeze.Sharp.Entity.RemoveFromManager()"/>
     /// </remarks>
     public void RejectChanges() {
-      if (this.IsDetached) return;
+      if (IsDetached) return;
       if (!OnEntityChanging(EntityAction.RejectChanges)) return;
 
       // we do not want PropertyChange or EntityChange events to occur here
       // because the single RejectChanges will cover both
-      using (new BooleanUsingBlock((b) => this.EntityManager.IsRejectingChanges = b)) {
+      using (new BooleanUsingBlock((b) => EntityManager.IsRejectingChanges = b)) {
         RejectChangesCore();
       };
 
       if (EntityState.IsAdded()) {
-        // next line is needed because the following line will cause this.entityManager -> null;
+        // next line is needed because the following line will cause entityManager -> null;
         EntityManager.DetachEntity(Entity);
         // need to tell em that an entity that needed to be saved no longer does.
         EntityManager.NotifyStateChange(this, false);
@@ -383,7 +383,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <returns></returns>
     public bool HasChanges() {
-      return !this.EntityState.IsUnchanged();
+      return !EntityState.IsUnchanged();
     }
 
     /// <summary>
@@ -411,7 +411,7 @@ namespace Breeze.Sharp {
       var hadChanges = _entityState != EntityState.Unchanged;
       _entityState = value;
       var hasChanges = _entityState != EntityState.Unchanged;
-      if (this.EntityGroup.ChangeNotificationEnabled) {
+      if (EntityGroup.ChangeNotificationEnabled) {
         OnEntityAspectPropertyChanged("EntityState");
         if (hadChanges != hasChanges) {
           OnEntityAspectPropertyChanged("IsChanged");
@@ -423,11 +423,11 @@ namespace Breeze.Sharp {
     // Sets the entity to an EntityState of 'Unchanged'.  This is also the equivalent of calling {{#crossLink "EntityAspect/acceptChanges"}}{{/crossLink}}
 
     private void SetUnchanged() {
-      if (this.EntityState == EntityState.Unchanged) return;
+      if (EntityState == EntityState.Unchanged) return;
       ClearBackupVersion(EntityVersion.Original);
-      //    delete this.hasTempKey;
+      //    delete hasTempKey;
       SetEntityStateCore(EntityState.Unchanged);
-      this.EntityManager.NotifyStateChange(this, false);
+      EntityManager.NotifyStateChange(this, false);
     }
 
     /// <summary>
@@ -438,8 +438,8 @@ namespace Breeze.Sharp {
     /// is automatically set to Added by the framework when a new entity is added to an EntityManager.
     /// </remarks>
     private void SetAdded() {
-      if (this.EntityState == EntityState.Added) return;
-      if (this.EntityState == EntityState.Detached) {
+      if (EntityState == EntityState.Added) return;
+      if (EntityState == EntityState.Detached) {
         throw new InvalidOperationException("Detached objects must be attached before calling SetAdded");
       }
       SetEntityStateCore(EntityState.Added);
@@ -456,8 +456,8 @@ namespace Breeze.Sharp {
     /// is automatically set to Modified by the framework when any EntityProperty of the entity is changed.
     /// </remarks>
     internal void SetModified() {
-      if (this.EntityState == EntityState.Modified) return;
-      if (this.EntityState == EntityState.Detached) {
+      if (EntityState == EntityState.Modified) return;
+      if (EntityState == EntityState.Detached) {
         throw new InvalidOperationException("Detached objects must be attached before calling SetModified");
       }
       SetEntityStateCore(EntityState.Modified);
@@ -562,9 +562,9 @@ namespace Breeze.Sharp {
 
       OnPropertyChanged(pcArgs);
 
-      if (this.IsAttached) {
+      if (IsAttached) {
         if (!EntityManager.IsLoadingEntity) {
-          if (this.EntityState == EntityState.Unchanged) {
+          if (EntityState == EntityState.Unchanged) {
             SetModified();
           }
         }
@@ -584,7 +584,7 @@ namespace Breeze.Sharp {
     }
 
     private void SetDpValueKey(DataProperty property, object newValue, object oldValue) {
-      if (this.IsAttached) {
+      if (IsAttached) {
         var values = EntityType.KeyProperties
           .Select(p => (p == property) ? newValue : GetValue(p))
           .ToArray();
@@ -622,8 +622,8 @@ namespace Breeze.Sharp {
         ProcessNpValue(np, e => e.EntityAspect.SetDpValue(fkProp, newValue));
       });
 
-      if (this.IsAttached) {
-        this.EntityType.InverseForeignKeyProperties.ForEach(invFkProp => {
+      if (IsAttached) {
+        EntityType.InverseForeignKeyProperties.ForEach(invFkProp => {
           if (invFkProp.RelatedNavigationProperty != null && invFkProp.RelatedNavigationProperty.Inverse == null) {
             // this next step may be slow - it iterates over all of the entities in a group;
             // hopefully it doesn't happen often.
@@ -653,11 +653,11 @@ namespace Breeze.Sharp {
 
       // manage attachment -
       if (newEntity != null) {
-        var fixupProperty = this.IsDetached && newAspect.IsAttached;
+        var fixupProperty = IsDetached && newAspect.IsAttached;
         ManageAttachment(newEntity);
         if (fixupProperty) {
           // need to insure that property is from the correct metadataStore
-          property = this.EntityType.GetNavigationProperty(property.Name);
+          property = EntityType.GetNavigationProperty(property.Name);
         }
 
       }
@@ -676,7 +676,7 @@ namespace Breeze.Sharp {
             oldAspect.SetNpValue(inverseProp, null);
           }
           if (newAspect != null) {
-            newAspect.SetNpValue(inverseProp, this.Entity);
+            newAspect.SetNpValue(inverseProp, Entity);
           }
         } else {
           // Example: bidirectional navProperty: 1->n: order -> orderDetails
@@ -685,15 +685,15 @@ namespace Breeze.Sharp {
           //    ==> order.orderDetails.push(newOrder)
           if (oldAspect != null) {
             var oldSiblings = oldAspect.GetValue<INavigationSet>(inverseProp.Name);
-            oldSiblings.Remove(this.Entity);
+            oldSiblings.Remove(Entity);
           }
           if (newAspect != null) {
             var siblings = newAspect.GetValue<INavigationSet>(inverseProp.Name);
             // recursion check if already in the collection is performed by the relationArray
-            siblings.Add(this.Entity);
+            siblings.Add(Entity);
           }
         }
-      } else if (property.InvForeignKeyProperties.Count > 0 && this.IsAttached) { // && !EntityManager._inKeyFixup) {
+      } else if (property.InvForeignKeyProperties.Count > 0 && IsAttached) { // && !EntityManager._inKeyFixup) {
         // var invForeignKeyNames = property.InvForeignKeyNames;
         var invForeignKeyProps = property.InvForeignKeyProperties;
         if (newAspect != null) {
@@ -704,7 +704,7 @@ namespace Breeze.Sharp {
           // Example: unidirectional navProperty: 1->n: order -> orderDetails
           // orderDetail.order <-xxx newOrder
           //    ==> CAN'T HAPPEN because if unidirectional because orderDetail will not have an order prop
-          var pkValues = this.EntityKey.Values;
+          var pkValues = EntityKey.Values;
 
           invForeignKeyProps.ForEach((fkProp, i) => newAspect.SetDpValue(fkProp, pkValues[i]));
         } else {
@@ -748,7 +748,7 @@ namespace Breeze.Sharp {
 
     private void ManageAttachment(IEntity newEntity) {
       var newAspect = newEntity.EntityAspect;
-      if (this.IsAttached) {
+      if (IsAttached) {
         if (newAspect.IsDetached) {
           if (!EntityManager.IsLoadingEntity) {
             EntityManager.AttachEntity(newEntity, EntityState.Added);
@@ -762,7 +762,7 @@ namespace Breeze.Sharp {
         if (newAspect.IsAttached) {
           var em = newAspect.EntityManager;
           if (!em.IsLoadingEntity) {
-            em.AttachEntity(this.Entity, EntityState.Added);
+            em.AttachEntity(Entity, EntityState.Added);
 
           }
         }
@@ -775,21 +775,21 @@ namespace Breeze.Sharp {
     internal void InitializeDefaultValues() {
       // TODO: if a string is nonnullable
       // what is the correct nonnullable default value.
-      this.EntityType.DataProperties.ForEach(dp => {
+      EntityType.DataProperties.ForEach(dp => {
         try {
           if (dp.IsNullable) return;
           if (GetValue(dp) != null) return;
           if (dp.IsComplexProperty) {
-            SetRawValue(dp.Name, ComplexAspect.Create(this.Entity, dp));
+            SetRawValue(dp.Name, ComplexAspect.Create(Entity, dp));
           } else {
             if (dp.DefaultValue == null) return; // wierd case mentioned above
             SetRawValue(dp.Name, dp.DefaultValue);
           }
         } catch (Exception e) {
-          Debug.WriteLine("Exception caught during initialization of {0}.{1}: {2}", this.EntityType.Name, dp.Name, e.Message);
+          Debug.WriteLine("Exception caught during initialization of {0}.{1}: {2}", EntityType.Name, dp.Name, e.Message);
         }
       });
-      this.EntityType.NavigationProperties.ForEach(np => {
+      EntityType.NavigationProperties.ForEach(np => {
         if (np.IsScalar) return;
         // one wierd case here: if entity has a value set to something that is not a navSet before 
         // this runs that value will be overwritten.  Probably not a big issue because all nonscalar nav properties must
@@ -799,7 +799,7 @@ namespace Breeze.Sharp {
           navSet = (INavigationSet)TypeFns.CreateGenericInstance(typeof(NavigationSet<>), np.ClrType);
           SetRawValue(np.Name, navSet);
         }
-        navSet.ParentEntity = this.Entity;
+        navSet.ParentEntity = Entity;
         navSet.NavigationProperty = np;
       });
     }
@@ -808,8 +808,8 @@ namespace Breeze.Sharp {
     //private void IfTempIdThenCleanup(DataProperty property) {
     //  var oldValue = GetValue(property);
     //  var oldUniqueId = new UniqueId(property, oldValue);
-    //  if (this.EntityManager.TempIds.Contains(oldUniqueId)) {
-    //    this.EntityManager.TempIds.Remove(oldUniqueId);
+    //  if (EntityManager.TempIds.Contains(oldUniqueId)) {
+    //    EntityManager.TempIds.Remove(oldUniqueId);
     //  }
     //}
 
@@ -1015,13 +1015,13 @@ namespace Breeze.Sharp {
           var relatedEntity = EntityManager.GetEntityByKey(key);
 
           if (relatedEntity != null) {
-            this.SetNpValue(relatedNavProp, relatedEntity);
+            SetNpValue(relatedNavProp, relatedEntity);
           } else {
             // it may not have been fetched yet in which case we want to add it as an unattachedChild.    
-            EntityManager.UnattachedChildrenMap.AddChild(key, relatedNavProp, this.Entity);
+            EntityManager.UnattachedChildrenMap.AddChild(key, relatedNavProp, Entity);
           }
         } else {
-          this.SetNpValue(relatedNavProp, null);
+          SetNpValue(relatedNavProp, null);
         }
       } else if (property.InverseNavigationProperty != null) { //  && !EntityManager._inKeyFixup) 
         // Example: unidirectional fkDataProperty: 1->n: region -> territories
@@ -1051,7 +1051,7 @@ namespace Breeze.Sharp {
             } else {
               // remove 'this' from old related nav prop
               var relatedArray = (INavigationSet)relatedEntity.EntityAspect.GetValue(invNavProp);
-              relatedArray.Remove(this.Entity);
+              relatedArray.Remove(Entity);
             }
           }
         }
@@ -1062,14 +1062,14 @@ namespace Breeze.Sharp {
 
           if (relatedEntity != null) {
             if (invNavProp.IsScalar) {
-              relatedEntity.EntityAspect.SetNpValue(invNavProp, this.Entity);
+              relatedEntity.EntityAspect.SetNpValue(invNavProp, Entity);
             } else {
               var relatedArray = (INavigationSet)relatedEntity.EntityAspect.GetValue(invNavProp.Name);
-              relatedArray.Add(this.Entity);
+              relatedArray.Add(Entity);
             }
           } else {
             // it may not have been fetched yet in which case we want to add it as an unattachedChild.    
-            EntityManager.UnattachedChildrenMap.AddChild(key, invNavProp, this.Entity);
+            EntityManager.UnattachedChildrenMap.AddChild(key, invNavProp, Entity);
           }
         }
 
@@ -1085,16 +1085,16 @@ namespace Breeze.Sharp {
       if (isDeleted) {
         RemoveFromRelationsCore(isDeleted);
       } else {
-        using (this.EntityManager.NewIsLoadingBlock()) {
+        using (EntityManager.NewIsLoadingBlock()) {
           RemoveFromRelationsCore(isDeleted);
         }
       }
     }
 
     private void RemoveFromRelationsCore(bool isDeleted) {
-      var entity = this.Entity;
+      var entity = Entity;
       var aspect = entity.EntityAspect;
-      this.EntityType.NavigationProperties.ForEach(np => {
+      EntityType.NavigationProperties.ForEach(np => {
         var inverseNp = np.Inverse;
 
         if (np.IsScalar) {
@@ -1132,7 +1132,7 @@ namespace Breeze.Sharp {
     }
 
     private void ClearNp(NavigationProperty np, bool relatedIsDeleted) {
-      var entity = this.Entity;
+      var entity = Entity;
 
       if (relatedIsDeleted) {
         SetNpValue(np, null);
@@ -1171,12 +1171,12 @@ namespace Breeze.Sharp {
 
     internal void ProcessNpValue(NavigationProperty np, Action<IEntity> action) {
       if (np.IsScalar) {
-        var toEntity = this.GetValue<IEntity>(np);
+        var toEntity = GetValue<IEntity>(np);
         if (toEntity != null) {
           action(toEntity);
         }
       } else {
-        var toEntities = this.GetValue<INavigationSet>(np);
+        var toEntities = GetValue<INavigationSet>(np);
         if (toEntities.Count > 0) {
           toEntities.Cast<IEntity>().ForEach(action);
         }
@@ -1184,10 +1184,10 @@ namespace Breeze.Sharp {
     }
 
     private void UndoMappedTempId(EntityState rowState) {
-      if (this.EntityState.IsAdded()) {
-        this.EntityManager.MarkTempIdAsMapped(this, true);
-      } else if (this.EntityState.IsDetached()) {
-        this.EntityManager.MarkTempIdAsMapped(this, false);
+      if (EntityState.IsAdded()) {
+        EntityManager.MarkTempIdAsMapped(this, true);
+      } else if (EntityState.IsDetached()) {
+        EntityManager.MarkTempIdAsMapped(this, false);
       }
     }
 
@@ -1198,13 +1198,13 @@ namespace Breeze.Sharp {
     #region NavProperty loading info
 
     public async Task<Object> LoadNavigationProperty(String propertyName) {
-      var np = this.EntityType.GetNavigationProperty(propertyName);
+      var np = EntityType.GetNavigationProperty(propertyName);
       return await LoadNavigationProperty(np);
     }
 
     public async Task<Object> LoadNavigationProperty(NavigationProperty navProperty) {
-      var query = EntityQueryBuilder.BuildQuery(this.Entity, navProperty);
-      await this.EntityManager.ExecuteQuery(query);
+      var query = EntityQueryBuilder.BuildQuery(Entity, navProperty);
+      await EntityManager.ExecuteQuery(query);
       return GetValue(navProperty.Name);
     }
 
@@ -1235,8 +1235,8 @@ namespace Breeze.Sharp {
     /// </summary>
     void IEditableObject.BeginEdit() {
       if (EntityVersion == EntityVersion.Proposed) return;
-      if (this.IsNullEntity) return;
-      _altEntityState = this.EntityState;
+      if (IsNullEntity) return;
+      _altEntityState = EntityState;
       //ValidationErrors.Backup();
       ClearBackupVersion(EntityVersion.Proposed);
       EntityVersion = EntityVersion.Proposed;
@@ -1251,8 +1251,8 @@ namespace Breeze.Sharp {
       RestoreBackupVersion(EntityVersion.Proposed);
       EntityVersion = EntityVersion.Current;
       if (_altEntityState == EntityState.Detached) return; // no need to do the rest
-      var wasUnchanged = this.EntityState.IsUnchanged();
-      this.SetEntityStateCore(_altEntityState);
+      var wasUnchanged = EntityState.IsUnchanged();
+      SetEntityStateCore(_altEntityState);
       EntityManager.CheckStateChange(this, wasUnchanged, _altEntityState.IsUnchanged());
       //ValidationErrors.Restore();
       ForceEntityPropertyChanged(null);
@@ -1322,10 +1322,10 @@ namespace Breeze.Sharp {
       var handler = EntityPropertyChanged;
       if (handler == null) return;
       try {
-        handler(this.Entity, args);
+        handler(Entity, args);
       } catch {
         // eat exceptions during load
-        if (IsDetached || !this.EntityManager.IsLoadingEntity) throw;
+        if (IsDetached || !EntityManager.IsLoadingEntity) throw;
       }
 
     }
@@ -1333,7 +1333,7 @@ namespace Breeze.Sharp {
     // internal because may be called from ComplexAspect
     internal bool OnEntityChanging(EntityAction action, EventArgs actionEventArgs = null) {
       if (IsDetached || !EntityGroup.ChangeNotificationEnabled) return true;
-      return EntityManager.OnEntityChanging(this.Entity, action, actionEventArgs);
+      return EntityManager.OnEntityChanging(Entity, action, actionEventArgs);
     }
 
 
@@ -1350,7 +1350,7 @@ namespace Breeze.Sharp {
       if (entityAction != EntityAction.PropertyChange && entityAction != EntityAction.EntityStateChange) {
         OnPropertyChanged(AllPropertiesChangedEventArgs);
       }
-      EntityManager.OnEntityChanged(this.Entity, entityAction, actionEventArgs);
+      EntityManager.OnEntityChanged(Entity, entityAction, actionEventArgs);
     }
 
     private void OnEntityAspectPropertyChanged(String propertyName) {
@@ -1360,7 +1360,7 @@ namespace Breeze.Sharp {
       try {
         handler(this, args);
       } catch {
-        if (IsDetached || !this.EntityManager.IsLoadingEntity) throw;
+        if (IsDetached || !EntityManager.IsLoadingEntity) throw;
       }
     }
 
@@ -1408,7 +1408,7 @@ namespace Breeze.Sharp {
       if (this == obj) return 0;
       EntityAspect aEntity = obj as EntityAspect;
       if (aEntity == null) return -1;
-      return this.EntityKey.CompareTo(aEntity.EntityKey);
+      return EntityKey.CompareTo(aEntity.EntityKey);
     }
 
     #endregion
@@ -1507,16 +1507,16 @@ namespace Breeze.Sharp {
     //  return !(a == b);
     //}
 
-    // not a good idea - talk to Jay before doing this.
+    // not a good idea - talk to Jay before doing 
     ///// <summary>
     ///// Overridden. See <see cref="Object.GetHashCode"/>.
     ///// </summary>
     ///// <returns></returns>
     //public override int GetHashCode() {
-    //  if ((this.EntityState & (EntityState.Deleted | EntityState.Detached)) > 0) {
+    //  if ((EntityState & (EntityState.Deleted | EntityState.Detached)) > 0) {
     //    return 0;
     //  } else {
-    //    return this.EntityKey.GetHashCode();
+    //    return EntityKey.GetHashCode();
     //  }
     //}
 

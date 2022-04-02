@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Breeze.Sharp.Core;
 using System;
 using System.Diagnostics;
@@ -35,20 +35,20 @@ namespace Breeze.Sharp {
     internal DataProperty(DataProperty dp)
       : base(dp) {
 
-      this._clrType = dp.ClrType;
-      this.DataType = dp.DataType;
-      this.DefaultValue = dp.DefaultValue;
-      this.IsNullable = dp.IsNullable;
-      this.IsPartOfKey = dp.IsPartOfKey;
-      this.IsForeignKey = dp.IsForeignKey;
-      this.ConcurrencyMode = dp.ConcurrencyMode;
-      this.IsUnmapped = dp.IsUnmapped;
-      this.IsAutoIncrementing = dp.IsAutoIncrementing;
-      this.IsScalar = dp.IsScalar;
-      this.ComplexType = dp.ComplexType;
-      this.MaxLength = dp.MaxLength;
-      this.EnumTypeName = dp.EnumTypeName;
-      this.RawTypeName = dp.RawTypeName;
+      _clrType = dp.ClrType;
+      DataType = dp.DataType;
+      DefaultValue = dp.DefaultValue;
+      IsNullable = dp.IsNullable;
+      IsPartOfKey = dp.IsPartOfKey;
+      IsForeignKey = dp.IsForeignKey;
+      ConcurrencyMode = dp.ConcurrencyMode;
+      IsUnmapped = dp.IsUnmapped;
+      IsAutoIncrementing = dp.IsAutoIncrementing;
+      IsScalar = dp.IsScalar;
+      ComplexType = dp.ComplexType;
+      MaxLength = dp.MaxLength;
+      EnumTypeName = dp.EnumTypeName;
+      RawTypeName = dp.RawTypeName;
 
     }
 
@@ -59,7 +59,7 @@ namespace Breeze.Sharp {
       } else {
         Check(ComplexType.Name, complexTypeName, "ComplexTypeName");
       }
-      Check(this.IsScalar, jNode.Get<bool>("isScalar", true), "IsScalar");
+      Check(IsScalar, jNode.Get<bool>("isScalar", true), "IsScalar");
 
       IsNullable = jNode.Get<bool>("isNullable", true);
       if (DataType != null) {
@@ -82,21 +82,21 @@ namespace Breeze.Sharp {
 
     JNode IJsonSerializable.ToJNode(Object config) {
       var jn = new JNode();
-      jn.AddPrimitive("name", this.Name);
-      jn.AddPrimitive("dataType", this.DataType != null ? this.DataType.Name : null);
-      jn.AddPrimitive("complexTypeName", this.ComplexType != null ? this.ComplexType.Name : null);
-      jn.AddPrimitive("isNullable", this.IsNullable, true);
-      jn.AddPrimitive("defaultValue", this.DefaultValue);
-      jn.AddPrimitive("isPartOfKey", this.IsPartOfKey, false);
-      jn.AddPrimitive("isUnmapped", this.IsUnmapped, false);
-      jn.AddPrimitive("isAutoIncrementing", this.IsAutoIncrementing, false);
-      jn.AddPrimitive("concurrencyMode", this.ConcurrencyMode == ConcurrencyMode.None ? null : this.ConcurrencyMode.ToString());
-      jn.AddPrimitive("maxLength", this.MaxLength);
-      jn.AddPrimitive("isScalar", this.IsScalar, true);
-      jn.AddArray("validators", this.Validators);
-      jn.AddPrimitive("enumType", this.EnumTypeName);
+      jn.AddPrimitive("name", Name);
+      jn.AddPrimitive("dataType", DataType != null ? DataType.Name : null);
+      jn.AddPrimitive("complexTypeName", ComplexType != null ? ComplexType.Name : null);
+      jn.AddPrimitive("isNullable", IsNullable, true);
+      jn.AddPrimitive("defaultValue", DefaultValue);
+      jn.AddPrimitive("isPartOfKey", IsPartOfKey, false);
+      jn.AddPrimitive("isUnmapped", IsUnmapped, false);
+      jn.AddPrimitive("isAutoIncrementing", IsAutoIncrementing, false);
+      jn.AddPrimitive("concurrencyMode", ConcurrencyMode == ConcurrencyMode.None ? null : ConcurrencyMode.ToString());
+      jn.AddPrimitive("maxLength", MaxLength);
+      jn.AddPrimitive("isScalar", IsScalar, true);
+      jn.AddArray("validators", Validators);
+      jn.AddPrimitive("enumType", EnumTypeName);
       // jo.AddProperty("rawTypeName").isOptional()
-      // jo.AddProperty("custom", this.Custom.ToJObject)
+      // jo.AddProperty("custom", Custom.ToJObject)
       return jn;           
     }
 
@@ -148,7 +148,7 @@ namespace Breeze.Sharp {
       get { return _isNullable; }
       set {
         if (value == _isNullable) return;
-        if (this.ParentType == null || this.ParentType is ComplexType) {
+        if (ParentType == null || ParentType is ComplexType) {
           _isNullable = value;
           return;
         }
@@ -163,11 +163,11 @@ namespace Breeze.Sharp {
           }
           //if (ComplexType != null) {
           //  throw new Exception("Metadata mismatch: A ComplexProperty cannot be made nullable: " +
-          //    this.ParentType.Name + "." + this.Name);
+          //    ParentType.Name + "." + Name);
           //}
           if (ClrType.GetTypeInfo().IsValueType && !TypeFns.IsNullableType(ClrType)) {
             throw new Exception("Metadata mismatch: This property cannot be made nullable because it has a nonnullable clr type: " +
-              this.ParentType.Name + "." + this.Name);
+              ParentType.Name + "." + Name);
           }
         }
 
@@ -186,7 +186,7 @@ namespace Breeze.Sharp {
       }
       set {
         if (value == _isAutoIncrementing) return;
-        if (this.ParentType == null) {
+        if (ParentType == null) {
           _isAutoIncrementing = value;
           return;
         }
@@ -211,7 +211,7 @@ namespace Breeze.Sharp {
       get { return _isPartOfKey; }
       set {
         if (value == _isPartOfKey) return;
-        if (this.ParentType == null) {
+        if (ParentType == null) {
           _isPartOfKey = value;
           return;
         }
@@ -239,12 +239,12 @@ namespace Breeze.Sharp {
       internal set {
         // TODO: check if valid;
         if (value == _defaultValue) return;
-        if (this.ParentType == null || this.ParentType is ComplexType) {
+        if (ParentType == null || ParentType is ComplexType) {
           _defaultValue = value;
           return;
         }
 
-        if (this.IsComplexProperty) {
+        if (IsComplexProperty) {
           throw new Exception("Cannot set a DefaultValue on a ComplexProperty");
         }
 
@@ -260,7 +260,7 @@ namespace Breeze.Sharp {
       get { return _isForeignKey; }
       internal set {
         if (value == _isForeignKey) return;
-        if (this.ParentType == null) {
+        if (ParentType == null) {
           _isForeignKey = value;
           return;
         }
@@ -278,7 +278,7 @@ namespace Breeze.Sharp {
       get { return _concurrencyMode; }
       internal set {
         if (value == _concurrencyMode) return;
-        if (this.ParentType == null) {
+        if (ParentType == null) {
           _concurrencyMode = value;
           return;
         }
@@ -301,9 +301,9 @@ namespace Breeze.Sharp {
       get { return _inverseNavigationProperty; }
       internal set {
         _inverseNavigationProperty = value;
-        this.IsForeignKey = true;
+        IsForeignKey = true;
 
-        value.AddInvFkName(this.Name);
+        value.AddInvFkName(Name);
       }
     }
 
@@ -317,7 +317,7 @@ namespace Breeze.Sharp {
         }
 
         _relatedNavigationProperty = value;
-        this.IsForeignKey = true;
+        IsForeignKey = true;
         value.EntityType.UpdateInverseForeignKeyProperties(this);
         value.UpdateWithRelatedDataProperty(this);
 
@@ -325,7 +325,7 @@ namespace Breeze.Sharp {
     }
 
     private EntityType InsureEntityType(String propertyName) {
-      var et = this.EntityType;
+      var et = EntityType;
       if (et == null) {
         var msg = String.Format("Cannot set '{0}' on a property of a ComplexType", propertyName);
         throw new Exception(msg);
@@ -334,14 +334,14 @@ namespace Breeze.Sharp {
     }
 
     private EntityType EntityType {
-      get { return this.ParentType as EntityType; }
+      get { return ParentType as EntityType; }
     }
 
     private IEnumerable<DataProperty> SelfAndSubtypeDps {
       get {
-        var entityType = this.ParentType as EntityType;
+        var entityType = ParentType as EntityType;
         if (entityType != null) {
-          return new DataProperty[] { this }.Concat(entityType.SelfAndSubEntityTypes.Skip(1).Select(st => st.GetDataProperty(this.Name)));
+          return new DataProperty[] { this }.Concat(entityType.SelfAndSubEntityTypes.Skip(1).Select(st => st.GetDataProperty(Name)));
         } else {
           // TODO: update this once we support inherited complexTypes
           return new DataProperty[] { this };

@@ -24,14 +24,14 @@ namespace Breeze.Sharp {
     }
 
     protected StructuralProperty(StructuralProperty prop) {
-      this.IsInherited = true;
-      this.Name = prop.Name;
-      this.NameOnServer = prop.NameOnServer;
-      this.Custom = prop.Custom;
-      this.IsInherited = prop.IsInherited;
-      this.IsScalar = prop.IsScalar;
-      this.IsUnmapped = prop.IsUnmapped;
-      this._validators = new ValidatorCollection(prop.Validators);
+      IsInherited = true;
+      Name = prop.Name;
+      NameOnServer = prop.NameOnServer;
+      Custom = prop.Custom;
+      IsInherited = prop.IsInherited;
+      IsScalar = prop.IsScalar;
+      IsUnmapped = prop.IsUnmapped;
+      _validators = new ValidatorCollection(prop.Validators);
     }
 
     public StructuralType ParentType { get; internal set; }
@@ -45,7 +45,7 @@ namespace Breeze.Sharp {
       get { return _isUnmapped; }
       set {
         if (_isUnmapped == value) return;
-        if (this.IsNavigationProperty) {
+        if (IsNavigationProperty) {
           if (value) { 
             throw new Exception("Cannot set IsUnmapped on a NavigationProperty");
           }
@@ -72,9 +72,9 @@ namespace Breeze.Sharp {
     }
 
     internal String FormatName() {
-      var typeLabel = this.ParentType.IsEntityType ? "EntityType" : "ComplexType";
-      var propLabel = this.IsDataProperty ? "DataProperty" : "NavigationProperty";
-      return String.Format("{0}: '{1}' on the {2}: '{3}'", propLabel, this.Name, typeLabel, this.ParentType.Name);
+      var typeLabel = ParentType.IsEntityType ? "EntityType" : "ComplexType";
+      var propLabel = IsDataProperty ? "DataProperty" : "NavigationProperty";
+      return String.Format("{0}: '{1}' on the {2}: '{3}'", propLabel, Name, typeLabel, ParentType.Name);
     }
 
     internal void UpdateClientServerNames() {
@@ -88,7 +88,7 @@ namespace Breeze.Sharp {
 
     // TODO: enhance this later with DisplayName property and localization
     public String DisplayName {
-      get { return this.Name; }
+      get { return Name; }
     }
     public Object Custom { get; internal set; }
 

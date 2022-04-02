@@ -392,11 +392,11 @@ namespace Breeze.Sharp {
       if (obj == this) return true;
       var other = obj as JNode;
       if (other == null) return false;
-      return EqualityComparer.Equals(this._jo, other._jo);
+      return EqualityComparer.Equals(_jo, other._jo);
     }
 
     public override int GetHashCode() {
-      return EqualityComparer.GetHashCode(this._jo);
+      return EqualityComparer.GetHashCode(_jo);
     }
 
     #endregion

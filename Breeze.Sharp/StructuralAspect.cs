@@ -91,7 +91,7 @@ namespace Breeze.Sharp {
 
       Object result;
       if (version == EntityVersion.Current) {
-        if (this.EntityVersion == EntityVersion.Proposed) {
+        if (EntityVersion == EntityVersion.Proposed) {
           result = GetPreproposedValue(property);
         } else {
           result = GetValue(property);
@@ -106,8 +106,8 @@ namespace Breeze.Sharp {
 
       if (property.IsComplexProperty) {
         var co = (IComplexObject)result;
-        if (co.ComplexAspect.Parent == null || co.ComplexAspect.Parent != this.StructuralObject) {
-          co.ComplexAspect.Parent = this.StructuralObject;
+        if (co.ComplexAspect.Parent == null || co.ComplexAspect.Parent != StructuralObject) {
+          co.ComplexAspect.Parent = StructuralObject;
           co.ComplexAspect.ParentProperty = property;
         }
         return co;
@@ -122,9 +122,9 @@ namespace Breeze.Sharp {
 
     protected internal Object[] GetValues(IEnumerable<DataProperty> properties = null) {
       if (properties == null) {
-        properties = this.StructuralType.DataProperties;
+        properties = StructuralType.DataProperties;
       }
-      return properties.Select(p => this.GetValue(p)).ToArray();
+      return properties.Select(p => GetValue(p)).ToArray();
     }
 
     #endregion
@@ -137,16 +137,16 @@ namespace Breeze.Sharp {
 
     public IEnumerable<ValidationError> Validate() {
       ValidateInternal();
-      return this.GetValidationErrors(null);
+      return GetValidationErrors(null);
     }
 
     public IEnumerable<ValidationError> ValidateProperty(StructuralProperty prop) {
-      var value = this.GetValue(prop);
+      var value = GetValue(prop);
       return ValidateProperty(prop, value);
     }
 
     protected internal void ValidateInternal() {
-      var vc = new ValidationContext(this.StructuralObject);
+      var vc = new ValidationContext(StructuralObject);
       vc.IsMutable = true;
 
       // PERF: 
@@ -155,10 +155,10 @@ namespace Breeze.Sharp {
       // would cause closure issues with a linq expression unless 
       // we kept resolving with toList.  This is actually simpler code.
 
-      var properties = this.StructuralType.Properties;
+      var properties = StructuralType.Properties;
       foreach (var prop in properties) {
         vc.Property = prop;
-        vc.PropertyValue = this.GetValue(prop);
+        vc.PropertyValue = GetValue(prop);
 
         var co = vc.PropertyValue as IComplexObject;
         if (co != null) {
@@ -171,7 +171,7 @@ namespace Breeze.Sharp {
 
       vc.Property = null;
       vc.PropertyValue = null;
-      foreach (var vr in this.StructuralType.Validators) {
+      foreach (var vr in StructuralType.Validators) {
         var ve = ValidateCore(vr, vc);
       }
 
@@ -185,7 +185,7 @@ namespace Breeze.Sharp {
       if (co != null) {
         errors = co.ComplexAspect.Validate();
       }
-      var vc = new ValidationContext(this.StructuralObject, prop, value);
+      var vc = new ValidationContext(StructuralObject, prop, value);
       var itemErrors = prop.Validators.Select(vr => ValidateCore(vr, vc)).Where(ve => ve != null);
       return errors == null ? itemErrors.ToList() : errors.Concat(itemErrors).ToList();
     }
@@ -202,9 +202,9 @@ namespace Breeze.Sharp {
     #region other misc
 
     internal void Initialize() {
-      if (this.Initialized) return;
+      if (Initialized) return;
       // will initialize base types as long as Initialize impls call base.Initialize();
-      this.StructuralObject.Initialize();
+      StructuralObject.Initialize();
 
       //// TODO: Only needed if we want to support Initializer fns in addition to 
       //var et = st as EntityType;
@@ -216,11 +216,11 @@ namespace Breeze.Sharp {
       //  initAction(so);
       //}
       
-      this.StructuralType.ComplexProperties.ForEach(cp => {
-        var co = (IComplexObject) this.GetValue(cp);
+      StructuralType.ComplexProperties.ForEach(cp => {
+        var co = (IComplexObject) GetValue(cp);
         co.ComplexAspect.Initialize();
       });
-      this.Initialized = true;
+      Initialized = true;
     }
 
     protected void RejectChangesCore() {
@@ -229,12 +229,12 @@ namespace Breeze.Sharp {
           SetValue(kvp.Key, kvp.Value);
         });
       }
-      this.ProcessComplexProperties(co => co.ComplexAspect.RejectChangesCore());
+      ProcessComplexProperties(co => co.ComplexAspect.RejectChangesCore());
     }
 
     protected void ProcessComplexProperties(Action<IComplexObject> action) {
-      this.StructuralType.ComplexProperties.ForEach(cp => {
-        var cos = this.GetValue(cp.Name);
+      StructuralType.ComplexProperties.ForEach(cp => {
+        var cos = GetValue(cp.Name);
         if (cp.IsScalar) {
           var co = (IComplexObject)cos;
           action(co);
@@ -250,14 +250,14 @@ namespace Breeze.Sharp {
 
     protected void UpdateBackupVersion(DataProperty property, Object oldValue) {
       // We actually do want to track Proposed changes when Detached ( or Added) but we do not track an Original for either
-      if (this.EntityState.IsAdded() || this.EntityState.IsDetached()) {
-        if (this.EntityVersion == EntityVersion.Proposed) {
+      if (EntityState.IsAdded() || EntityState.IsDetached()) {
+        if (EntityVersion == EntityVersion.Proposed) {
           BackupProposedValueIfNeeded(property, oldValue);
         }
       } else {
-        if (this.EntityVersion == EntityVersion.Current) {
+        if (EntityVersion == EntityVersion.Current) {
           BackupOriginalValueIfNeeded(property, oldValue);
-        } else if (this.EntityVersion == EntityVersion.Proposed) {
+        } else if (EntityVersion == EntityVersion.Proposed) {
           // need to do both
           BackupOriginalValueIfNeeded(property, oldValue);
           BackupProposedValueIfNeeded(property, oldValue);
@@ -300,7 +300,7 @@ namespace Breeze.Sharp {
       if (backupMap != null) {
         backupMap.ForEach(kvp => {
           var value = kvp.Value;
-          var dp = this.StructuralType.GetDataProperty(kvp.Key);
+          var dp = StructuralType.GetDataProperty(kvp.Key);
           if (GetValue(dp) != value) {
             SetDpValue(dp, value);
             OnDataPropertyRestore(dp);

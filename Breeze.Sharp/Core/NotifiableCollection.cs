@@ -29,7 +29,7 @@ namespace Breeze.Sharp.Core {
     /// </summary>
     /// <param name="collection">The collection whose elements are copied to the new set.</param>
     public NotifiableCollection(IEnumerable<T> collection)  {
-      collection.ForEach(item => this.Add(item));
+      collection.ForEach(item => Add(item));
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace Breeze.Sharp.Core {
     /// <param name="collection">The collection whose elements are copied to the new set.</param>
     /// <param name="comparer">The IEqualityComparer&lt;T&gt; implementation to use when comparing values in the set, or null to use the default EqualityComparer&lt;T&gt; implementation for the set type.</param>
     public NotifiableCollection(IEnumerable<T> collection, IEqualityComparer<T> comparer) :base(comparer) {
-      collection.ForEach(item => this.Add(item));
+      collection.ForEach(item => Add(item));
     }
 
     #endregion
@@ -58,42 +58,42 @@ namespace Breeze.Sharp.Core {
     }
     
     protected override void InsertItem(int index, T item) {
-      this.CheckReentrancy();
+      CheckReentrancy();
       
       base.InsertItem(index, item);
         
-      this.RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
-      this.RaisePropertyChanged("Count");
+      RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
+      RaisePropertyChanged("Count");
     }
 
     protected override void ClearItems() {
-      this.CheckReentrancy();
+      CheckReentrancy();
 
       base.ClearItems();
 
-      this.RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-      this.RaisePropertyChanged("Count");
+      RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+      RaisePropertyChanged("Count");
     }
 
     protected override void RemoveItem(int index) {
-      this.CheckReentrancy();
+      CheckReentrancy();
 
       var removedItem = this[index];
       base.RemoveItem(index);
 
-      this.RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removedItem, index));
-      this.RaisePropertyChanged("Count");
+      RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removedItem, index));
+      RaisePropertyChanged("Count");
 
     }
 
     protected override void SetItem(int index, T item) {
-      this.CheckReentrancy();
+      CheckReentrancy();
 
       T originalItem = this[index];
       base.SetItem(index, item);
 
-      this.RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, originalItem, item, index));
-      this.RaisePropertyChanged("Count");
+      RaiseCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, originalItem, item, index));
+      RaisePropertyChanged("Count");
     }
 
     #endregion
@@ -106,9 +106,9 @@ namespace Breeze.Sharp.Core {
     public event NotifyCollectionChangedEventHandler CollectionChanged;
 
     private void RaiseCollectionChanged(NotifyCollectionChangedEventArgs e) {
-      if (this.CollectionChanged != null) {
-        using (this.BlockReentrancy()) {
-          this.CollectionChanged(this, e);
+      if (CollectionChanged != null) {
+        using (BlockReentrancy()) {
+          CollectionChanged(this, e);
         }
       }
     }
@@ -119,8 +119,8 @@ namespace Breeze.Sharp.Core {
     public event PropertyChangedEventHandler PropertyChanged;
 
     private void RaisePropertyChanged(string propertyName) {
-      if (this.PropertyChanged != null) {
-        this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      if (PropertyChanged != null) {
+        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
       }
     }
 
@@ -129,19 +129,19 @@ namespace Breeze.Sharp.Core {
     #region Reentrancy Methods
 
     void IDisposable.Dispose() {
-      if (this._monitor != null) {
-        this._monitor.Dispose();
-        this._monitor = null;
+      if (_monitor != null) {
+        _monitor.Dispose();
+        _monitor = null;
       }
     }
 
     private IDisposable BlockReentrancy() {
-      this._monitor.Enter();
-      return this._monitor;
+      _monitor.Enter();
+      return _monitor;
     }
 
     private void CheckReentrancy() {
-      if ((this._monitor.Busy && (this.CollectionChanged != null)) && (this.CollectionChanged.GetInvocationList().Length > 1)) {
+      if ((_monitor.Busy && (CollectionChanged != null)) && (CollectionChanged.GetInvocationList().Length > 1)) {
         throw new InvalidOperationException("There are additional attempts to change this hash set during a CollectionChanged event.");
       }
     }
@@ -154,16 +154,16 @@ namespace Breeze.Sharp.Core {
       private int _busyCount;
 
       public void Dispose() {
-        this._busyCount--;
+        _busyCount--;
       }
 
       public void Enter() {
-        this._busyCount++;
+        _busyCount++;
       }
 
       public bool Busy {
         get {
-          return (this._busyCount > 0);
+          return (_busyCount > 0);
         }
       }
     }

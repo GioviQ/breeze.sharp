@@ -77,8 +77,8 @@ namespace Breeze.Sharp {
 
      JNode IJsonSerializable.ToJNode(object config) {
       var jn = new JNode();
-      jn.AddPrimitive("entityType", this.EntityType.Name);
-      jn.AddArray("values", this.Values);
+      jn.AddPrimitive("entityType", EntityType.Name);
+      jn.AddArray("values", Values);
 
       return jn;
     }
@@ -160,8 +160,8 @@ namespace Breeze.Sharp {
       var other = obj as EntityKey;
       if (other == null) return -1;
       int result = -1;
-      for (int i = 0; i < this.Values.GetLength(0); i++) {
-        result = this.Values[i].ToString().CompareTo(other.Values[i].ToString());
+      for (int i = 0; i < Values.GetLength(0); i++) {
+        result = Values[i].ToString().CompareTo(other.Values[i].ToString());
         if (result != 0) return result;
       }
       return result;
@@ -220,7 +220,7 @@ namespace Breeze.Sharp {
     }
 
 
-    //// do not need to serialize this.
+    //// do not need to serialize 
     //internal EntityKey BasemostEntityKey {
     //  get {
     //    if (_baseMostEntityKey == null) {

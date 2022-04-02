@@ -18,7 +18,7 @@ namespace Breeze.Sharp.Core {
     }
 
     public MapCollection(IEnumerable<U> values) {
-      values.ForEach(v => this.Add(v));
+      values.ForEach(v => Add(v));
     }
 
     protected abstract T GetKeyForItem(U value);

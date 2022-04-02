@@ -186,7 +186,7 @@ namespace Breeze.Sharp {
           metadataProcessor.ProcessMetadata(this, json);
         } else {
           // metadata returned in breeze native format
-          this.ImportMetadata(metadata, true);
+          ImportMetadata(metadata, true);
 
         }
         var errorMessages = GetMessages(MessageType.Error).ToList();
@@ -489,13 +489,13 @@ namespace Breeze.Sharp {
       lock (_structuralTypes) {
         var jo = new JNode();
         jo.AddPrimitive("metadataVersion", MetadataVersion);
-        // jo.Add("name", this.Name);
-        // jo.AddPrimitive("namingConvention", this.NamingConvention.Name);
-        jo.AddJNode("namingConvention", this.NamingConvention);
-        // jo.AddProperty("localQueryComparisonOptions", this.LocalQueryComparisonOptions);
-        jo.AddArray("dataServices", this._dataServiceMap.Values);
-        jo.AddArray("structuralTypes", this._structuralTypes);
-        jo.AddMap("resourceEntityTypeMap", this._resourceNameEntityTypeMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name));
+        // jo.Add("name", Name);
+        // jo.AddPrimitive("namingConvention", NamingConvention.Name);
+        jo.AddJNode("namingConvention", NamingConvention);
+        // jo.AddProperty("localQueryComparisonOptions", LocalQueryComparisonOptions);
+        jo.AddArray("dataServices", _dataServiceMap.Values);
+        jo.AddArray("structuralTypes", _structuralTypes);
+        jo.AddMap("resourceEntityTypeMap", _resourceNameEntityTypeMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name));
         return jo;
       }
     }
@@ -511,7 +511,7 @@ namespace Breeze.Sharp {
           OnMetadataMismatch(null, null, MetadataMismatchTypes.MissingCLRNamingConvention, ncNode.ToString());
         } else {
           // keep any preexisting ClientServerNamespaceMap info
-          NamingConvention = nc.WithClientServerNamespaceMapping(this.NamingConvention.ClientServerNamespaceMap);
+          NamingConvention = nc.WithClientServerNamespaceMapping(NamingConvention.ClientServerNamespaceMap);
         }
       }
 

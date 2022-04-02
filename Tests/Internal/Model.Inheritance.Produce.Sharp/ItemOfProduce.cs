@@ -7,7 +7,7 @@ namespace Model.Inheritance.Produce {
 
   public abstract partial class ItemOfProduce : BaseEntity {
     public ItemOfProduce() {
-      this.RowVersion = 0;
+      RowVersion = 0;
     }
 
     public override void Initialize() {

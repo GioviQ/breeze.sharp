@@ -99,12 +99,12 @@ namespace Breeze.Sharp {
             }
           }
           
-          var vc = new ValidationContext(this.Entity);
+          var vc = new ValidationContext(Entity);
           vc.Property = Property;
           var veKey = (ErrorName ?? ErrorMessage) + (PropertyName ?? "");
           var ve = new ValidationError(null, vc, ErrorMessage, veKey);
           ve.IsServerError = true;
-          this.Entity.EntityAspect.ValidationErrors.Add(ve);
+          Entity.EntityAspect.ValidationErrors.Add(ve);
         }
       } catch (Exception e) {
         ErrorMessage = ( ErrorMessage ?? "") + ":  Unable to Resolve this error: " + e.Message;

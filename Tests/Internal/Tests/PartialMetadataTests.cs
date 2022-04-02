@@ -47,7 +47,7 @@ namespace Breeze.Sharp.Tests {
 
     public class MorphedClassNamingConvention : Breeze.Sharp.NamingConvention {
       public MorphedClassNamingConvention() {
-        this.AddClientServerNamespaceMapping("PartialFoo", "Foo");
+        AddClientServerNamespaceMapping("PartialFoo", "Foo");
       }
     }
 

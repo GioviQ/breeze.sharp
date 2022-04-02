@@ -68,7 +68,7 @@ namespace Breeze.Sharp.Core {
     class ParameterRebinder : ExpressionVisitor {
       
       private ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map) {
-        this._map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
+        _map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
       }
 
       public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map, Expression exp) {

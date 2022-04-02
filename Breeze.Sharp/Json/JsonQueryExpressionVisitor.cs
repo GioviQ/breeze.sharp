@@ -55,19 +55,19 @@ namespace Breeze.Sharp.Json {
 
     /// <summary> Populate this visitor's properties from the expression </summary>
     protected void VisitRoot(Expression expression) {
-      this.sb = new StringBuilder();
-      this.selectVisitor = new ListExpressionVisitor();
-      this.expandVisitor = new ListExpressionVisitor();
+      sb = new StringBuilder();
+      selectVisitor = new ListExpressionVisitor();
+      expandVisitor = new ListExpressionVisitor();
 
-      this.Visit(expression);
+      Visit(expression);
       if (sb.Length > 2) {
-        this.Where = sb.ToString();
+        Where = sb.ToString();
       }
-      if (this.selectVisitor.list.Count > 0) {
-        this.Select = this.selectVisitor.list;
+      if (selectVisitor.list.Count > 0) {
+        Select = selectVisitor.list;
       }
-      if (this.expandVisitor.list.Count > 0) {
-        this.Expand = this.expandVisitor.list;
+      if (expandVisitor.list.Count > 0) {
+        Expand = expandVisitor.list;
       }
     }
 
@@ -87,54 +87,54 @@ namespace Breeze.Sharp.Json {
       var methodName = m.Method.Name;
       if (m.Method.DeclaringType == typeof(Queryable) && methodName == "Where") {
         if (!IsResourceSetExpression(m.Arguments[0])) {
-          this.Visit(m.Arguments[0]);
+          Visit(m.Arguments[0]);
           LambdaExpression lambda = (LambdaExpression)StripQuotes(m.Arguments[1]);
-          this.Visit(lambda.Body);
+          Visit(lambda.Body);
         }
         return m;
       } else if (methodName == "Select") {
-        this.Visit(m.Arguments[0]);
+        Visit(m.Arguments[0]);
         LambdaExpression lambda = (LambdaExpression)StripQuotes(m.Arguments[1]);
-        this.selectVisitor.Visit(lambda.Body);
+        selectVisitor.Visit(lambda.Body);
         return m;
       } else if (methodName == "Expand") {
         var inner = StripQuotes(m.Arguments[0]);
         if (inner is LambdaExpression lambda) {
-          this.expandVisitor.Visit(lambda.Body);
+          expandVisitor.Visit(lambda.Body);
         } else {
-          this.expandVisitor.Visit(inner);
+          expandVisitor.Visit(inner);
         }
         var operand = ((UnaryExpression)m.Object).Operand;
-        this.Visit(operand);
+        Visit(operand);
         return m;
       } else if (methodName == "Take") {
-        if (this.ParseTakeExpression(m)) {
-          return this.Visit(m.Arguments[0]);
+        if (ParseTakeExpression(m)) {
+          return Visit(m.Arguments[0]);
         }
       } else if (methodName == "Skip") {
-        if (this.ParseSkipExpression(m)) {
-          return this.Visit(m.Arguments[0]);
+        if (ParseSkipExpression(m)) {
+          return Visit(m.Arguments[0]);
         }
       } else if (methodName == "IncludeTotalCount") {
-        this.InlineCount = true;
+        InlineCount = true;
         var operand = ((UnaryExpression)m.Object).Operand;
-        return this.Visit(operand);
+        return Visit(operand);
       } else if (methodName == "OrderBy") {
-        if (this.ParseOrderByExpression(m, null)) {
-          return this.Visit(m.Arguments[0]);
+        if (ParseOrderByExpression(m, null)) {
+          return Visit(m.Arguments[0]);
         }
       } else if (methodName == "ThenBy") {
-        if (this.ParseOrderByExpression(m, null)) {
-          return this.Visit(m.Arguments[0]);
+        if (ParseOrderByExpression(m, null)) {
+          return Visit(m.Arguments[0]);
         }
       } else if (methodName == "OrderByDescending") {
-        if (this.ParseOrderByExpression(m, "desc")) {
-          return this.Visit(m.Arguments[0]);
+        if (ParseOrderByExpression(m, "desc")) {
+          return Visit(m.Arguments[0]);
         }
       } else if (methodName == "AddQueryOption") {
-        if (this.ParseAddQueryOptionExpression(m)) {
+        if (ParseAddQueryOptionExpression(m)) {
           var operand = ((UnaryExpression)m.Object).Operand;
-          this.Visit(operand);
+          Visit(operand);
           return m;
         }
       }
@@ -146,10 +146,10 @@ namespace Breeze.Sharp.Json {
       switch (u.NodeType) {
         case ExpressionType.Not:
           sb.Append(" NOT ");
-          this.Visit(u.Operand);
+          Visit(u.Operand);
           break;
         case ExpressionType.Convert:
-          this.Visit(u.Operand);
+          Visit(u.Operand);
           break;
         default:
           throw new NotSupportedException(string.Format("The unary operator '{0}' is not supported", u.NodeType));
@@ -199,22 +199,22 @@ namespace Breeze.Sharp.Json {
 
     private Expression VisitBinaryAndOr(BinaryExpression b, string op) {
       sb.Append("{\"").Append(op).Append("\":[");
-      this.Visit(b.Left);
+      Visit(b.Left);
       sb.Append(",");
-      this.Visit(b.Right);
+      Visit(b.Right);
       sb.Append("]}");
       return b;
     }
 
     private Expression VisitBinaryComparison(BinaryExpression b, string op) {
       sb.Append('{');
-      this.Visit(b.Left);
+      Visit(b.Left);
       if (op == "eq") {
         sb.Append(":");
-        this.Visit(b.Right);
+        Visit(b.Right);
       } else {
         sb.Append(":{\"").Append(op).Append("\": ");
-        this.Visit(b.Right);
+        Visit(b.Right);
         sb.Append("}");
       }
       sb.Append('}');

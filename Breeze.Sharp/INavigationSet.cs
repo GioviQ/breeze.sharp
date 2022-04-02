@@ -109,7 +109,7 @@ namespace Breeze.Sharp {
 
     protected override void InsertItem(int index, T entity) {
       // contains in next line is needed
-      if (_inProcess || this.Contains(entity)) return;
+      if (_inProcess || Contains(entity)) return;
       
       var parentAspect = ParentEntity == null ? null : ParentEntity.EntityAspect;
       if (parentAspect == null
@@ -145,12 +145,12 @@ namespace Breeze.Sharp {
     }
 
     protected override void ClearItems() {
-      // TODO: need to resolve this. - when is it called
+      // TODO: need to resolve  - when is it called
       base.ClearItems();
     }
 
     protected override void SetItem(int index, T item) {
-      // TODO: need to resolve this.
+      // TODO: need to resolve 
       base.SetItem(index, item);
     }
 
@@ -166,7 +166,7 @@ namespace Breeze.Sharp {
 
       var aspect = entity.EntityAspect;
       var parentAspect = ParentEntity.EntityAspect;
-      var np = this.NavigationProperty;
+      var np = NavigationProperty;
       var invNp = np.Inverse;
       if (invNp != null) {
         aspect.SetNpValue(invNp, ParentEntity);
@@ -194,7 +194,7 @@ namespace Breeze.Sharp {
         // This occurs with a unidirectional 1-n navigation - in this case
         // we need to update the fks instead of the navProp
         var pks = parentAspect.EntityType.KeyProperties;
-        this.NavigationProperty.InvForeignKeyProperties.ForEach((fkp, i) => {
+        NavigationProperty.InvForeignKeyProperties.ForEach((fkp, i) => {
           // TODO: write a test to see what happens if this fails
           aspect.SetDpValue(fkp, fkp.DefaultValue);
         });

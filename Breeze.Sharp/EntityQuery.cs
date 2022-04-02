@@ -128,7 +128,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public EntityQuery<T> Expand<TTarget>(Expression<Func<T, TTarget>> navigationPropertyFn) {
       var q = new EntityQuery<T>(this);
-      q.DataServiceQuery = this.DataServiceQuery.Expand(navigationPropertyFn);
+      q.DataServiceQuery = DataServiceQuery.Expand(navigationPropertyFn);
       return q;
     }
 
@@ -142,7 +142,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public EntityQuery<T> Expand(String path) {
       var q = new EntityQuery<T>(this);
-      q.DataServiceQuery = this.DataServiceQuery.Expand(path.Replace('.', '/'));
+      q.DataServiceQuery = DataServiceQuery.Expand(path.Replace('.', '/'));
       return q;
     }
 
@@ -162,7 +162,7 @@ namespace Breeze.Sharp {
 
       if (value != null) {
         q = new EntityQuery<T>(this);
-        q.DataServiceQuery = this.DataServiceQuery.AddQueryOption(name, value);
+        q.DataServiceQuery = DataServiceQuery.AddQueryOption(name, value);
       }
 
       return q;
@@ -175,7 +175,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public EntityQuery<T> WithParameters(IDictionary<String, Object> dictionary) {
       var q = new EntityQuery<T>(this);
-      var dsq = this.DataServiceQuery;
+      var dsq = DataServiceQuery;
       dictionary.Where(kvp => kvp.Value != null).ForEach(kvp => dsq = dsq.AddQueryOption(kvp.Key, kvp.Value));
       q.DataServiceQuery = dsq;
       return q;
@@ -191,7 +191,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public EntityQuery<T> InlineCount() {
       var q = new EntityQuery<T>(this);
-      q.DataServiceQuery = this.DataServiceQuery.IncludeTotalCount();
+      q.DataServiceQuery = DataServiceQuery.IncludeTotalCount();
       return q;
     }
 
@@ -202,10 +202,10 @@ namespace Breeze.Sharp {
     public override String GetResourcePath(MetadataStore metadataStore) {
 
       var resourceName = (String.IsNullOrEmpty(ResourceName))
-        ? metadataStore.GetDefaultResourceName(this.QueryableType)
+        ? metadataStore.GetDefaultResourceName(QueryableType)
         : ResourceName;
       if (String.IsNullOrEmpty(resourceName)) {
-        throw new Exception("Cannot find a default resource name for CLR type: " + this.QueryableType.FullName);
+        throw new Exception("Cannot find a default resource name for CLR type: " + QueryableType.FullName);
       }
 
       if (Configuration.Instance.QueryUriStyle == QueryUriStyle.JSON) {
@@ -217,7 +217,7 @@ namespace Breeze.Sharp {
 
     /// <summary> Return the query as JSON url, e.g. "Customer?{where:{FirstName:'Maria'}}" </summary>
     private string GetJsonResourcePath(string resourceName) {
-      var json = JsonQueryExpressionVisitor.Translate(this.Expression, out string parameters);
+      var json = JsonQueryExpressionVisitor.Translate(Expression, out string parameters);
       if (json.Length > 2) {
         // TODO may be able to get away with not escaping the URI
         System.Diagnostics.Debug.WriteLine($"json query: {json}");
@@ -230,7 +230,7 @@ namespace Breeze.Sharp {
 
     /// <summary> Return the query as Odata URL, e.g. "Customer?$filter=FirstName%20eq%20'Maria'" </summary>
     private string GetOdataResourcePath(string resourceName) {
-      var dsq = this.DataServiceQuery;
+      var dsq = DataServiceQuery;
       var requestUri = dsq.RequestUri.AbsoluteUri;
       var s2 = requestUri.Replace(__placeholderServiceName, "");
 
@@ -279,7 +279,7 @@ namespace Breeze.Sharp {
       if (m.Success) {
         var enumName = m.Groups["enumName"].Value;
         var enumValue = m.Groups["enumValue"].Value;
-        var pinfo = this.QueryableType.GetTypeInfo().GetDeclaredProperty(enumName);
+        var pinfo = QueryableType.GetTypeInfo().GetDeclaredProperty(enumName);
         if (pinfo == null) return resourcePath;
         var enumType = TypeFns.GetNonNullableType(pinfo.PropertyType);
         if (!enumType.GetTypeInfo().IsEnum) return resourcePath;
@@ -511,7 +511,7 @@ namespace Breeze.Sharp {
     }
 
     protected EntityManager CheckEm(EntityManager entityManager) {
-      entityManager = entityManager ?? this.EntityManager;
+      entityManager = entityManager ?? EntityManager;
       if (entityManager == null) {
         throw new ArgumentException("entityManager parameter is null and this EntityQuery does not have its own EntityManager specified");
       }

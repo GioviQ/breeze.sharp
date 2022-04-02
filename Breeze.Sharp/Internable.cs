@@ -32,7 +32,7 @@ namespace Breeze.Sharp {
       if (obj == this) return true;
       var other = obj as Internable;
       if (other == null) return false;
-      return this.ToJNode().Equals(other.ToJNode());
+      return ToJNode().Equals(other.ToJNode());
     }
 
     internal bool IsInterned {
@@ -43,7 +43,7 @@ namespace Breeze.Sharp {
     public override int GetHashCode() {
       // This ONLY works because of the immutability convention for all Validators.
       if (_hashCode == 0) {
-        _hashCode = this.ToJNode().GetHashCode();
+        _hashCode = ToJNode().GetHashCode();
       }
       return _hashCode;
     }

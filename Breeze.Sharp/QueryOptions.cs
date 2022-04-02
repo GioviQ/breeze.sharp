@@ -18,8 +18,8 @@ namespace Breeze.Sharp {
 
     JNode IJsonSerializable.ToJNode(object config) {
       var jn = new JNode();
-      jn.AddEnum("fetchStrategy", this.FetchStrategy );
-      jn.AddEnum("mergeStrategy", this.MergeStrategy );
+      jn.AddEnum("fetchStrategy", FetchStrategy );
+      jn.AddEnum("mergeStrategy", MergeStrategy );
       return jn;
     }
 
@@ -34,7 +34,7 @@ namespace Breeze.Sharp {
     /// <param name="fetchStrategy"></param>
     /// <returns></returns>
     public QueryOptions With(FetchStrategy fetchStrategy) {
-      return new QueryOptions(fetchStrategy, this.MergeStrategy);
+      return new QueryOptions(fetchStrategy, MergeStrategy);
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ namespace Breeze.Sharp {
     /// <param name="mergeStrategy"></param>
     /// <returns></returns>
     public QueryOptions With(MergeStrategy mergeStrategy) {
-      return new QueryOptions(this.FetchStrategy, mergeStrategy);
+      return new QueryOptions(FetchStrategy, mergeStrategy);
     }
 
     public static QueryOptions Default = new QueryOptions(Breeze.Sharp.FetchStrategy.FromServer, Breeze.Sharp.MergeStrategy.PreserveChanges);

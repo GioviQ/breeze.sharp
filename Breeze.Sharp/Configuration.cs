@@ -128,7 +128,7 @@ namespace Breeze.Sharp {
     // includeThisAssembly = whether to probe the assembly where 'type' is defined
     private void RegisterTypeDiscoveryActionCore(Type type, Action<Type> action, bool includeThisAssembly) {
       Func<Assembly, bool> shouldProcessAssembly = (a) => {
-        return includeThisAssembly ? true : a != this.GetType().GetTypeInfo().Assembly;
+        return includeThisAssembly ? true : a != GetType().GetTypeInfo().Assembly;
       };
       lock (_typeDiscoveryActions) {
         _typeDiscoveryActions.Add(Tuple.Create(type, action, shouldProcessAssembly));

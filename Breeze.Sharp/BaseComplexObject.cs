@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -34,7 +34,7 @@ namespace Breeze.Sharp {
     }
 
     public bool StructuralEquals(BaseComplexObject other) {
-      return this.ComplexAspect.StructuralEquals(other.ComplexAspect);
+      return ComplexAspect.StructuralEquals(other.ComplexAspect);
     }
 
     #endregion

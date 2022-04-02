@@ -33,12 +33,12 @@ namespace Breeze.Sharp {
     internal NavigationProperty(NavigationProperty np) 
       : base( np) {
       
-      this.EntityType = np.EntityType;
-      this.AssociationName = np.AssociationName;
+      EntityType = np.EntityType;
+      AssociationName = np.AssociationName;
       // ok for next two var to ref the base class collections because these should be shared.
       // and other code assumes that if the base class collection is updated then so will the subclass.
-      this._fkNames = np._fkNames;  
-      this._invFkNames = np._invFkNames;
+      _fkNames = np._fkNames;  
+      _invFkNames = np._invFkNames;
       
     }
 
@@ -55,14 +55,14 @@ namespace Breeze.Sharp {
 
     JNode IJsonSerializable.ToJNode(Object config) {
       var jo = new JNode();
-      jo.AddPrimitive("name", this.Name);
-      jo.AddPrimitive("entityTypeName", this.EntityType.Name);
-      jo.AddPrimitive("isScalar", this.IsScalar);
-      jo.AddPrimitive("associationName", this.AssociationName);
-      jo.AddArray("validators", this.Validators);
-      jo.AddArray("foreignKeyNames", this.ForeignKeyNames);
-      jo.AddArray("invForeignKeyNames", this.InvForeignKeyNames);
-      // jo.Add("custom", this.Custom.ToJObject)
+      jo.AddPrimitive("name", Name);
+      jo.AddPrimitive("entityTypeName", EntityType.Name);
+      jo.AddPrimitive("isScalar", IsScalar);
+      jo.AddPrimitive("associationName", AssociationName);
+      jo.AddArray("validators", Validators);
+      jo.AddArray("foreignKeyNames", ForeignKeyNames);
+      jo.AddArray("invForeignKeyNames", InvForeignKeyNames);
+      // jo.Add("custom", Custom.ToJObject)
       return jo;
     }
 
@@ -171,8 +171,8 @@ namespace Breeze.Sharp {
     // Not yet needed.
     //private IEnumerable<NavigationProperty> SelfAndSubtypeNps {
     //  get {
-    //    var entityType = (EntityType) this.ParentType;
-    //    return new NavigationProperty[] { this }.Concat(entityType.Subtypes.Select(st => st.GetNavigationProperty(this.Name)));
+    //    var entityType = (EntityType) ParentType;
+    //    return new NavigationProperty[] { this }.Concat(entityType.Subtypes.Select(st => st.GetNavigationProperty(Name)));
     //  }
     //}
 

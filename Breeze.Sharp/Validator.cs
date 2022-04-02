@@ -37,7 +37,7 @@ namespace Breeze.Sharp {
     }
 
     protected Validator() {
-      Name = UtilFns.TypeToSerializationName(this.GetType(), Suffix);
+      Name = UtilFns.TypeToSerializationName(GetType(), Suffix);
       LocalizedMessage = new LocalizedMessage(LocalizedKey);
     }
 
@@ -181,7 +181,7 @@ namespace Breeze.Sharp {
     public ValidatorCollection(IEnumerable<JNode> jNodes) {
       jNodes.Select(jn => Validator.FindOrCreate(jn))
         .Where(v => v != null)
-        .ForEach(v => this.Add(v));
+        .ForEach(v => Add(v));
     }
 
     public override void Add(Validator item) {

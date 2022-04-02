@@ -147,7 +147,7 @@ namespace Breeze.Sharp {
     //    }
     //    var args = bindings.Cast<MemberAssignment>().Select(a => a.Expression);
     //    var newExpr2 = Expression.New(dti.DynamicConstructor, args);
-    //    return this.VisitNew(newExpr2, args);
+    //    return VisitNew(newExpr2, args);
     //  } else {
     //    return base.VisitMemberInit(mie);
     //  }

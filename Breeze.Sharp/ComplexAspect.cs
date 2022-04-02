@@ -109,7 +109,7 @@ namespace Breeze.Sharp {
         if (Parent == null) return null;
         var parentCo = Parent as IComplexObject;
         if (parentCo == null) {
-          return this.ParentProperty;
+          return ParentProperty;
         } else {
           return parentCo.ComplexAspect.ParentEntityProperty;
         }
@@ -177,7 +177,7 @@ namespace Breeze.Sharp {
 
     protected override ValidationError ValidateCore(Validator vr, ValidationContext vc) {
       var ve = vr.Validate(vc);
-      var entityAspect = this.EntityAspect;
+      var entityAspect = EntityAspect;
       if (entityAspect != null) {
         if (ve == null) {
           if (EntityAspect.ValidationErrors.RemoveKey(ValidationError.GetKey(vr, vc.PropertyPath))) {
@@ -203,7 +203,7 @@ namespace Breeze.Sharp {
 
     internal void AbsorbCurrentValues(ComplexAspect sourceAspect) {
 
-      this.ComplexType.DataProperties.ForEach(p => {
+      ComplexType.DataProperties.ForEach(p => {
         var sourceValue = sourceAspect.GetValue(p);
         if (p.IsComplexProperty) {
           var targetChildCo = GetValue<IComplexObject>(p);
@@ -217,11 +217,11 @@ namespace Breeze.Sharp {
     }
 
     public override StructuralType StructuralType {
-      get { return this.ComplexType; }
+      get { return ComplexType; }
     }
 
     protected override IStructuralObject StructuralObject {
-      get { return this.ComplexObject; ; }
+      get { return ComplexObject; ; }
     }
 
     #endregion
@@ -233,12 +233,12 @@ namespace Breeze.Sharp {
       ComplexType.DataProperties.ForEach(dp => {
         try {
           if (dp.IsComplexProperty) {
-            SetDpValue(dp, ComplexAspect.Create(this.ComplexObject, dp));
+            SetDpValue(dp, ComplexAspect.Create(ComplexObject, dp));
           } else if (dp.DefaultValue != null) {
             SetDpValue(dp, dp.DefaultValue);
           }
         } catch (Exception e) {
-          Debug.WriteLine("Exception caught during initialization of {0}.{1}: {2}", this.ComplexObject.GetType().Name, dp.Name, e.Message);
+          Debug.WriteLine("Exception caught during initialization of {0}.{1}: {2}", ComplexObject.GetType().Name, dp.Name, e.Message);
         }
       });
     }
@@ -298,16 +298,16 @@ namespace Breeze.Sharp {
       var oldValue = GetValue(property);
       if (Object.Equals(oldValue, newValue)) return;
 
-      var pcArgs = new PropertyChangedEventArgs(this.ParentEntityProperty.Name);
+      var pcArgs = new PropertyChangedEventArgs(ParentEntityProperty.Name);
       if (!EntityAspect.OnEntityChanging(EntityAction.PropertyChange, pcArgs)) return;
 
       action(property, newValue, oldValue);
 
       EntityAspect.OnPropertyChanged(pcArgs);
 
-      if (this.IsAttached) {
+      if (IsAttached) {
         if (!EntityManager.IsLoadingEntity) {
-          if (this.EntityState == EntityState.Unchanged) {
+          if (EntityState == EntityState.Unchanged) {
             EntityAspect.SetModified();
           }
         }
@@ -320,11 +320,11 @@ namespace Breeze.Sharp {
     }
 
     internal IComplexObject GetOriginalVersion() {
-      var originalClone = Create(this.Parent, this.ParentProperty);
+      var originalClone = Create(Parent, ParentProperty);
       var cloneAspect = originalClone.ComplexAspect;
 
-      this.ComplexType.DataProperties.ForEach(p => {
-        var ov = this.GetOriginalValue(p);
+      ComplexType.DataProperties.ForEach(p => {
+        var ov = GetOriginalValue(p);
         cloneAspect.SetDpValue(p, ov);
       });
       return originalClone;
@@ -338,8 +338,8 @@ namespace Breeze.Sharp {
     internal String PropertyPathPrefix {
       get {
         if (_propertyPathPrefix == null) {
-          var name = this.ParentProperty.Name;
-          var parent = this.Parent as IComplexObject;
+          var name = ParentProperty.Name;
+          var parent = Parent as IComplexObject;
           if (parent == null) {
             _propertyPathPrefix = name + ".";
           } else {
@@ -365,7 +365,7 @@ namespace Breeze.Sharp {
     /// </summary>
     bool INotifyDataErrorInfo.HasErrors {
       get {
-        return EntityAspect.ValidationErrors.Where(ve => ve.Context.PropertyPath.StartsWith(this.PropertyPathPrefix)).Any();
+        return EntityAspect.ValidationErrors.Where(ve => ve.Context.PropertyPath.StartsWith(PropertyPathPrefix)).Any();
       }
     }
 
@@ -383,7 +383,7 @@ namespace Breeze.Sharp {
 
     IEnumerable INotifyDataErrorInfo.GetErrors(string propertyName) {
       // parent EntityAspect has all of the errors.
-      return EntityAspect.GetValidationErrors(this.GetPropertyPath(propertyName));
+      return EntityAspect.GetValidationErrors(GetPropertyPath(propertyName));
     }
 
     /// <summary>

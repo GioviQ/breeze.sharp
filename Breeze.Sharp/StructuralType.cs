@@ -126,12 +126,12 @@ namespace Breeze.Sharp {
     }
 
     internal String FormatDpName(String propertyName) {
-      var typeLabel = this.IsEntityType ? "EntityType" : "ComplexType";
-      return String.Format("Data Property: '{0}' on the {1}: '{2}'", propertyName, typeLabel, this.Name);
+      var typeLabel = IsEntityType ? "EntityType" : "ComplexType";
+      return String.Format("Data Property: '{0}' on the {1}: '{2}'", propertyName, typeLabel, Name);
     }
 
     internal String FormatNpName(String propertyName) {
-      return String.Format("Navigation Property: '{0}' on the EntityType: '{1}'", propertyName, this.Name);
+      return String.Format("Navigation Property: '{0}' on the EntityType: '{1}'", propertyName, Name);
     }
     
     protected void UpdateCollection(SafeList<DataProperty> list, DataProperty dp, bool add) {

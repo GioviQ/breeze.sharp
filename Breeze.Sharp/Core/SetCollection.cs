@@ -13,7 +13,7 @@ namespace Breeze.Sharp.Core {
     }
 
     public SetCollection(IEnumerable<U> values) {
-      values.ForEach(v => this.Add(v));
+      values.ForEach(v => Add(v));
     }
 
     public virtual void Add(U value) {

@@ -114,9 +114,9 @@ namespace Breeze.Sharp {
       if (o == null) return false;
       CacheQueryOptions cqo = o as CacheQueryOptions;
       if (cqo == null) return false;
-      return cqo.StringComparison == this.StringComparison
-        && cqo.UseSql92CompliantStringComparison == this.UseSql92CompliantStringComparison
-        && cqo.GuidOrdering == this.GuidOrdering;
+      return cqo.StringComparison == StringComparison
+        && cqo.UseSql92CompliantStringComparison == UseSql92CompliantStringComparison
+        && cqo.GuidOrdering == GuidOrdering;
     }
 
     /// <summary>
@@ -150,9 +150,9 @@ namespace Breeze.Sharp {
     /// A hash code for the current <see cref="T:System.Object"></see>.
     /// </returns>
     public override int GetHashCode() {
-      return (int)this.StringComparison ^
-        this.UseSql92CompliantStringComparison.GetHashCode() ^
-        this.GuidOrdering.GetHashCode();
+      return (int)StringComparison ^
+        UseSql92CompliantStringComparison.GetHashCode() ^
+        GuidOrdering.GetHashCode();
     }
 
     private static object __lock = new Object();
