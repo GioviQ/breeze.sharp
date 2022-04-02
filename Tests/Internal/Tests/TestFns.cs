@@ -87,7 +87,7 @@ namespace Breeze.Sharp.Tests {
       public static int ChaiProductID = 1;
       public static int DummyOrderID = 999;
       public static int DummyEmployeeID = 9999;
-      public static Object[] AlfredsOrderDetailKey = new Object[] { 10643, 28 };
+      public static object[] AlfredsOrderDetailKey = new object[] { 10643, 28 };
     }
 
     public static string MorphString(string val) {

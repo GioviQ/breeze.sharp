@@ -127,7 +127,7 @@ namespace Breeze.Sharp.Tests {
 
       var results = await em1.ExecuteQuery(q);
 
-      Assert.IsTrue(results.Cast<Object>().Count() > 0);
+      Assert.IsTrue(results.Cast<object>().Count() > 0);
       var r1 = await em1.ExecuteQuery(q.Take(2));
       Assert.IsTrue(r1.Count() == 2);
     }
@@ -196,7 +196,7 @@ namespace Breeze.Sharp.Tests {
 
       var results = await em1.ExecuteQuery(q3);
 
-      Assert.IsTrue(results.Cast<Object>().Count() == 3);
+      Assert.IsTrue(results.Cast<object>().Count() == 3);
       
     }
 

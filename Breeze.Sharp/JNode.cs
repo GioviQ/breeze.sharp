@@ -19,7 +19,7 @@ namespace Breeze.Sharp {
   /// For internal use only.
   /// </summary>
   public interface IJsonSerializable {
-    JNode ToJNode(Object config);
+    JNode ToJNode(object config);
   }
 
   /// <summary>
@@ -34,7 +34,7 @@ namespace Breeze.Sharp {
       _jo = jo;
     }
 
-    public static JNode FromObject(Object o, bool shouldCamelCase) {
+    public static JNode FromObject(object o, bool shouldCamelCase) {
       JObject jo;
       if (shouldCamelCase) {
         jo = (JObject)JToken.FromObject(o, CamelCaseSerializer);
@@ -50,7 +50,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public Object ToObject(Type t, bool shouldCamelCase = false) {
+    public object ToObject(Type t, bool shouldCamelCase = false) {
       if (shouldCamelCase) {
         return _jo.ToObject(t, CamelCaseSerializer);
       }
@@ -61,7 +61,7 @@ namespace Breeze.Sharp {
       return _jo.ToString();
     }
 
-    public Object Config {
+    public object Config {
       get;
       set;
     }
@@ -73,7 +73,7 @@ namespace Breeze.Sharp {
 
     #region Add Methods
 
-    public void AddPrimitive(string propName, Object value, Object defaultValue = null) {
+    public void AddPrimitive(string propName, object value, object defaultValue = null) {
       if (value == null) return;
       if (value != null && value.Equals(defaultValue)) return;
       AddRaw(propName, new JValue(value));
@@ -131,12 +131,12 @@ namespace Breeze.Sharp {
     #region Get methods 
 
 
-    public Object Get(string propName, Type objectType) {
+    public object Get(string propName, Type objectType) {
       var prop = _jo.Property(propName);
       if (prop == null) return null;
       var nonnullableType = objectType.GenericTypeArguments.FirstOrDefault();
       // TODO: Ugh.. hack to allow latest NewtonSoft Json to work correctly with nullable enums. 
-      Object val;
+      object val;
       if (nonnullableType != null && nonnullableType.GetTypeInfo().IsEnum) {
         val = Enum.Parse(nonnullableType, prop.Value.ToString());
       } else {
@@ -202,10 +202,10 @@ namespace Breeze.Sharp {
       }
     }
 
-    public IEnumerable<Object> GetArray(string propName, IEnumerable<Type> toTypes) {
+    public IEnumerable<object> GetArray(string propName, IEnumerable<Type> toTypes) {
       var items = GetToken<JArray>(propName);
       if (items == null) {
-        return Enumerable.Empty<Object>();
+        return Enumerable.Empty<object>();
       } else {
         return items.Zip(toTypes, (item, type) => {
           return item.ToObject(type);
@@ -224,10 +224,10 @@ namespace Breeze.Sharp {
       return rmap;
     }
 
-    public Dictionary<string, Object> GetMap(string propName, Func<string, Type> toTypeFn) {
+    public Dictionary<string, object> GetMap(string propName, Func<string, Type> toTypeFn) {
       var map = (JObject)GetToken<JObject>(propName);
       if (map == null) return null;
-      var rmap = new Dictionary<string, Object>();
+      var rmap = new Dictionary<string, object>();
       foreach (var kvp in map) {
         var toType = toTypeFn(kvp.Key);
         rmap.Add(kvp.Key, kvp.Value.ToObject(toType));
@@ -280,7 +280,7 @@ namespace Breeze.Sharp {
 
 
     // pass in a simple value, a JNode or a IJsonSerializable and returns either a simple value or a JObject or a JArray
-    private static Object CvtValue(Object value) {
+    private static object CvtValue(object value) {
       var jn = value as JNode;
       if (jn != null) {
         return jn._jo;

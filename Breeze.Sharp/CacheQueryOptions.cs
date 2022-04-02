@@ -69,7 +69,7 @@ namespace Breeze.Sharp {
     /// Is this instance the default instance. 
     /// </summary>
     public bool IsDefault {
-      get { return Object.ReferenceEquals(this, __default); }
+      get { return object.ReferenceEquals(this, __default); }
     }
 
     /// <summary>
@@ -106,11 +106,11 @@ namespace Breeze.Sharp {
     }
 
     /// <summary>
-    /// See <see cref="Object.Equals(Object)"/>.
+    /// See <see cref="Object.Equals(object)"/>.
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>
-    public override bool Equals(Object o) {
+    public override bool Equals(object o) {
       if (o == null) return false;
       CacheQueryOptions cqo = o as CacheQueryOptions;
       if (cqo == null) return false;
@@ -126,8 +126,8 @@ namespace Breeze.Sharp {
     /// <param name="y"></param>
     /// <returns></returns>
     public static bool operator ==(CacheQueryOptions x, CacheQueryOptions y) {
-      if (null == (Object)x) {
-        return null == (Object)y;
+      if (null == (object)x) {
+        return null == (object)y;
       }
       return x.Equals(y);
     }
@@ -155,7 +155,7 @@ namespace Breeze.Sharp {
         GuidOrdering.GetHashCode();
     }
 
-    private static object __lock = new Object();
+    private static object __lock = new object();
     private static CacheQueryOptions __default;
 
   }

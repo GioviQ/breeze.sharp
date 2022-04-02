@@ -485,7 +485,7 @@ namespace Breeze.Sharp {
     }
 
 
-    JNode IJsonSerializable.ToJNode(Object config) {
+    JNode IJsonSerializable.ToJNode(object config) {
       lock (_structuralTypes) {
         var jo = new JNode();
         jo.AddPrimitive("metadataVersion", MetadataVersion);
@@ -696,7 +696,7 @@ namespace Breeze.Sharp {
 
     #region Private vars
 
-    private static Object __lock = new Object();
+    private static object __lock = new object();
     private static int __nextStoreID = 1;
     // Note: the two lines above need to appear before this next one 
     private static MetadataStore __detached = new MetadataStore();
@@ -705,7 +705,7 @@ namespace Breeze.Sharp {
     private NamingConvention _namingConvention = new NamingConvention();
 
     private readonly AsyncSemaphore _asyncSemaphore = new AsyncSemaphore(1);
-    private readonly Object _lock = new Object();
+    private readonly object _lock = new object();
 
     // lock using _dataServiceMap
     private readonly Dictionary<string, DataService> _dataServiceMap = new Dictionary<string, DataService>();
@@ -737,7 +737,7 @@ namespace Breeze.Sharp {
     #region Unfinished or removed ideas
 
     //// Not needed because of Initialize() method on each Entity/ComplexObject
-    //public void RegisterTypeInitializer(Type type, Action<Object> action) {
+    //public void RegisterTypeInitializer(Type type, Action<object> action) {
     //  lock (_typeInitializerMap) {
     //    if (action!=null) {
     //      _typeInitializerMap[type] = action;
@@ -753,7 +753,7 @@ namespace Breeze.Sharp {
     //  }
     //}
 
-    // private Dictionary<Type, Action<Object>> _typeInitializerMap = new Dictionary<Type, Action<object>>();
+    // private Dictionary<Type, Action<object>> _typeInitializerMap = new Dictionary<Type, Action<object>>();
 
     #endregion
   }

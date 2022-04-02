@@ -264,7 +264,7 @@ namespace Breeze.Sharp {
     protected internal override void SetDpValue(DataProperty property, object newValue) {
       if (EntityAspect == null) {
         var oldValue = GetValue(property);
-        if (Object.Equals(oldValue, newValue)) return;
+        if (object.Equals(oldValue, newValue)) return;
         SetDpValueCore(property, newValue, oldValue);
       } else {
         SetValueWithEvents(property, newValue, SetDpValueCore);
@@ -293,10 +293,10 @@ namespace Breeze.Sharp {
 
     }
 
-    private void SetValueWithEvents<T>(T property, object newValue, Action<T, Object, Object> action) where T : StructuralProperty {
+    private void SetValueWithEvents<T>(T property, object newValue, Action<T, object, object> action) where T : StructuralProperty {
 
       var oldValue = GetValue(property);
-      if (Object.Equals(oldValue, newValue)) return;
+      if (object.Equals(oldValue, newValue)) return;
 
       var pcArgs = new PropertyChangedEventArgs(ParentEntityProperty.Name);
       if (!EntityAspect.OnEntityChanging(EntityAction.PropertyChange, pcArgs)) return;
@@ -413,7 +413,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public bool StructuralEquals(Object obj) {
+    public bool StructuralEquals(object obj) {
       var otherAspect = obj as ComplexAspect;
       if (otherAspect == null) return false;
       var theseValues = GetValues();
@@ -422,7 +422,7 @@ namespace Breeze.Sharp {
         if (o1 is IComplexObject) {
           return (((IComplexObject)o1).ComplexAspect).StructuralEquals(((IComplexObject)o2).ComplexAspect);
         } else {
-          return Object.Equals(o1, o2);
+          return object.Equals(o1, o2);
         }
       }).All(b => b);
       return areEqual;

@@ -30,7 +30,7 @@ namespace Breeze.Sharp {
 
     internal EntityType CreateEntityType(Type clrType ) {
       var typeInfo = clrType.GetTypeInfo();
-      var baseEntityType = (typeInfo.BaseType == typeof(Object)) ? null : MetadataStore.GetEntityType(typeInfo.BaseType);
+      var baseEntityType = (typeInfo.BaseType == typeof(object)) ? null : MetadataStore.GetEntityType(typeInfo.BaseType);
       
       var entityType = new EntityType(MetadataStore) {
         ClrType = clrType,
@@ -70,7 +70,7 @@ namespace Breeze.Sharp {
 
       MetadataStore.AddComplexType(complexType);
 
-      var baseComplexType = (typeInfo.BaseType == typeof(Object)) ? null : MetadataStore.GetComplexType(typeInfo.BaseType);
+      var baseComplexType = (typeInfo.BaseType == typeof(object)) ? null : MetadataStore.GetComplexType(typeInfo.BaseType);
       if (baseComplexType != null)
       if (typeof(IComplexObject).IsAssignableFrom(typeInfo.BaseType) && typeInfo.BaseType != typeof(BaseComplexObject)) {
         UpdateBaseProperties(complexType, baseComplexType);
@@ -277,7 +277,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="defaultValue"></param>
     /// <returns></returns>
-    public DataPropertyBuilder DefaultValue(Object defaultValue) {
+    public DataPropertyBuilder DefaultValue(object defaultValue) {
       DataProperty.DefaultValue = defaultValue;
       return this;
     }

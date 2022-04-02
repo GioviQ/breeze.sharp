@@ -32,7 +32,7 @@ namespace Breeze.Sharp.Tests {
 
       var r0 = await em1.ExecuteQuery(q);
 
-      Assert.IsTrue(r0.Cast<Object>().Count() > 0);
+      Assert.IsTrue(r0.Cast<object>().Count() > 0);
       var r1 = q.ExecuteLocally(em1);
       Assert.IsTrue(r0.Count() == r1.Count());
     }

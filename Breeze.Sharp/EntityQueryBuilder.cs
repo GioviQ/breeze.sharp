@@ -99,7 +99,7 @@ namespace Breeze.Sharp {
     private static EntityQuery AddWhereClause(EntityQuery entityQuery, LambdaExpression lambda) {
       // This works too - not sure which is faster or better
       //var method = factory.GetType().GetMethod("Where", new Type[] { typeof(LambdaExpression) });
-      //var query = method.Invoke(factory, new Object[] { lambda });
+      //var query = method.Invoke(factory, new object[] { lambda });
       //return (EntityQuery)query;
       var expr = BuildCallWhereExpr(entityQuery, lambda);
       var query = (EntityQuery)TypeFns.ConstructGenericInstance(typeof(EntityQuery<>),
@@ -138,7 +138,7 @@ namespace Breeze.Sharp {
     }
 
 
-    private static BinaryExpression BuildMultiEqualExpr(IEnumerable<MemberExpression> propExpressions, Object[] values) {
+    private static BinaryExpression BuildMultiEqualExpr(IEnumerable<MemberExpression> propExpressions, object[] values) {
       var condExpressions = propExpressions.Select(
         (expr, i) => BuildEqualExpr(expr, values[i]));
       // and together all of the pieces of the primary key ( if more than 1)
@@ -146,7 +146,7 @@ namespace Breeze.Sharp {
       return resultExpr;
     }
 
-    private static BinaryExpression BuildEqualExpr(MemberExpression propertyExpr, Object aValue) {
+    private static BinaryExpression BuildEqualExpr(MemberExpression propertyExpr, object aValue) {
       // Allow query to be parameterized.
       // var expr = LocalizingExpressionVisitor.LocalizePrimitive(aValue, propertyExpr.Type);
       var expr = Expression.Constant(aValue, propertyExpr.Type);

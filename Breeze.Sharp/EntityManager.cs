@@ -117,7 +117,7 @@ namespace Breeze.Sharp {
     private static ThreadLocal<Int32> __threadLocalId;
     private static Int32 __nextThreadId = 34;
     private Int32 _authorizedThreadId;
-    private readonly object _reificationLock = new Object();
+    private readonly object _reificationLock = new object();
 
     #endregion
 
@@ -958,7 +958,7 @@ namespace Breeze.Sharp {
     /// <typeparam name="T"></typeparam>
     /// <param name="values"></param>
     /// <returns></returns>
-    public T GetEntityByKey<T>(params Object[] values) where T : IEntity {
+    public T GetEntityByKey<T>(params object[] values) where T : IEntity {
       var ek = new EntityKey(typeof(T), MetadataStore, values);
       return (T)GetEntityByKey(ek);
     }
@@ -1008,7 +1008,7 @@ namespace Breeze.Sharp {
     /// <param name="initialValues"></param>
     /// <param name="entityState">Default is 'Added'</param>
     /// <returns></returns>
-    public T CreateEntity<T>(Object initialValues = null, EntityState entityState = EntityState.Added) {
+    public T CreateEntity<T>(object initialValues = null, EntityState entityState = EntityState.Added) {
       return (T)CreateEntity(typeof(T), initialValues, entityState);
     }
 
@@ -1020,7 +1020,7 @@ namespace Breeze.Sharp {
     /// <param name="initialValues"></param>
     /// <param name="entityState"></param>
     /// <returns></returns>
-    public IEntity CreateEntity(EntityType entityType, Object initialValues = null, EntityState entityState = EntityState.Added) {
+    public IEntity CreateEntity(EntityType entityType, object initialValues = null, EntityState entityState = EntityState.Added) {
       return CreateEntity(entityType.ClrType, initialValues, entityState);
     }
 
@@ -1032,7 +1032,7 @@ namespace Breeze.Sharp {
     /// <param name="initialValues"></param>
     /// <param name="entityState"></param>
     /// <returns></returns>
-    public IEntity CreateEntity(Type clrType, Object initialValues = null, EntityState entityState = EntityState.Added) {
+    public IEntity CreateEntity(Type clrType, object initialValues = null, EntityState entityState = EntityState.Added) {
       var entity = (IEntity)Activator.CreateInstance(clrType);
 
       var et = MetadataStore.GetEntityType(clrType);
@@ -1203,7 +1203,7 @@ namespace Breeze.Sharp {
       // return properties that are = to defaultValues
       var keyProps = aspect.EntityType.KeyProperties;
       var keyPropsWithDefaultValues = keyProps
-        .Zip(ek.Values, (kp, kv) => Object.Equals(kp.DefaultValue, kv) ? kp : null)
+        .Zip(ek.Values, (kp, kv) => object.Equals(kp.DefaultValue, kv) ? kp : null)
         .Where(kp => kp != null);
 
       if (keyPropsWithDefaultValues.Any()) {
@@ -1467,7 +1467,7 @@ namespace Breeze.Sharp {
 
     #region Other internal 
 
-    internal void UpdateFkVal(DataProperty fkProp, Object oldValue, Object newValue) {
+    internal void UpdateFkVal(DataProperty fkProp, object oldValue, object newValue) {
       var eg = EntityGroups[fkProp.ParentType.ClrType];
       if (eg == null) return;
 

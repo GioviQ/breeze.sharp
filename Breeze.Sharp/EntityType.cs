@@ -60,7 +60,7 @@ namespace Breeze.Sharp {
 
 
 
-    JNode IJsonSerializable.ToJNode(Object config) {
+    JNode IJsonSerializable.ToJNode(object config) {
       var jo = new JNode();
       jo.AddPrimitive("shortName", ShortName);
       jo.AddPrimitive("namespace", Namespace);
@@ -75,9 +75,9 @@ namespace Breeze.Sharp {
       return jo;
     }
 
-    internal void Check(Object v1, Object v2, string name) {
+    internal void Check(object v1, object v2, string name) {
       if (v1 == null && v2 == null) return;
-      if (Object.Equals(v1, v2)) return;
+      if (object.Equals(v1, v2)) return;
       var msg = string.Format("EntityType metadata mismatch. EntityType: '{0}'.  Metadata property: '{1}'.  Client value: '{2}',  Server value: '{3}'",
         Name, name, (v1 ?? "").ToString(), (v2 ?? "").ToString());
       MetadataStore.OnMetadataMismatch(Name, null, MetadataMismatchTypes.InconsistentCLRTypeDefinition, msg);

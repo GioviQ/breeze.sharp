@@ -181,7 +181,7 @@ namespace Breeze.Sharp {
   //  /// <summary>
   //  /// The actual value that is being proposed - only avail if the property is on a complex object
   //  /// </summary>
-  //  public Object NestedProposedValue { get; private set; }
+  //  public object NestedProposedValue { get; private set; }
 
 
   //}

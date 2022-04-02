@@ -114,7 +114,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public string Format(params Object[] parameters) {
+    public string Format(params object[] parameters) {
       return string.Format(Message, parameters);
     }
 
@@ -154,7 +154,7 @@ namespace Breeze.Sharp {
     private string _message;
     private bool _isLocalized;
     
-    private static Object __lock = new Object();
+    private static object __lock = new object();
     private static Dictionary<Type, ResourceManager> __resourceManagerTypeMap = new Dictionary<Type, ResourceManager>();
     private static Dictionary<Tuple<string, Assembly>, ResourceManager> __resourceManagerFileMap = new Dictionary<Tuple<string, Assembly>, ResourceManager>();
     private static ResourceManager __defaultResourceManager = new ResourceManager("Breeze.Sharp.LocalizedMessages", typeof(LocalizedMessage).GetTypeInfo().Assembly);

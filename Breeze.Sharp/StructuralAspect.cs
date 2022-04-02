@@ -12,7 +12,7 @@ namespace Breeze.Sharp {
   /// Implemented via an explicit interface.
   /// </summary>
   public interface IHasBackingStore {
-    IDictionary<string, Object> BackingStore { get; set; }
+    IDictionary<string, object> BackingStore { get; set; }
   }
 
   /// <summary>
@@ -21,7 +21,7 @@ namespace Breeze.Sharp {
   public abstract class StructuralAspect {
 
     public StructuralAspect(IStructuralObject stObj) {
-      _backingStore = (stObj is IHasBackingStore) ? null : new Dictionary<string, Object>();
+      _backingStore = (stObj is IHasBackingStore) ? null : new Dictionary<string, object>();
     }
 
     #region Public/protected properties 
@@ -38,7 +38,7 @@ namespace Breeze.Sharp {
 
     protected abstract IStructuralObject StructuralObject { get; }
 
-    protected internal IDictionary<string, Object> BackingStore {
+    protected internal IDictionary<string, object> BackingStore {
       get {
         return _backingStore ?? ((IHasBackingStore)StructuralObject).BackingStore;
       }
@@ -56,22 +56,22 @@ namespace Breeze.Sharp {
 
     #region Get/Set value
 
-    protected internal Object GetRawValue(string propertyName) {
-      Object val = null;
+    protected internal object GetRawValue(string propertyName) {
+      object val = null;
       BackingStore.TryGetValue(propertyName, out val);
       return val;
     }
 
-    protected internal void SetRawValue(string propertyName, Object value) {
+    protected internal void SetRawValue(string propertyName, object value) {
       BackingStore[propertyName] = value;
     }
 
-    public Object GetValue(string propertyName) {
+    public object GetValue(string propertyName) {
       // TODO: will be different when we add property interception.
       return GetRawValue(propertyName);
     }
 
-    public Object GetValue(StructuralProperty prop) {
+    public object GetValue(StructuralProperty prop) {
       return GetValue(prop.Name);
     }
 
@@ -83,13 +83,13 @@ namespace Breeze.Sharp {
       return (T) GetRawValue(propertyName);
     }
 
-    public Object GetValue(DataProperty property, EntityVersion version) {
+    public object GetValue(DataProperty property, EntityVersion version) {
 
       if (version == EntityVersion.Default) {
         version = EntityVersion;
       }
 
-      Object result;
+      object result;
       if (version == EntityVersion.Current) {
         if (EntityVersion == EntityVersion.Proposed) {
           result = GetPreproposedValue(property);
@@ -120,7 +120,7 @@ namespace Breeze.Sharp {
 
     protected internal abstract void SetDpValue(DataProperty dp, object newValue);
 
-    protected internal Object[] GetValues(IEnumerable<DataProperty> properties = null) {
+    protected internal object[] GetValues(IEnumerable<DataProperty> properties = null) {
       if (properties == null) {
         properties = StructuralType.DataProperties;
       }
@@ -179,7 +179,7 @@ namespace Breeze.Sharp {
     }
 
     // called internally by property set logic
-    internal IEnumerable<ValidationError> ValidateProperty(StructuralProperty prop, Object value) {
+    internal IEnumerable<ValidationError> ValidateProperty(StructuralProperty prop, object value) {
       IEnumerable<ValidationError> errors = null;
       var co = value as IComplexObject;
       if (co != null) {
@@ -248,7 +248,7 @@ namespace Breeze.Sharp {
 
     #region Backup version members
 
-    protected void UpdateBackupVersion(DataProperty property, Object oldValue) {
+    protected void UpdateBackupVersion(DataProperty property, object oldValue) {
       // We actually do want to track Proposed changes when Detached ( or Added) but we do not track an Original for either
       if (EntityState.IsAdded() || EntityState.IsDetached()) {
         if (EntityVersion == EntityVersion.Proposed) {
@@ -265,7 +265,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    protected Object GetOriginalValue(DataProperty property) {
+    protected object GetOriginalValue(DataProperty property) {
       object result;
       if (property.IsComplexProperty) {
         var co = (IComplexObject)GetValue(property, EntityVersion.Current);
@@ -279,7 +279,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    protected Object GetPreproposedValue(DataProperty property) {
+    protected object GetPreproposedValue(DataProperty property) {
       object result;
       if (_preproposedValuesMap != null && _preproposedValuesMap.TryGetValue(property.Name, out result)) {
         return result;
@@ -330,7 +330,7 @@ namespace Breeze.Sharp {
 
 
 
-    private void BackupOriginalValueIfNeeded(DataProperty property, Object oldValue) {
+    private void BackupOriginalValueIfNeeded(DataProperty property, object oldValue) {
       if (_originalValuesMap == null) {
         _originalValuesMap = new BackupValuesMap();
       } else {
@@ -340,7 +340,7 @@ namespace Breeze.Sharp {
       _originalValuesMap.Add(property.Name, oldValue);
     }
 
-    private void BackupProposedValueIfNeeded(DataProperty property, Object oldValue) {
+    private void BackupProposedValueIfNeeded(DataProperty property, object oldValue) {
       if (_preproposedValuesMap == null) {
         _preproposedValuesMap = new BackupValuesMap();
       } else {
@@ -349,15 +349,15 @@ namespace Breeze.Sharp {
       _preproposedValuesMap.Add(property.Name, oldValue);
     }
 
-    public ReadOnlyDictionary<string, Object> OriginalValuesMap {
+    public ReadOnlyDictionary<string, object> OriginalValuesMap {
       get { return HandleNull(_originalValuesMap); }
     }
 
-    public ReadOnlyDictionary<string, Object> PreproposedValuesMap {
+    public ReadOnlyDictionary<string, object> PreproposedValuesMap {
       get { return HandleNull(_preproposedValuesMap); }
     }
 
-    private ReadOnlyDictionary<string, Object> HandleNull(BackupValuesMap map) {
+    private ReadOnlyDictionary<string, object> HandleNull(BackupValuesMap map) {
       return (map ?? BackupValuesMap.Empty).ReadOnlyDictionary;
     }
     
@@ -369,7 +369,7 @@ namespace Breeze.Sharp {
 
     #region Private 
 
-    private IDictionary<string, Object> _backingStore;
+    private IDictionary<string, object> _backingStore;
 
     #endregion
 

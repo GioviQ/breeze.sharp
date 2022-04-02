@@ -92,18 +92,18 @@ namespace Breeze.Sharp {
     private string _localizedKey;
     
 
-    private static Object __lock = new Object();
+    private static object __lock = new object();
 
 
     private static readonly IEnumerable<ValidationError> EmptyErrors = Enumerable.Empty<ValidationError>();
 
     #region Not currently used 
 
-    //public static T FindOrCreate<T>(params Object[] parameters) where T : Validator {
+    //public static T FindOrCreate<T>(params object[] parameters) where T : Validator {
     //  return (T)FindOrCreate(typeof(T), parameters);
     //}
 
-    //public static Validator FindOrCreate(Type type, params Object[] parameters) {
+    //public static Validator FindOrCreate(Type type, params object[] parameters) {
     //  var key = new ParamsWrapper(parameters);
     //  Validator vr;
     //  lock (__validatorParamsCache) {
@@ -121,7 +121,7 @@ namespace Breeze.Sharp {
     //}
 
     //private class ParamsWrapper {
-    //  public ParamsWrapper(params Object[] values) {
+    //  public ParamsWrapper(params object[] values) {
     //    _values = values;
     //  }
 
@@ -136,7 +136,7 @@ namespace Breeze.Sharp {
     //    return _values.GetAggregateHashCode();
     //  }
 
-    //  private Object[] _values;
+    //  private object[] _values;
     //}
 
     //private static Dictionary<ParamsWrapper, Validator> __validatorParamsCache = new Dictionary<ParamsWrapper, Validator>();

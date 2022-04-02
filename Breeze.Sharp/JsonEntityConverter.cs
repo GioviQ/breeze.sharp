@@ -31,7 +31,7 @@ namespace Breeze.Sharp {
     // AllEntities is a list of all deserialized entities not just the top level ones.
     public List<IEntity> Entities { get; private set; }
     public JsonSerializer Serializer { get; internal set; }
-    public Dictionary<string, Object> RefMap { get; private set; }
+    public Dictionary<string, object> RefMap { get; private set; }
 
     public MetadataStore MetadataStore {
       get { return EntityManager.MetadataStore; }
@@ -119,7 +119,7 @@ namespace Breeze.Sharp {
       return MetadataStore.IsStructuralType(objectType);
     }
 
-    protected virtual Object CreateAndPopulate(NodeContext nodeContext) {
+    protected virtual object CreateAndPopulate(NodeContext nodeContext) {
       var node = nodeContext.Node;
 
       var nodeInfo = _mappingContext.VisitNode(nodeContext);
@@ -168,7 +168,7 @@ namespace Breeze.Sharp {
     }
 
 
-    protected virtual Object PopulateEntity(NodeContext nodeContext, IEntity entity) {
+    protected virtual object PopulateEntity(NodeContext nodeContext, IEntity entity) {
 
       var aspect = entity.EntityAspect;
       if (aspect.EntityManager == null) {
@@ -274,7 +274,7 @@ namespace Breeze.Sharp {
             }
           }
         } else {
-          if (backingStore != null) backingStore[key] = kvp.Value.ToObject<Object>();
+          if (backingStore != null) backingStore[key] = kvp.Value.ToObject<object>();
         }
       });
 

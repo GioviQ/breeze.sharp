@@ -19,7 +19,7 @@ namespace Breeze.Sharp {
     /// <summary>
     /// Constructs a new EntityKey. Each entity within an EntityManager will have a unique EntityKey.
     /// </summary>
-    public EntityKey(Type clrType, MetadataStore metadataStore, params Object[] values) {
+    public EntityKey(Type clrType, MetadataStore metadataStore, params object[] values) {
       ClrType = clrType;
       EntityType = metadataStore.GetEntityType(ClrType);
       InitializeValues(values, true);
@@ -30,7 +30,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="entityType">The Entity type</param>
     /// <param name="values">The values of the primary key properties</param>
-    public EntityKey(EntityType entityType, params Object[] values) {
+    public EntityKey(EntityType entityType, params object[] values) {
       EntityType = entityType;
       ClrType = EntityType.ClrType;
       InitializeValues(values, true);
@@ -45,7 +45,7 @@ namespace Breeze.Sharp {
     }
 
     // should be called internally when we don't need to go thru coercion.
-    internal static EntityKey Create(EntityType entityType, params Object[] values) {
+    internal static EntityKey Create(EntityType entityType, params object[] values) {
       var ek = new EntityKey();
       ek.EntityType = entityType;
       ek.ClrType = entityType.ClrType;
@@ -53,7 +53,7 @@ namespace Breeze.Sharp {
       return ek;
     }
 
-    private void InitializeValues(Object[] values, bool shouldCoerce = true) {
+    private void InitializeValues(object[] values, bool shouldCoerce = true) {
       if (!EntityType.KeyProperties.Any()) {
         var msg = string.Format("There are no KeyProperties yet defined on EntityType: '{0}'.  "
                                 + "Please insure that the metadata for this type is complete either by calling FetchMetadata or "
@@ -63,7 +63,7 @@ namespace Breeze.Sharp {
       }
 
       if (values.Length == 1 && values[0] is Array) {
-        Values = ((IEnumerable)values[0]).Cast<Object>().ToArray();
+        Values = ((IEnumerable)values[0]).Cast<object>().ToArray();
       } else {
         Values = values;
       }
@@ -99,7 +99,7 @@ namespace Breeze.Sharp {
     /// <summary>
     /// An array of values associated with individual properties of the key.
     /// </summary>
-    public Object[] Values {
+    public object[] Values {
       get;
       internal set;
     }
@@ -141,8 +141,8 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public override Boolean Equals(Object obj) {
-      if ((Object)this == obj) return true;
+    public override Boolean Equals(object obj) {
+      if ((object)this == obj) return true;
       var other = obj as EntityKey;
       if (other == null) return false;
       if (!ClrType.Equals(other.ClrType)) return false;
@@ -155,8 +155,8 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public virtual int CompareTo(Object obj) {
-      if ((Object)this == obj) return 0;
+    public virtual int CompareTo(object obj) {
+      if ((object)this == obj) return 0;
       var other = obj as EntityKey;
       if (other == null) return -1;
       int result = -1;
@@ -173,7 +173,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public override int GetHashCode() {
       int hashCode = ClrType.GetHashCode();
-      foreach (Object item in Values) {
+      foreach (object item in Values) {
         if (item == null) continue;
         hashCode ^= item.GetHashCode();
       }

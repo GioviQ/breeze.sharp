@@ -17,7 +17,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public ValidationContext(IStructuralObject so, StructuralProperty property, Object propertyValue) 
+    public ValidationContext(IStructuralObject so, StructuralProperty property, object propertyValue) 
       : this(so) {
       Property = property;
       PropertyValue = propertyValue;
@@ -32,7 +32,7 @@ namespace Breeze.Sharp {
     }
 
     public IEntity Entity { get; set; }
-    public Object PropertyValue { get; set; }
+    public object PropertyValue { get; set; }
     // May be null
     public StructuralProperty Property { get; set; }
     public IComplexObject ComplexObject { get; set; }

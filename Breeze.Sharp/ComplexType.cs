@@ -33,7 +33,7 @@ namespace Breeze.Sharp {
       get { return false; }
     }
 
-    JNode IJsonSerializable.ToJNode(Object config) {
+    JNode IJsonSerializable.ToJNode(object config) {
       var jo = new JNode();
       jo.AddPrimitive("shortName", ShortName);
       jo.AddPrimitive("namespace", Namespace);

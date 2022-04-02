@@ -29,7 +29,7 @@ namespace Breeze.Sharp {
       return ComplexAspect.GetValue<T>(propertyName);
     }
 
-    protected void SetValue(Object value, [CallerMemberName] string propertyName = "") {
+    protected void SetValue(object value, [CallerMemberName] string propertyName = "") {
       ComplexAspect.SetValue(propertyName, value);
     }
 

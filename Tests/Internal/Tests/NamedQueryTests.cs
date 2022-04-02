@@ -116,7 +116,7 @@ namespace Breeze.Sharp.Tests {
       var companyNames = await q.Execute(em1);
       Assert.IsTrue(companyNames.Count() > 0, "should be some results");
 
-      var q2 = new EntityQuery<Object>("CompanyNames");
+      var q2 = new EntityQuery<object>("CompanyNames");
       rp = q2.GetResourcePath(em1.MetadataStore);
       var companyNames2 = await q2.Execute(em1);
       Assert.IsTrue(companyNames2.Count() > 0, "should be some results");
@@ -126,7 +126,7 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task CompanyNamesAndIds() {
       var em1 = await TestFns.NewEm(_serviceName);
-      var q = new EntityQuery<Object>("CompanyNamesAndIds");
+      var q = new EntityQuery<object>("CompanyNamesAndIds");
       var rp = q.GetResourcePath(em1.MetadataStore);
       var companyNamesAndIds = await q.Execute(em1);
       Assert.IsTrue(companyNamesAndIds.Count() > 0, "should be some results");
@@ -265,7 +265,7 @@ namespace Breeze.Sharp.Tests {
       //var query = EntityQuery.from("SearchCustomers")
       //      .withParameters( { CompanyName: "A", ContactNames: ["B", "C"] , City: "Los Angeles"  } );
       var q = new EntityQuery<Customer>("SearchCustomers")
-        .WithParameters(new Dictionary<string, Object> {
+        .WithParameters(new Dictionary<string, object> {
           { "CompanyName", "A" }, 
           { "ContactNames", new string[] { "B", "C" }},
           { "City", "LosAngeles" }

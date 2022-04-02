@@ -8,12 +8,12 @@ namespace Breeze.Sharp {
   /// Class that is used to track property changes on an Entity or ComplexObject.  Instances of this type are used 
   /// for both the EntityAspect.OriginalValuesMap as well as to track IEditableObject changes on an entity.
   /// </summary>
-  public  class BackupValuesMap : SafeDictionary<string, Object> {
+  public  class BackupValuesMap : SafeDictionary<string, object> {
     public BackupValuesMap() : base() {}
-    public BackupValuesMap(Dictionary<string, Object> map) : base(map) {
+    public BackupValuesMap(Dictionary<string, object> map) : base(map) {
     }
 
-    public static BackupValuesMap Empty = new BackupValuesMap(new Dictionary<string, Object>());
+    public static BackupValuesMap Empty = new BackupValuesMap(new Dictionary<string, object>());
   }
 
  

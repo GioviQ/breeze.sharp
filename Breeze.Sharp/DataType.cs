@@ -23,7 +23,7 @@ namespace Breeze.Sharp {
     public NumericDataType(Type clrType, string fmtSuffix, bool isInteger)
       : base(clrType) {
       DefaultValue = Convert.ChangeType(0, clrType);
-      FmtOData = (Object source) => FmtNumber(source, clrType, fmtSuffix);
+      FmtOData = (object source) => FmtNumber(source, clrType, fmtSuffix);
       GetNextTempValue = () => GetNextNumber(clrType);
       DataTypeInfo = DataTypeInfo.IsNumeric | (isInteger ? DataTypeInfo.IsInteger : DataTypeInfo.None);
     }
@@ -47,14 +47,14 @@ namespace Breeze.Sharp {
 
     public string Name { get; internal set; }
     public Type ClrType { get; internal set; }
-    public Object DefaultValue { get; internal set; }
+    public object DefaultValue { get; internal set; }
     
-    public virtual Object Parse(Object val) {
+    public virtual object Parse(object val) {
       if (val == null) return null;
       return Convert.ChangeType(val, ClrType);
     }
-    public Func<Object, string> FmtOData { get; internal set; }
-    public Func<Object> GetNextTempValue { get; internal set; }
+    public Func<object, string> FmtOData { get; internal set; }
+    public Func<object> GetNextTempValue { get; internal set; }
     public DataTypeInfo DataTypeInfo { get; internal set; }
     public static List<DataType> All = new List<DataType>();
 
@@ -114,7 +114,7 @@ namespace Breeze.Sharp {
       FmtOData = FmtBinary,
     };
 
-    public static DataType Undefined = new DataType(typeof(Object)) {
+    public static DataType Undefined = new DataType(typeof(object)) {
       DefaultValue = null,
       FmtOData = FmtUndefined,
     };
@@ -152,7 +152,7 @@ namespace Breeze.Sharp {
       return StringPrefix + GetNextNumber(typeof(Int64)).ToString();
     }
 
-    protected static Object GetNextNumber(Type clrType) {
+    protected static object GetNextNumber(Type clrType) {
       var result = Convert.ChangeType(NextNumber, clrType);
       NextNumber += NextNumberIncrement;
       return result;
@@ -173,58 +173,58 @@ namespace Breeze.Sharp {
     private static DateTime __prevDateTime;
 
 
-    protected static string FmtString(Object val) {
+    protected static string FmtString(object val) {
       if (val == null) return null;
       return "'" + ((string)val).Replace("'", "''") + "'";
     }
 
-    protected static string FmtNumber(Object val, Type clrType, string fmtSuffix) {
+    protected static string FmtNumber(object val, Type clrType, string fmtSuffix) {
       if (val == null) return null;
       var tmp = Convert.ChangeType(val, clrType);
       return tmp.ToString() + fmtSuffix;
     }
 
-    protected static string FmtDateTime(Object val) {
+    protected static string FmtDateTime(object val) {
       if (val == null) return null;
       var date = (DateTime)Convert.ChangeType(val, typeof(DateTime));
       var tmp = date.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
       return "datetime'" + tmp + "'";
     }
 
-    protected static string FmtDateTimeOffset(Object val) {
+    protected static string FmtDateTimeOffset(object val) {
       if (val == null) return null;
       var date = (DateTimeOffset)Convert.ChangeType(val, typeof(DateTimeOffset));
       var tmp = date.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
       return "datetimeoffset'" + tmp + "'";
     }
 
-    protected static string FmtTime(Object val) {
+    protected static string FmtTime(object val) {
       if (val == null) return null;
       var timeSpan = (TimeSpan)val;
       var tmp = XmlConvert.ToString(timeSpan);
       return "time'" + tmp + "'";
     }
 
-    protected static string FmtGuid(Object val) {
+    protected static string FmtGuid(object val) {
       if (val == null) return null;
       var guid = (Guid)val;
       var tmp = guid.ToString();
       return "guid'" + tmp + "'";
     }
 
-    protected static string FmtBoolean(Object val) {
+    protected static string FmtBoolean(object val) {
       if (val == null) return null;
       var tmp = (Boolean)val;
       return tmp ? "true" : "false";
     }
 
-    protected static string FmtBinary(Object val) {
+    protected static string FmtBinary(object val) {
       if (val == null) return null;
       var tmp = (Byte[])val;
       return "binary'" + tmp + "'";
     }
 
-    protected static string FmtUndefined(Object val) {
+    protected static string FmtUndefined(object val) {
       if (val == null) return null;
       return val.ToString();
     }

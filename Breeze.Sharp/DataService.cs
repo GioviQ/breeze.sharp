@@ -178,7 +178,7 @@ namespace Breeze.Sharp {
       return result;
     }
 
-    JNode IJsonSerializable.ToJNode(Object config) {
+    JNode IJsonSerializable.ToJNode(object config) {
       var jo = new JNode();
       jo.AddPrimitive("serviceName", ServiceName);
       jo.AddPrimitive("adapterName", Adapter == null ? null : Adapter.Name);
@@ -192,7 +192,7 @@ namespace Breeze.Sharp {
     private HttpClient _httpClient;
     private string _serviceName;
     private static HttpMessageHandler __defaultHttpMessageHandler;
-    private static Object __lock = new Object();
+    private static object __lock = new object();
 
   }
 

@@ -88,7 +88,7 @@ namespace Breeze.Sharp {
       get {
         // need to insure 
         if (_entityKey == null) {
-          Object[] values = GetValues(EntityType.KeyProperties);
+          object[] values = GetValues(EntityType.KeyProperties);
           var key = EntityKey.Create(EntityType, values);
           // do not cache _entityKey values that have not yet
           // gone thru a save
@@ -529,7 +529,7 @@ namespace Breeze.Sharp {
       SetValueWithEvents(property, newValue, SetDpValueCore);
     }
 
-    private void SetDpValueCore(DataProperty property, object newValue, Object oldValue) {
+    private void SetDpValueCore(DataProperty property, object newValue, object oldValue) {
       if (property.IsComplexProperty) {
         SetDpValueComplex(property, newValue, oldValue);
       } else if (property.IsPartOfKey) {
@@ -551,10 +551,10 @@ namespace Breeze.Sharp {
 
     private bool _inProcess;
 
-    private void SetValueWithEvents<T>(T property, object newValue, Action<T, Object, Object> action) where T : StructuralProperty {
+    private void SetValueWithEvents<T>(T property, object newValue, Action<T, object, object> action) where T : StructuralProperty {
 
       var oldValue = GetValue(property);
-      if (Object.Equals(oldValue, newValue)) return;
+      if (object.Equals(oldValue, newValue)) return;
       var pcArgs = new PropertyChangedEventArgs(property.Name);
       if (!OnEntityChanging(EntityAction.PropertyChange, pcArgs)) return;
 
@@ -1142,7 +1142,7 @@ namespace Breeze.Sharp {
         var em = entity.EntityAspect.EntityManager;
 
         var fkProps = np.ForeignKeyProperties;
-        List<Object> fkVals = null;
+        List<object> fkVals = null;
         if (fkProps.Count > 0) {
           fkVals = fkProps.Select(fkp => GetValue(fkp)).ToList();
         }
@@ -1157,7 +1157,7 @@ namespace Breeze.Sharp {
     //// TODO: check if ever used
     //internal bool IsCurrent(EntityAspect targetAspect, EntityAspect sourceAspect) {
     //  var targetVersion = (targetAspect.EntityState == EntityState.Deleted) ? EntityVersion.Original : EntityVersion.Current;
-    //  bool isCurrent = EntityType.ConcurrencyProperties.All(c => (Object.Equals(targetAspect.GetValue(c, targetVersion), sourceAspect.GetValue(c, EntityVersion.Current))));
+    //  bool isCurrent = EntityType.ConcurrencyProperties.All(c => (object.Equals(targetAspect.GetValue(c, targetVersion), sourceAspect.GetValue(c, EntityVersion.Current))));
     //  return isCurrent;
     //}
 
@@ -1197,12 +1197,12 @@ namespace Breeze.Sharp {
 
     #region NavProperty loading info
 
-    public async Task<Object> LoadNavigationProperty(string propertyName) {
+    public async Task<object> LoadNavigationProperty(string propertyName) {
       var np = EntityType.GetNavigationProperty(propertyName);
       return await LoadNavigationProperty(np);
     }
 
-    public async Task<Object> LoadNavigationProperty(NavigationProperty navProperty) {
+    public async Task<object> LoadNavigationProperty(NavigationProperty navProperty) {
       var query = EntityQueryBuilder.BuildQuery(Entity, navProperty);
       await EntityManager.ExecuteQuery(query);
       return GetValue(navProperty.Name);
@@ -1404,7 +1404,7 @@ namespace Breeze.Sharp {
     /// </remarks>
     // Dummy implementation just to insure that Entities can compare to one another
     // DO NOT implement Equals by calling this method
-    int IComparable.CompareTo(Object obj) {
+    int IComparable.CompareTo(object obj) {
       if (this == obj) return 0;
       EntityAspect aEntity = obj as EntityAspect;
       if (aEntity == null) return -1;

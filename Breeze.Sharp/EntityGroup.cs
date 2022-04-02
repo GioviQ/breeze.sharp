@@ -238,7 +238,7 @@ namespace Breeze.Sharp {
       _entityKeyMap.Add(newKey, entityAspect);
     }
 
-    internal void UpdateFkVal(DataProperty fkProp, Object oldValue, Object newValue) {
+    internal void UpdateFkVal(DataProperty fkProp, object oldValue, object newValue) {
       var fkPropName = fkProp.Name;
       _entityAspects.ForEach(ea => {
         if (Equals(ea.GetValue(fkPropName), oldValue)) {

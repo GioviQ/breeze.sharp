@@ -170,7 +170,7 @@ namespace Breeze.Sharp {
         }
       }
 
-      Object defaultValue;
+      object defaultValue;
       var rawDefaultValue = csdlProperty["defaultValue"];
       if (rawDefaultValue == null) {
         defaultValue = isNullable ? null : dataType.DefaultValue;
@@ -370,18 +370,18 @@ namespace Breeze.Sharp {
       }
     }
 
-    internal void CheckStructuralType(StructuralType stType, Object v1, Object v2, string name) {
+    internal void CheckStructuralType(StructuralType stType, object v1, object v2, string name) {
       if (v1 == null && v2 == null) return;
-      if (Object.Equals(v1, v2)) return;
+      if (object.Equals(v1, v2)) return;
       var detail = string.Format("Type property: {0}, Client value: '{1}',  Server value: '{2}'",
         name, (v1 ?? "").ToString(), (v2 ?? "").ToString());
       MetadataStore.OnMetadataMismatch(stType.Name, null, MetadataMismatchTypes.InconsistentCLRTypeDefinition, detail);
     }
 
 
-    internal void CheckProperty(StructuralProperty prop, Object v1, Object v2, string name) {
+    internal void CheckProperty(StructuralProperty prop, object v1, object v2, string name) {
       if (v1 == null && v2 == null) return;
-      if (Object.Equals(v1, v2)) return;
+      if (object.Equals(v1, v2)) return;
       var detail = string.Format("Client value: '{0}',  Server value: '{1}'",
         (v1 ?? "").ToString(), (v2 ?? "").ToString());
       MetadataStore.OnMetadataMismatch(prop.ParentType.Name, prop.Name, MetadataMismatchTypes.InconsistentCLRPropertyDefinition, detail);

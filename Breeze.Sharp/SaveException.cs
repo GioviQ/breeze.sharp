@@ -70,7 +70,7 @@ namespace Breeze.Sharp {
 
     public string ErrorName;
     public string EntityTypeName;
-    public Object[] KeyValues;
+    public object[] KeyValues;
     public string PropertyName;
     public string ErrorMessage;
 

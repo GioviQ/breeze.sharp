@@ -255,10 +255,10 @@ namespace Breeze.Sharp {
     internal static string ANONTYPE_PREFIX = "_IB_";
 
     private static Configuration __instance = new Configuration();
-    private static readonly Object __lock = new Object();
+    private static readonly object __lock = new object();
     
     private readonly AsyncSemaphore _asyncSemaphore = new AsyncSemaphore(1);
-    private readonly Object _lock = new Object();
+    private readonly object _lock = new object();
 
     private Dictionary<string, Type> _clrTypeMap = new Dictionary<string, Type>();
 

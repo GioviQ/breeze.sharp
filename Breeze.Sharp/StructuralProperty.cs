@@ -64,9 +64,9 @@ namespace Breeze.Sharp {
       get { return ParentType.MetadataStore; }
     }
 
-    internal void Check(Object v1, Object v2, string name) {
+    internal void Check(object v1, object v2, string name) {
       if (v1 == null && v2 == null) return;
-      if (Object.Equals(v1, v2)) return;
+      if (object.Equals(v1, v2)) return;
       var msg = "Metadata mismatch - values do not match between server and client for " + FormatName() + " Metadata property: " + name;
       MetadataStore.AddMessage(msg, MessageType.Error, true);
     }
@@ -90,7 +90,7 @@ namespace Breeze.Sharp {
     public string DisplayName {
       get { return Name; }
     }
-    public Object Custom { get; internal set; }
+    public object Custom { get; internal set; }
 
     public abstract bool IsDataProperty { get;  }
     public abstract bool IsNavigationProperty { get; }

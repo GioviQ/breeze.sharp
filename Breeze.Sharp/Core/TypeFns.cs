@@ -80,7 +80,7 @@ namespace Breeze.Sharp.Core {
     /// <param name="genericType"></param>
     /// <param name="argTypes"></param>
     /// <returns></returns>
-    public static Object CreateGenericInstance(Type genericType, params Type[] argTypes) {
+    public static object CreateGenericInstance(Type genericType, params Type[] argTypes) {
       if (genericType == null) {
         throw new ArgumentNullException("genericType");
       }
@@ -109,7 +109,7 @@ namespace Breeze.Sharp.Core {
     /// <param name="genericType"></param>
     /// <param name="argTypes"></param>
     /// <returns></returns>
-    public static Object ConstructGenericInstance(Type genericType, params Type[] argTypes) {
+    public static object ConstructGenericInstance(Type genericType, params Type[] argTypes) {
       if (genericType == null) {
         throw new ArgumentNullException("genericType");
       }
@@ -125,7 +125,7 @@ namespace Breeze.Sharp.Core {
     /// <param name="argTypes"></param>
     /// <param name="constructorParams"></param>
     /// <returns></returns>
-    public static Object ConstructGenericInstance(Type genericType, Type[] argTypes, params Object[] constructorParams) {
+    public static object ConstructGenericInstance(Type genericType, Type[] argTypes, params object[] constructorParams) {
       if (genericType == null) {
         throw new ArgumentNullException("genericType");
       }
@@ -260,12 +260,12 @@ namespace Breeze.Sharp.Core {
     private static Dictionary<Type, NullableInfo> __nullableInfoMap = new Dictionary<Type, NullableInfo>();
 
     private class NullableInfo {
-      public NullableInfo(Type pNullableType, Object pDefaultValue) {
+      public NullableInfo(Type pNullableType, object pDefaultValue) {
         NullableType = pNullableType;
         DefaultValue = pDefaultValue;
       }
       public Type NullableType;
-      public Object DefaultValue;
+      public object DefaultValue;
     }
     #endregion
   }

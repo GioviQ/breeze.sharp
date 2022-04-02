@@ -24,7 +24,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="property"></param>
     /// <param name="value"></param>
-    public UniqueId(DataProperty property, Object value) {
+    public UniqueId(DataProperty property, object value) {
       Property = property;
       Value = value;
     }
@@ -41,17 +41,17 @@ namespace Breeze.Sharp {
     /// Returns the Value associated with this UniqueId.
     /// </summary>
     
-    public Object Value {
+    public object Value {
       get;
       set;  // public for deserialization in SL
     }
 
     /// <summary>
-    /// See <see cref="Object.Equals(Object)"/>.
+    /// See <see cref="Object.Equals(object)"/>.
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public override Boolean Equals(Object obj) {
+    public override Boolean Equals(object obj) {
       if (this == obj) return true;
       var other = obj as UniqueId;
       if (other == null) return false;
@@ -85,7 +85,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public int CompareTo(Object obj) {
+    public int CompareTo(object obj) {
       UniqueId id = obj as UniqueId;
       if (id == null) return -1;
       int result = Property.ParentType.Name.CompareTo(id.Property.ParentType.Name);
@@ -149,7 +149,7 @@ namespace Breeze.Sharp {
   /// <seealso cref="IKeyGenerator"/>
   /// </summary>
   /// <remarks>Used when mapping temporary to real identifiers.</remarks>
-  public class UniqueIdMap : Dictionary<UniqueId, Object> {
+  public class UniqueIdMap : Dictionary<UniqueId, object> {
 
     /// <summary>
     /// Initializes a new instance of the UniqueIdMap class.
@@ -181,7 +181,7 @@ namespace Breeze.Sharp {
     /// <param name="map">map</param>
     public void AddMap(UniqueIdMap map) {
       if (map == null) return;
-      foreach (KeyValuePair<UniqueId, Object> entry in map) {
+      foreach (KeyValuePair<UniqueId, object> entry in map) {
         Add(entry.Key, entry.Value);
       }
     }

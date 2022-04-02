@@ -160,7 +160,7 @@ namespace Breeze.Core {
     private void CleanIfNeeded() {
       if (_gcSentinal.Target == null) {
         CleanAbandonedItems();
-        _gcSentinal = new WeakReference(new Object());
+        _gcSentinal = new WeakReference(new object());
       }
     }
 
@@ -183,7 +183,7 @@ namespace Breeze.Core {
     /// Serves as a simple "GC Monitor" that indicates whether cleanup is needed. 
     /// If _gcSentinal.IsAlive is false, GC has occurred and we should perform cleanup
     /// </summary>
-    private WeakReference _gcSentinal = new WeakReference(new Object());
+    private WeakReference _gcSentinal = new WeakReference(new object());
   }
 
 }

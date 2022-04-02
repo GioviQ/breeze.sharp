@@ -53,7 +53,7 @@ namespace Breeze.Sharp {
       // custom
     }
 
-    JNode IJsonSerializable.ToJNode(Object config) {
+    JNode IJsonSerializable.ToJNode(object config) {
       var jo = new JNode();
       jo.AddPrimitive("name", Name);
       jo.AddPrimitive("entityTypeName", EntityType.Name);

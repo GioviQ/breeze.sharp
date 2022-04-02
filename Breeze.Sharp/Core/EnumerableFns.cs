@@ -94,7 +94,7 @@ namespace Breeze.Sharp.Core {
       // Overflow is fine, just wrap (17/23 here - but any two primes should do)
       unchecked {
         int hash = 17;
-        foreach (Object item in items) {
+        foreach (object item in items) {
           if (item != null) {
             hash = hash * 23 + item.GetHashCode();
           }
@@ -208,7 +208,7 @@ namespace Breeze.Sharp.Core {
       if (!items.Any()) return true;
       T val = items.First();
       foreach (T item in items.Skip(1)) {
-        if (!Object.Equals(val, item)) return false;
+        if (!Equals(val, item)) return false;
       }
       return true;
 
@@ -226,7 +226,7 @@ namespace Breeze.Sharp.Core {
       if (!items.Any()) return true;
       U val = selector(items.First());
       foreach (T item in items.Skip(1)) {
-        if (!Object.Equals(val, selector(item))) return false;
+        if (!object.Equals(val, selector(item))) return false;
       }
       return true;
     }

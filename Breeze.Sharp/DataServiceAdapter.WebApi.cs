@@ -173,8 +173,8 @@ namespace Breeze.Sharp {
 
   internal class KeyMapping {
     public string EntityTypeName;
-    public Object TempValue;
-    public Object RealValue;
+    public object TempValue;
+    public object RealValue;
   }
 
   public class WebApiJsonResultsAdapter : IJsonResultsAdapter {

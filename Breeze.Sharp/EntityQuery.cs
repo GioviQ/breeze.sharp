@@ -157,7 +157,7 @@ namespace Breeze.Sharp {
     /// <param name="name"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public EntityQuery<T> WithParameter(string name, Object value) {
+    public EntityQuery<T> WithParameter(string name, object value) {
       var q = this;
 
       if (value != null) {
@@ -173,7 +173,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="dictionary"></param>
     /// <returns></returns>
-    public EntityQuery<T> WithParameters(IDictionary<string, Object> dictionary) {
+    public EntityQuery<T> WithParameters(IDictionary<string, object> dictionary) {
       var q = new EntityQuery<T>(this);
       var dsq = DataServiceQuery;
       dictionary.Where(kvp => kvp.Value != null).ForEach(kvp => dsq = dsq.AddQueryOption(kvp.Key, kvp.Value));
@@ -371,7 +371,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="expression"></param>
     /// <returns></returns>
-    Object IQueryProvider.Execute(Expression expression) {
+    object IQueryProvider.Execute(Expression expression) {
       throw new Exception("EntityQueries can only be executed asynchronously");
     }
 
@@ -573,7 +573,7 @@ namespace Breeze.Sharp {
     QueryOptions QueryOptions { get; }
     string ResourceName { get; }
     IJsonResultsAdapter JsonResultsAdapter { get; }
-    Object Clone();
+    object Clone();
   }
 
   internal interface IHasDataServiceQuery {

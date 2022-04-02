@@ -80,7 +80,7 @@ namespace Breeze.Sharp {
       _validators = new ValidatorCollection(jNode.GetJNodeArray("validators"));
     }
 
-    JNode IJsonSerializable.ToJNode(Object config) {
+    JNode IJsonSerializable.ToJNode(object config) {
       var jn = new JNode();
       jn.AddPrimitive("name", Name);
       jn.AddPrimitive("dataType", DataType != null ? DataType.Name : null);
@@ -234,7 +234,7 @@ namespace Breeze.Sharp {
       get { return !string.IsNullOrEmpty(EnumTypeName); }
     }
 
-    public Object DefaultValue {
+    public object DefaultValue {
       get { return _defaultValue; }
       internal set {
         // TODO: check if valid;
@@ -363,7 +363,7 @@ namespace Breeze.Sharp {
     private bool _isForeignKey = false;
     private NavigationProperty _relatedNavigationProperty = null;
     private NavigationProperty _inverseNavigationProperty = null;
-    private Object _defaultValue;
+    private object _defaultValue;
   }
 
   /// <summary>

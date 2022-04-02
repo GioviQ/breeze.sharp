@@ -33,7 +33,7 @@ namespace Breeze.Sharp {
       return EntityAspect.GetValue<T>(propertyName);
     }
 
-    protected void SetValue(Object value, [CallerMemberName] string propertyName = "") {
+    protected void SetValue(object value, [CallerMemberName] string propertyName = "") {
       EntityAspect.SetValue(propertyName, value);
     }
 
