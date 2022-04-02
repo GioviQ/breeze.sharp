@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
@@ -34,14 +34,14 @@ namespace Breeze.Sharp {
     protected override bool ValidateCore(ValidationContext context) {
       var value = context.PropertyValue;
       if (value == null) return false;
-      if (value.GetType() == typeof (String) && String.IsNullOrEmpty((String) value) && TreatEmptyStringAsNull) {
+      if (value.GetType() == typeof (string) && string.IsNullOrEmpty((string) value) && TreatEmptyStringAsNull) {
         return false;
       }
       return true;
     }
 
     /// <inheritdoc />
-    public override String GetErrorMessage(ValidationContext context) {
+    public override string GetErrorMessage(ValidationContext context) {
       return LocalizedMessage.Format(context.DisplayName);
     }
 
@@ -67,11 +67,11 @@ namespace Breeze.Sharp {
     protected override bool ValidateCore(ValidationContext context) {
       var value = context.PropertyValue;
       if (value == null) return true;
-      return ((String) value).Length <= MaxLength;
+      return ((string) value).Length <= MaxLength;
     }
 
     /// <inheritdoc />
-    public override String GetErrorMessage(ValidationContext context) {
+    public override string GetErrorMessage(ValidationContext context) {
       // '{0}' must be {1} character(s) or less
       return LocalizedMessage.Format(context.DisplayName, MaxLength);
     }
@@ -93,12 +93,12 @@ namespace Breeze.Sharp {
     protected override bool ValidateCore(ValidationContext context) {
       var value = context.PropertyValue;
       if (value == null) return true;
-      var length = ((String) value).Length;
+      var length = ((string) value).Length;
       return length <= MaxLength & length >= MinLength;
     }
 
     /// <inheritdoc />
-    public override String GetErrorMessage(ValidationContext context) {
+    public override string GetErrorMessage(ValidationContext context) {
       // '{0}' must be between {1} and {2} character(s)
       return LocalizedMessage.Format(context.DisplayName, MinLength, MaxLength);
     }
@@ -145,7 +145,7 @@ namespace Breeze.Sharp {
     }
 
     /// <inheritdoc />
-    public override String GetErrorMessage(ValidationContext context) {
+    public override string GetErrorMessage(ValidationContext context) {
       // '{0}' must be {1} {2} and {3} {4}"
       var minPhrase = IncludeMinEndpoint ? ">=" : ">";
       var maxPhrase = IncludeMaxEndpoint ? "<=" : "<";
@@ -207,7 +207,7 @@ namespace Breeze.Sharp {
     }
 
     /// <inheritdoc />
-    public override String GetErrorMessage(ValidationContext context) {
+    public override string GetErrorMessage(ValidationContext context) {
       // '{0}' must be a valid {1} pattern
       return LocalizedMessage.Format(context.DisplayName, PatternName ?? Regex.ToString());
     }
@@ -215,7 +215,7 @@ namespace Breeze.Sharp {
     /// <summary>
     /// Display name for this pattern in any errorMessage.
     /// </summary>
-    public String PatternName;
+    public string PatternName;
 
     /// <summary>
     /// The Regex1 pattern to match.
@@ -229,7 +229,7 @@ namespace Breeze.Sharp {
 
     // Regex from: https://github.com/srkirkland/DataAnnotationsExtensions/blob/master/DataAnnotationsExtensions
 
-    public EmailValidator(String patternName = null) :
+    public EmailValidator(string patternName = null) :
       base(Email, patternName) {
     }
 
@@ -243,7 +243,7 @@ namespace Breeze.Sharp {
 
     // Regex from: https://github.com/srkirkland/DataAnnotationsExtensions/blob/master/DataAnnotationsExtensions
 
-    public PhoneNumberValidator(String patternName = null) :
+    public PhoneNumberValidator(string patternName = null) :
       base(new Regex(PhoneNumber), patternName) {
     }
 
@@ -273,7 +273,7 @@ namespace Breeze.Sharp {
 
     // Regex from: https://github.com/srkirkland/DataAnnotationsExtensions/blob/master/DataAnnotationsExtensions
 
-    public UrlValidator(String patternName = null, UrlOptions urlOptions = UrlOptions.OptionalProtocol) :
+    public UrlValidator(string patternName = null, UrlOptions urlOptions = UrlOptions.OptionalProtocol) :
       base(GetRegex(urlOptions), patternName) {
     }
 
@@ -293,7 +293,7 @@ namespace Breeze.Sharp {
     private const string BaseProtocolExpression = @"(https?|ftp):\/\/";
 
     private static Regex GetRegex(UrlOptions urlOptions) {
-      String regex;
+      string regex;
       switch (urlOptions) {
         case UrlOptions.RequireProtocol:
           regex = @"^" + BaseProtocolExpression + BaseUrlExpression + @"$";

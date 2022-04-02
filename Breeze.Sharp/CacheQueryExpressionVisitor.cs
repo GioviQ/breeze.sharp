@@ -1,4 +1,4 @@
-﻿using Breeze.Sharp.Core;
+using Breeze.Sharp.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -105,9 +105,9 @@ namespace Breeze.Sharp {
         }
       } 
       
-      if (objectExpr != null && mce.Method.DeclaringType == typeof(String)) {
-        // gracefully handle methods on String where string is null - by coalescing to String.Empty
-        objectExpr = Expression.Coalesce(objectExpr, Expression.Constant(String.Empty));
+      if (objectExpr != null && mce.Method.DeclaringType == typeof(string)) {
+        // gracefully handle methods on String where string is null - by coalescing to string.Empty
+        objectExpr = Expression.Coalesce(objectExpr, Expression.Constant(string.Empty));
       } 
 
      
@@ -127,9 +127,9 @@ namespace Breeze.Sharp {
     }
 
     protected override Expression VisitMember(MemberExpression me) {
-      // gracefully handle properties on String where string is null - by coalescing to String.Empty
-      if (me.Member.DeclaringType == typeof(String)) {
-        var coalesceExpr = Expression.Coalesce(me.Expression, Expression.Constant(String.Empty));
+      // gracefully handle properties on String where string is null - by coalescing to string.Empty
+      if (me.Member.DeclaringType == typeof(string)) {
+        var coalesceExpr = Expression.Coalesce(me.Expression, Expression.Constant(string.Empty));
         var newMe = Expression.MakeMemberAccess(coalesceExpr, me.Member);
         return base.VisitMember(newMe);
       } else {
@@ -194,7 +194,7 @@ namespace Breeze.Sharp {
         return ProcessOrderByExpr(mce, methodName, typeof(Guid));
       }
       if (_cacheQueryOptions.StringComparison != StringComparison.CurrentCulture) {
-        return ProcessOrderByExpr(mce, methodName, typeof(String));
+        return ProcessOrderByExpr(mce, methodName, typeof(string));
       }
       return mce;
     }
@@ -218,7 +218,7 @@ namespace Breeze.Sharp {
         Expression comparerExpr;
         if (returnType == typeof(Guid)) {
           comparerExpr = Expression.Constant(new SqlServerGuidComparer());
-        } else if (returnType == typeof(String)) {
+        } else if (returnType == typeof(string)) {
           var stringComparer = GetStringComparer(_cacheQueryOptions.StringComparison);
           comparerExpr = Expression.Constant(stringComparer);
         } else {
@@ -249,7 +249,7 @@ namespace Breeze.Sharp {
       if (be.Method == null) return false;
       if (be.Method.Name != "op_Equality" && be.Method.Name != "op_Inequality") return false;
       var parms = be.Method.GetParameters();
-      return parms.All(p => p.ParameterType == typeof(String));
+      return parms.All(p => p.ParameterType == typeof(string));
     }
 
     private Expression HandleCacheQueryOptions(BinaryExpression be) {
@@ -268,7 +268,7 @@ namespace Breeze.Sharp {
     }
 
     private MethodCallExpression HandleCacheQueryOptions(MethodCallExpression mce) {
-      if (mce.Object == null || mce.Method.DeclaringType != typeof(String)) return mce;
+      if (mce.Object == null || mce.Method.DeclaringType != typeof(string)) return mce;
       if (_cacheQueryOptions == CacheQueryOptions.None) return mce;
 
       MethodInfo mi;
@@ -324,48 +324,48 @@ namespace Breeze.Sharp {
     internal static class StringFns {
 
       // this line needs to occur before Map property below.
-      private static readonly Lazy<Dictionary<String, MethodInfo>> __lazyMap = new Lazy<Dictionary<string, MethodInfo>>(() => BuildMap());
+      private static readonly Lazy<Dictionary<string, MethodInfo>> __lazyMap = new Lazy<Dictionary<string, MethodInfo>>(() => BuildMap());
 
-      public static Dictionary<String, MethodInfo> Map {
+      public static Dictionary<string, MethodInfo> Map {
         get { return __lazyMap.Value; }
       }
 
       public static MethodInfo EqualsMethod = Map["Equals"];
       public static MethodInfo NotEqualsMethod = Map["NotEquals"];
 
-      public static bool Equals(String s1, String s2, CacheQueryOptions cqo) {
+      public static bool Equals(string s1, string s2, CacheQueryOptions cqo) {
         if (cqo.UseSql92CompliantStringComparison) {
           s1 = (s1 ?? "").TrimEnd();
           s2 = (s2 ?? "").TrimEnd();
         }
-        return String.Equals(s1, s2, cqo.StringComparison);
+        return string.Equals(s1, s2, cqo.StringComparison);
       }
 
-      public static bool NotEquals(String s1, String s2, CacheQueryOptions cqo) {
+      public static bool NotEquals(string s1, string s2, CacheQueryOptions cqo) {
         if (cqo.UseSql92CompliantStringComparison) {
           s1 = (s1 ?? "").TrimEnd();
           s2 = (s2 ?? "").TrimEnd();
         }
-        return !String.Equals(s1, s2, cqo.StringComparison);
+        return !string.Equals(s1, s2, cqo.StringComparison);
       }
 
-      public static bool StartsWith(String s1, String s2, CacheQueryOptions cqo) {
+      public static bool StartsWith(string s1, string s2, CacheQueryOptions cqo) {
         return s1.StartsWith(s2, cqo.StringComparison);
       }
 
-      public static bool EndsWith(String s1, String s2, CacheQueryOptions cqo) {
+      public static bool EndsWith(string s1, string s2, CacheQueryOptions cqo) {
         return s1.EndsWith(s2, cqo.StringComparison);
       }
 
-      public static bool Contains(String s1, String s2, CacheQueryOptions cqo) {
+      public static bool Contains(string s1, string s2, CacheQueryOptions cqo) {
         return s1.IndexOf(s2, cqo.StringComparison) >= 0;
       }
 
-      public static int IndexOf(String s1, String s2, CacheQueryOptions cqo) {
+      public static int IndexOf(string s1, string s2, CacheQueryOptions cqo) {
         return s1.IndexOf(s2, cqo.StringComparison);
       }
 
-      private static Dictionary<String, MethodInfo> BuildMap() {
+      private static Dictionary<string, MethodInfo> BuildMap() {
         var methods = typeof(StringFns).GetTypeInfo().DeclaredMethods
           .Where(m => (m.IsPublic || m.IsStatic) && m.GetParameters().Length > 0);
         //var methods = typeof(StringFns).GetMethods(BindingFlags.Public | BindingFlags.Static)

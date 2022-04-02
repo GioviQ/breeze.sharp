@@ -14,7 +14,7 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class InheritanceProduceTests {
 
-    private String _serviceName;
+    private string _serviceName;
 
     //    test("Skipping inherit produce tests - DB not yet avail", function () {
     //        ok(true, "Skipped tests - Mongo");

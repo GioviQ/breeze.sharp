@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -162,9 +162,9 @@ namespace Breeze.Sharp {
     #region Public methods
 
     // property path here is the propertyPath from this ComplexObject down.
-    public override IEnumerable<ValidationError> GetValidationErrors(String propertyPath = null) {
+    public override IEnumerable<ValidationError> GetValidationErrors(string propertyPath = null) {
       if (EntityAspect == null) return Enumerable.Empty<ValidationError>();
-      if (String.IsNullOrEmpty(propertyPath)) {
+      if (string.IsNullOrEmpty(propertyPath)) {
         return EntityAspect.ValidationErrors.Where(ve => ve.Context.PropertyPath.StartsWith(PropertyPathPrefix));
       } else {
         return EntityAspect.ValidationErrors.Where(ve => ve.Context.PropertyPath == PropertyPathPrefix + propertyPath);
@@ -243,7 +243,7 @@ namespace Breeze.Sharp {
       });
     }
 
-    public override void SetValue(String propertyName, object newValue) {
+    public override void SetValue(string propertyName, object newValue) {
       var dp = ComplexType.GetDataProperty(propertyName);
 
       if (dp == null) {
@@ -251,7 +251,7 @@ namespace Breeze.Sharp {
       }
 
       if (!dp.IsScalar) {
-        throw new Exception(String.Format("You cannot set the non-scalar complex property: '{0}' on the type: '{1}'." +
+        throw new Exception(string.Format("You cannot set the non-scalar complex property: '{0}' on the type: '{1}'." +
           "Instead get the property and use collection functions like 'Add' and 'Remove' to change its contents.",
           dp.Name, dp.ParentType.Name));
       }
@@ -330,12 +330,12 @@ namespace Breeze.Sharp {
       return originalClone;
     }
 
-    internal override String GetPropertyPath(String propName) {
+    internal override string GetPropertyPath(string propName) {
       if (Parent == null) return null;
       return PropertyPathPrefix + propName;
     }
 
-    internal String PropertyPathPrefix {
+    internal string PropertyPathPrefix {
       get {
         if (_propertyPathPrefix == null) {
           var name = ParentProperty.Name;
@@ -390,7 +390,7 @@ namespace Breeze.Sharp {
     /// Raises the ErrorsChanged event.
     /// </summary>
     /// <param name="propertyName"></param>
-    private void OnErrorsChanged(String propertyName) {
+    private void OnErrorsChanged(string propertyName) {
       // _inErrorsChanged is needed because SL tries to reinvoke validation every time in the ErrorsChanged event fires.
       if (_inErrorsChanged) return;
       _inErrorsChanged = true;
@@ -437,7 +437,7 @@ namespace Breeze.Sharp {
     private IStructuralObject _parent;
     private DataProperty _parentProperty;
 
-    private String _propertyPathPrefix;
+    private string _propertyPathPrefix;
     private bool _inErrorsChanged = false;
     private event EventHandler<DataErrorsChangedEventArgs> _errorsChangedHandler;
 

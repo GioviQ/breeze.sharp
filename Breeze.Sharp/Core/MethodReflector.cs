@@ -49,7 +49,7 @@ namespace Breeze.Sharp.Core {
     /// <param name="resolvedTypes"></param>
     /// <returns></returns>
     public static MethodInfo GetMethodByExample<TIn, TOut>(Expression<Func<TIn, TOut>> prototypeLambda, params Type[] resolvedTypes) {
-      //Example: var method = TypeFns.GetMethodByExample((IQueryable<String> s) => s.FirstOrDefault(s1 => s1.Any()), source.ElementType);
+      //Example: var method = TypeFns.GetMethodByExample((IQueryable<string> s) => s.FirstOrDefault(s1 => s1.Any()), source.ElementType);
       var mi = (prototypeLambda.Body as MethodCallExpression).Method;
       if (!resolvedTypes.Any()) return mi;
       if (!mi.IsGenericMethod) return mi;

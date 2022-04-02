@@ -1,4 +1,4 @@
-﻿using Breeze.Sharp.Core;
+using Breeze.Sharp.Core;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -18,7 +18,7 @@ namespace Breeze.Sharp {
 
     internal override void UpdateFromJNode(JNode jNode, bool isFromServer) {
       Name = MetadataStore.GetStructuralTypeNameFromJNode(jNode, isFromServer);
-      // BaseTypeName = jnode.Get<String>("baseTypeName");
+      // BaseTypeName = jnode.Get<string>("baseTypeName");
       // IsAbstract = jnode.Get<bool>("isAbstract");
       jNode.GetJNodeArray("dataProperties").ForEach(jn => {
         var dpName = GetPropertyNameFromJNode(jn);
@@ -53,8 +53,8 @@ namespace Breeze.Sharp {
   /// <summary>
   /// For internal use only.
   /// </summary>
-  internal class ComplexTypeCollection : KeyedCollection<String, ComplexType> {
-    protected override String GetKeyForItem(ComplexType item) {
+  internal class ComplexTypeCollection : KeyedCollection<string, ComplexType> {
+    protected override string GetKeyForItem(ComplexType item) {
       return item.ShortName + ":#" + item.Namespace;
     }
   }

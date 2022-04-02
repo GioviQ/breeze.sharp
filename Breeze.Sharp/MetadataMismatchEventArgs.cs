@@ -1,4 +1,4 @@
-﻿using Breeze.Sharp.Core;
+using Breeze.Sharp.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,24 +8,24 @@ using System.Text.RegularExpressions;
 namespace Breeze.Sharp {
 
   public class MetadataMismatchEventArgs {
-    public String StructuralTypeName { get; internal set; }
+    public string StructuralTypeName { get; internal set; }
 
     public TypeNameInfo StructuralTypeInfo {
       get { return TypeNameInfo.FromStructuralTypeName(StructuralTypeName); } 
     }
 
-    public String PropertyName { get; internal set; }
+    public string PropertyName { get; internal set; }
     public MetadataMismatchTypes MetadataMismatchType { get; set; }
-    public String Detail { get; internal set; }
+    public string Detail { get; internal set; }
     public bool Allow { get; set; }
-    public String Message {
+    public string Message {
       get {
         var mismatchDescr = SplitCamelCase(MetadataMismatchType.ToString()).Replace("C L R", "CLR");
-        if (String.IsNullOrEmpty(PropertyName)) {
-          return String.Format("Metadata mismatch classification: '{0}' - for StructuralType: '{1}'.  {2}",
+        if (string.IsNullOrEmpty(PropertyName)) {
+          return string.Format("Metadata mismatch classification: '{0}' - for StructuralType: '{1}'.  {2}",
             mismatchDescr, StructuralTypeName, Detail);
         } else {
-          return String.Format("Metadata mismatch classification: '{0}' - for StructuralType: '{1}' Property: '{2}'.  {3}",
+          return string.Format("Metadata mismatch classification: '{0}' - for StructuralType: '{1}' Property: '{2}'.  {3}",
             mismatchDescr, StructuralTypeName, PropertyName, Detail);
         }
       }

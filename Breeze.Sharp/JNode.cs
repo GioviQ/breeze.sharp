@@ -57,7 +57,7 @@ namespace Breeze.Sharp {
       return _jo.ToObject(t);
     }
 
-    public override String ToString() {
+    public override string ToString() {
       return _jo.ToString();
     }
 
@@ -66,47 +66,47 @@ namespace Breeze.Sharp {
       set;
     }
 
-    public bool HasValues(String propName) {
+    public bool HasValues(string propName) {
       var jt = _jo[propName];
       return jt != null && jt.HasValues;
     }
 
     #region Add Methods
 
-    public void AddPrimitive(String propName, Object value, Object defaultValue = null) {
+    public void AddPrimitive(string propName, Object value, Object defaultValue = null) {
       if (value == null) return;
       if (value != null && value.Equals(defaultValue)) return;
       AddRaw(propName, new JValue(value));
     }
 
-    public void AddEnum<TEnum>(String propName, TEnum value) where TEnum : struct {
+    public void AddEnum<TEnum>(string propName, TEnum value) where TEnum : struct {
       AddRaw(propName, new JValue(value.ToString()));
     }
 
-    public void AddEnum<TEnum>(String propName, TEnum? value) where TEnum : struct {
+    public void AddEnum<TEnum>(string propName, TEnum? value) where TEnum : struct {
       if (value == null) return;
       AddRaw(propName, new JValue(value.ToString()));
     }
 
-    public void AddJNode(String propName, IJsonSerializable item) {
+    public void AddJNode(string propName, IJsonSerializable item) {
       if (item == null) return;
       var jn = item.ToJNode(null);
       AddRaw(propName, jn._jo);
     }
 
-    public void AddArray<T>(String propName, IEnumerable<T> items) {
+    public void AddArray<T>(string propName, IEnumerable<T> items) {
       if (!items.Any()) return;
       var ja = ToJArray(items);
       AddRaw(propName, ja);
     }
 
-    public void AddArray<T>(String propName, IEnumerable<T> items, Func<T, JNode> func) {
+    public void AddArray<T>(string propName, IEnumerable<T> items, Func<T, JNode> func) {
       if (!items.Any()) return;
       var ja = ToJArray(items, func);
       AddRaw(propName, ja);
     }
 
-    public void AddMap<T>(String propName, IDictionary<String, T> map) {
+    public void AddMap<T>(string propName, IDictionary<string, T> map) {
       if (map == null) return;
       if (!map.Values.Any()) return;
 
@@ -116,13 +116,13 @@ namespace Breeze.Sharp {
     }
 
 
-    public void AddJNode(String propName, JNode jn) {
+    public void AddJNode(string propName, JNode jn) {
       if (jn == null) return;
       if (jn.IsEmpty) return;
       AddRaw(propName, jn._jo);
     }
 
-    private void AddRaw(String propName, JToken jt) {
+    private void AddRaw(string propName, JToken jt) {
       _jo.Add(propName, jt);
     }
 
@@ -131,7 +131,7 @@ namespace Breeze.Sharp {
     #region Get methods 
 
 
-    public Object Get(String propName, Type objectType) {
+    public Object Get(string propName, Type objectType) {
       var prop = _jo.Property(propName);
       if (prop == null) return null;
       var nonnullableType = objectType.GenericTypeArguments.FirstOrDefault();
@@ -147,22 +147,22 @@ namespace Breeze.Sharp {
       return val;
     }
 
-    public T Get<T>(String propName, T defaultValue = default(T)) {
+    public T Get<T>(string propName, T defaultValue = default(T)) {
       var prop = _jo.Property(propName);
       if (prop == null) return defaultValue;
       var val = prop.Value.ToObject<T>();
       return val;
     }
 
-    public T GetToken<T>(String propName) where T : JToken {
+    public T GetToken<T>(string propName) where T : JToken {
       var prop = _jo.Property(propName);
       if (prop == null) return null;
       return (T)prop.Value;
 
     }
 
-    public TEnum GetEnum<TEnum>(String propName, TEnum defaultValue = default(TEnum)) {
-      var val = Get<String>(propName);
+    public TEnum GetEnum<TEnum>(string propName, TEnum defaultValue = default(TEnum)) {
+      var val = Get<string>(propName);
       if (val == null) {
         return defaultValue;
       } else {
@@ -170,8 +170,8 @@ namespace Breeze.Sharp {
       }
     }
 
-    public TEnum? GetNullableEnum<TEnum>(String propName) where TEnum : struct {
-      var val = Get<String>(propName);
+    public TEnum? GetNullableEnum<TEnum>(string propName) where TEnum : struct {
+      var val = Get<string>(propName);
       if (val == null) {
         return null;
       } else {
@@ -180,7 +180,7 @@ namespace Breeze.Sharp {
     }
 
     // for non newable types like String, Int etc..
-    public IEnumerable<T> GetArray<T>(String propName) {
+    public IEnumerable<T> GetArray<T>(string propName) {
       var items = GetToken<JArray>(propName);
       if (items == null) {
         return Enumerable.Empty<T>();
@@ -191,7 +191,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public IEnumerable<T> GetArray<T>(params String[] propNames) {
+    public IEnumerable<T> GetArray<T>(params string[] propNames) {
       var items = propNames.Select(pn => GetToken<JArray>(pn)).FirstOrDefault(jt => jt != null);
       if (items == null) {
         return Enumerable.Empty<T>();
@@ -202,7 +202,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public IEnumerable<Object> GetArray(String propName, IEnumerable<Type> toTypes) {
+    public IEnumerable<Object> GetArray(string propName, IEnumerable<Type> toTypes) {
       var items = GetToken<JArray>(propName);
       if (items == null) {
         return Enumerable.Empty<Object>();
@@ -213,10 +213,10 @@ namespace Breeze.Sharp {
       }
     }
 
-    public Dictionary<String, T> GetMap<T>(String propName) {
+    public Dictionary<string, T> GetMap<T>(string propName) {
       var map = (JObject)GetToken<JObject>(propName);
 
-      var rmap = new Dictionary<String, T>();
+      var rmap = new Dictionary<string, T>();
       if (map == null) return rmap;
       foreach (var kvp in map) {
         rmap.Add(kvp.Key, kvp.Value.ToObject<T>());
@@ -224,10 +224,10 @@ namespace Breeze.Sharp {
       return rmap;
     }
 
-    public Dictionary<String, Object> GetMap(String propName, Func<String, Type> toTypeFn) {
+    public Dictionary<string, Object> GetMap(string propName, Func<string, Type> toTypeFn) {
       var map = (JObject)GetToken<JObject>(propName);
       if (map == null) return null;
-      var rmap = new Dictionary<String, Object>();
+      var rmap = new Dictionary<string, Object>();
       foreach (var kvp in map) {
         var toType = toTypeFn(kvp.Key);
         rmap.Add(kvp.Key, kvp.Value.ToObject(toType));
@@ -235,21 +235,21 @@ namespace Breeze.Sharp {
       return rmap;
     }
 
-    public JNode GetJNode(String propName) {
+    public JNode GetJNode(string propName) {
       var item = (JObject)GetToken<JObject>(propName);
       if (item == null) return null;
       var jNode = new JNode(item);
       return jNode;
     }
 
-    //public T GetObject<T>(String propName, Func<JNode, T> ctorFn) {
+    //public T GetObject<T>(string propName, Func<JNode, T> ctorFn) {
     //  var item = (JObject)GetToken<JObject>(propName);
     //  if (item == null) return default(T);
     //  var jNode = new JNode(item);
     //  return ctorFn(jNode);
     //}
 
-    public IEnumerable<JNode> GetJNodeArray(String propName) {
+    public IEnumerable<JNode> GetJNodeArray(string propName) {
       var items = GetToken<JArray>(propName);
       if (items == null) {
         return Enumerable.Empty<JNode>();
@@ -258,17 +258,17 @@ namespace Breeze.Sharp {
       }
     }
 
-    public IDictionary<String, JNode> GetJNodeMap(String propName) {
+    public IDictionary<string, JNode> GetJNodeMap(string propName) {
       var map = GetToken<JObject>(propName);
       if (map == null) return null;
-      var rmap = ((IDictionary<String, JToken>)map).ToDictionary(kvp => kvp.Key, kvp => new JNode((JObject)kvp.Value));
+      var rmap = ((IDictionary<string, JToken>)map).ToDictionary(kvp => kvp.Key, kvp => new JNode((JObject)kvp.Value));
       return rmap;
     }
 
-    public IDictionary<String, IEnumerable<JNode>> GetJNodeArrayMap(String propName) {
+    public IDictionary<string, IEnumerable<JNode>> GetJNodeArrayMap(string propName) {
       var map = GetToken<JObject>(propName);
       if (map == null) return null;
-      var rmap = new Dictionary<String, IEnumerable<JNode>>();
+      var rmap = new Dictionary<string, IEnumerable<JNode>>();
       foreach (var kvp in map) {
         var ja = (JArray)kvp.Value;
         var values = ja.Select(item => new JNode((JObject)item));
@@ -303,7 +303,7 @@ namespace Breeze.Sharp {
 
     #region Serialize/Deserialize fns
 
-    public String Serialize() {
+    public string Serialize() {
       using (var stringWriter = new StringWriter()) {
         return SerializeTo(stringWriter).ToString();
       }
@@ -359,7 +359,7 @@ namespace Breeze.Sharp {
 
     #region Other methods
 
-    public static JNode BuildMapNode<T>(IDictionary<String, T> map) {
+    public static JNode BuildMapNode<T>(IDictionary<string, T> map) {
       var jn = new JNode();
       map.ForEach(kvp => {
         var val = CvtValue(kvp.Value);

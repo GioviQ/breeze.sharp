@@ -9,12 +9,12 @@ namespace Breeze.Sharp {
   /// A collection of ValidationErrors.
   /// </summary>
   [DebuggerDisplay("Count = {Count}")]
-  public class ValidationErrorCollection : MapCollection<String, ValidationError> {
+  public class ValidationErrorCollection : MapCollection<string, ValidationError> {
     public ValidationErrorCollection(EntityAspect entityAspect) {
       EntityAspect = entityAspect;
     }
 
-    protected override String GetKeyForItem(ValidationError item) {
+    protected override string GetKeyForItem(ValidationError item) {
       return item.Key;
     }
 
@@ -63,7 +63,7 @@ namespace Breeze.Sharp {
   [DebuggerDisplay("{Validator.Name} Error: {Message}")]
   public class ValidationError {
 
-    public ValidationError(Validator validator, ValidationContext context, String message = null, String key = null) {
+    public ValidationError(Validator validator, ValidationContext context, string message = null, string key = null) {
       Validator = validator;
       // clone it if mutated.
       Context = context.IsMutable ? new ValidationContext(context) : context;
@@ -73,7 +73,7 @@ namespace Breeze.Sharp {
 
     public Validator Validator { get; private set; }
     public ValidationContext Context { get; internal set; }
-    public String Message {
+    public string Message {
       get {
         if (_message == null) {
           _message = Validator.GetErrorMessage(Context);
@@ -81,7 +81,7 @@ namespace Breeze.Sharp {
         return _message;
       }
     }
-    public String Key {
+    public string Key {
       get {
         if (_key == null) {
           _key = GetKey(Validator, Context.PropertyPath);
@@ -95,7 +95,7 @@ namespace Breeze.Sharp {
     public bool IsServerError { get; internal set; }
 
     // To obtain a key that can be used to remove an item from a validationErrorsCollection
-    public static String GetKey(Validator validator, String propertyPath = null) {
+    public static string GetKey(Validator validator, string propertyPath = null) {
       if (propertyPath != null) {
         return validator.Name + "_" + propertyPath;
       } else {
@@ -103,8 +103,8 @@ namespace Breeze.Sharp {
       }
     }
 
-    private String _key; 
-    private String _message;
+    private string _key; 
+    private string _message;
 
 
   }

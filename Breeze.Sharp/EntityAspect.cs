@@ -484,7 +484,7 @@ namespace Breeze.Sharp {
       return ve;
     }
 
-    public override IEnumerable<ValidationError> GetValidationErrors(String propertyPath = null) {
+    public override IEnumerable<ValidationError> GetValidationErrors(string propertyPath = null) {
       if (propertyPath == null) {
         return ValidationErrors.ReadOnlyValues;
       } else {
@@ -498,7 +498,7 @@ namespace Breeze.Sharp {
 
     #region GetValue(s)/SetValue methods
 
-    public override void SetValue(String propertyName, object newValue) {
+    public override void SetValue(string propertyName, object newValue) {
       var prop = EntityType.GetProperty(propertyName);
       if (prop == null) {
         throw new Exception("Unable to locate property: " + EntityType.Name + ":" + propertyName);
@@ -509,7 +509,7 @@ namespace Breeze.Sharp {
 
     public void SetValue(StructuralProperty property, object newValue) {
       if (!property.IsScalar) {
-        throw new Exception(String.Format("You cannot set the non-scalar complex property: '{0}' on the type: '{1}'." +
+        throw new Exception(string.Format("You cannot set the non-scalar complex property: '{0}' on the type: '{1}'." +
           "Instead get the property and use collection functions like 'Add' and 'Remove' to change its contents.",
           property.Name, property.ParentType.Name));
       }
@@ -636,7 +636,7 @@ namespace Breeze.Sharp {
 
     private void SetDpValueComplex(DataProperty property, object newValue, object oldValue) {
       if (newValue == null) {
-        throw new Exception(String.Format("You cannot set the '{0}' property to null because it's datatype is the ComplexType: '{1}'", property.Name, property.ComplexType.Name));
+        throw new Exception(string.Format("You cannot set the '{0}' property to null because it's datatype is the ComplexType: '{1}'", property.Name, property.ComplexType.Name));
       }
       var oldCo = (IComplexObject)oldValue;
       var newCo = (IComplexObject)newValue;
@@ -1197,7 +1197,7 @@ namespace Breeze.Sharp {
 
     #region NavProperty loading info
 
-    public async Task<Object> LoadNavigationProperty(String propertyName) {
+    public async Task<Object> LoadNavigationProperty(string propertyName) {
       var np = EntityType.GetNavigationProperty(propertyName);
       return await LoadNavigationProperty(np);
     }
@@ -1208,12 +1208,12 @@ namespace Breeze.Sharp {
       return GetValue(navProperty.Name);
     }
 
-    internal List<String> LoadedNavigationPropertyNames {
+    internal List<string> LoadedNavigationPropertyNames {
       get;
       set;
     }
 
-    internal void AddLoadedNavigationPropertyName(String propertyName, bool wasLoaded) {
+    internal void AddLoadedNavigationPropertyName(string propertyName, bool wasLoaded) {
       if (LoadedNavigationPropertyNames == null) {
         LoadedNavigationPropertyNames = new List<string>();
       }
@@ -1353,7 +1353,7 @@ namespace Breeze.Sharp {
       EntityManager.OnEntityChanged(Entity, entityAction, actionEventArgs);
     }
 
-    private void OnEntityAspectPropertyChanged(String propertyName) {
+    private void OnEntityAspectPropertyChanged(string propertyName) {
       var handler = PropertyChanged;
       if (handler == null) return;
       var args = new PropertyChangedEventArgs(propertyName ?? NullPropertyName);
@@ -1418,7 +1418,7 @@ namespace Breeze.Sharp {
     /// <summary>
     /// 'Magic' string that can be used to return all errors from <see cref="INotifyDataErrorInfo.GetErrors"/>.
     /// </summary>
-    public static String AllErrors = "*";
+    public static string AllErrors = "*";
 
     /// <summary>
     /// True if there are any validation errors.
@@ -1446,7 +1446,7 @@ namespace Breeze.Sharp {
       // So we need an AllErrors magic string
       if (propertyName == AllErrors) {
         return GetValidationErrors(null);
-      } else if (String.IsNullOrEmpty(propertyName)) {
+      } else if (string.IsNullOrEmpty(propertyName)) {
         return ValidationErrors.Where(vr => vr.Context.Property == null).ToList();
       } else {
         return GetValidationErrors(propertyName);
@@ -1458,7 +1458,7 @@ namespace Breeze.Sharp {
       OnErrorsChanged(validationError.Context.PropertyPath);
     }
 
-    private void OnErrorsChanged(String propertyPath) {
+    private void OnErrorsChanged(string propertyPath) {
       // a property name of null means an 'entity' level errors ( not ALL errors)
       // _inErrorsChanged is needed because some environments try to reinvoke validation every time in the ErrorsChanged event fires.
       if (_inErrorsChanged) return;
@@ -1524,14 +1524,14 @@ namespace Breeze.Sharp {
 
     #region Fields
 
-    // DataForm blows unless we use String.Empty - see B1112 - we're keeping 
+    // DataForm blows unless we use string.Empty - see B1112 - we're keeping 
     // old non-SL behavior because this change was made at last minute and couldn't
     // be adequately tested.
 
 #if NET
-    private static readonly String NullPropertyName = null;
+    private static readonly string NullPropertyName = null;
 #else
-    private static readonly String NullPropertyName = String.Empty;
+    private static readonly string NullPropertyName = string.Empty;
 #endif
 
     private static readonly PropertyChangedEventArgs AllPropertiesChangedEventArgs

@@ -12,21 +12,21 @@ namespace Breeze.Sharp {
   /// </summary>
   public class LocalizedMessage {
 
-    public LocalizedMessage(String message) {
+    public LocalizedMessage(string message) {
       _message = message;
     }
 
-    public LocalizedMessage(String key, ResourceManager resourceManager) {
+    public LocalizedMessage(string key, ResourceManager resourceManager) {
       Key = key;
       _resourceManager = resourceManager ?? __defaultResourceManager;
     }
 
-    public LocalizedMessage(String key, Type resourceType) {
+    public LocalizedMessage(string key, Type resourceType) {
       Key = key;
       _resourceManagerFn = () => GetResourceManager(resourceType);
     }
 
-    public LocalizedMessage(String key, String baseName, Assembly assembly) {
+    public LocalizedMessage(string key, string baseName, Assembly assembly) {
       Key = key;
       _resourceManagerFn = () => GetResourceManager(baseName, assembly);
     }
@@ -38,19 +38,19 @@ namespace Breeze.Sharp {
       DefaultMessage = lm.DefaultMessage;
     }
 
-    public LocalizedMessage WithDefaultMessage(String defaultMessage) {
+    public LocalizedMessage WithDefaultMessage(string defaultMessage) {
       var lm = new LocalizedMessage(this);
       lm.DefaultMessage = defaultMessage;
       return lm;
     }
 
-    public String Key {
+    public string Key {
       get;
       private set;
     }
 
     [JsonIgnore]
-    public String Message {
+    public string Message {
       get {
         if (_message == null) {
           try {
@@ -78,12 +78,12 @@ namespace Breeze.Sharp {
       }
     }
 
-    public String DefaultMessage {
+    public string DefaultMessage {
       get;
       private set;
     }
 
-    //public String BaseName {
+    //public string BaseName {
     //  get;
     //  private set;
     //}
@@ -114,8 +114,8 @@ namespace Breeze.Sharp {
       }
     }
 
-    public String Format(params Object[] parameters) {
-      return String.Format(Message, parameters);
+    public string Format(params Object[] parameters) {
+      return string.Format(Message, parameters);
     }
 
     private ResourceManager GetResourceManager(Type resourceType) {
@@ -133,7 +133,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    private ResourceManager GetResourceManager(String baseName, Assembly assembly) {
+    private ResourceManager GetResourceManager(string baseName, Assembly assembly) {
       ResourceManager rm;
       lock (__lock) {
         var key = Tuple.Create(baseName, assembly);
@@ -151,12 +151,12 @@ namespace Breeze.Sharp {
 
     private ResourceManager _resourceManager;
     private Func<ResourceManager> _resourceManagerFn;
-    private String _message;
+    private string _message;
     private bool _isLocalized;
     
     private static Object __lock = new Object();
     private static Dictionary<Type, ResourceManager> __resourceManagerTypeMap = new Dictionary<Type, ResourceManager>();
-    private static Dictionary<Tuple<String, Assembly>, ResourceManager> __resourceManagerFileMap = new Dictionary<Tuple<string, Assembly>, ResourceManager>();
+    private static Dictionary<Tuple<string, Assembly>, ResourceManager> __resourceManagerFileMap = new Dictionary<Tuple<string, Assembly>, ResourceManager>();
     private static ResourceManager __defaultResourceManager = new ResourceManager("Breeze.Sharp.LocalizedMessages", typeof(LocalizedMessage).GetTypeInfo().Assembly);
   }
 

@@ -9,7 +9,7 @@ namespace Breeze.Sharp.Tests {
   /// <summary> Test whether EntityQuery is serialized to JSON correctly </summary>
   [TestClass]
   public class JsonQuerySerializationTests {
-    private String _serviceName;
+    private string _serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {

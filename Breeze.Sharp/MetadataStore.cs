@@ -38,7 +38,7 @@ namespace Breeze.Sharp {
 
     public int StoreID { get; private set; }
 
-    public static String MetadataVersion = "1.0.3";
+    public static string MetadataVersion = "1.0.3";
 
     private Regex regExGeneric = new Regex(@"`\d+");
 
@@ -89,7 +89,7 @@ namespace Breeze.Sharp {
     /// </summary>
     public event EventHandler<MetadataMismatchEventArgs> MetadataMismatch;
 
-    internal Message OnMetadataMismatch(String entityTypeName, String propertyName, MetadataMismatchTypes mmType, String detail = null) {
+    internal Message OnMetadataMismatch(string entityTypeName, string propertyName, MetadataMismatchTypes mmType, string detail = null) {
       EventHandler<MetadataMismatchEventArgs> handler = MetadataMismatch;
       var allow = (AllowedMetadataMismatchTypes & mmType) > 0;
       var args = new MetadataMismatchEventArgs() {
@@ -113,7 +113,7 @@ namespace Breeze.Sharp {
       return AddMessage(args.Message, allow ? MessageType.Message : MessageType.Error, false);
     }
 
-    internal Message AddMessage(String message, MessageType messageType, bool throwOnError = false) {
+    internal Message AddMessage(string message, MessageType messageType, bool throwOnError = false) {
 
       var msg = new Message() { Text = message, MessageType = messageType };
       _messages.Add(msg);
@@ -124,7 +124,7 @@ namespace Breeze.Sharp {
 
     }
 
-    public IEnumerable<String> GetMessages(MessageType messageType = MessageType.All) {
+    public IEnumerable<string> GetMessages(MessageType messageType = MessageType.All) {
       return _messages.ToList().Where(m => (m.MessageType & messageType) > 0).Select(m => m.Text);
     }
 
@@ -151,7 +151,7 @@ namespace Breeze.Sharp {
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public async Task<DataService> FetchMetadata(DataService dataService, CancellationToken cancellationToken) {
-      String serviceName;
+      string serviceName;
 
       serviceName = dataService.ServiceName;
       var ds = GetDataService(serviceName);
@@ -161,7 +161,7 @@ namespace Breeze.Sharp {
 
       cancellationToken.ThrowIfCancellationRequested();
 
-      String metadata;
+      string metadata;
       try {
         ds = GetDataService(serviceName);
         if (ds != null) return dataService;
@@ -211,7 +211,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="serviceName"></param>
     /// <returns></returns>
-    public DataService GetDataService(String serviceName) {
+    public DataService GetDataService(string serviceName) {
       lock (_dataServiceMap) {
         if (_dataServiceMap.ContainsKey(serviceName)) {
           return _dataServiceMap[serviceName];
@@ -252,7 +252,7 @@ namespace Breeze.Sharp {
     /// <param name="etName"></param>
     /// <param name="okIfNotFound"></param>
     /// <returns></returns>
-    public EntityType GetEntityType(String etName, bool okIfNotFound = false) {
+    public EntityType GetEntityType(string etName, bool okIfNotFound = false) {
       return GetStructuralType<EntityType>(etName, okIfNotFound);
     }
 
@@ -271,7 +271,7 @@ namespace Breeze.Sharp {
     /// <param name="ctName"></param>
     /// <param name="okIfNotFound"></param>
     /// <returns></returns>
-    public ComplexType GetComplexType(String ctName, bool okIfNotFound = false) {
+    public ComplexType GetComplexType(string ctName, bool okIfNotFound = false) {
       return GetStructuralType<ComplexType>(ctName, okIfNotFound);
     }
 
@@ -286,7 +286,7 @@ namespace Breeze.Sharp {
     }
 
     // T is either <ComplexType> or <EntityType>
-    private T GetStructuralType<T>(String typeName, bool okIfNotFound = false) where T : class {
+    private T GetStructuralType<T>(string typeName, bool okIfNotFound = false) where T : class {
       var st = GetStructuralTypeCore(typeName);
       if (st != null) {
         var result = st as T;
@@ -323,10 +323,10 @@ namespace Breeze.Sharp {
       }
     }
 
-    private StructuralType GetStructuralTypeCore(String stName) {
+    private StructuralType GetStructuralTypeCore(string stName) {
       lock (_structuralTypes) {
         if (!TypeNameInfo.IsQualifiedTypeName(stName)) {
-          String fullStName;
+          string fullStName;
           if (_shortNameMap.TryGetValue(stName, out fullStName)) {
             stName = fullStName;
           }
@@ -355,13 +355,13 @@ namespace Breeze.Sharp {
     /// <param name="resourceName"></param>
     /// <param name="clrType"></param>
     /// <param name="isDefault"></param>
-    public void SetResourceName(String resourceName, Type clrType, bool isDefault = false) {
+    public void SetResourceName(string resourceName, Type clrType, bool isDefault = false) {
       var entityType = GetEntityType(clrType);
       SetResourceName(resourceName, entityType, isDefault);
     }
 
 
-    internal void SetResourceName(String resourceName, EntityType entityType, bool isDefault = false) {
+    internal void SetResourceName(string resourceName, EntityType entityType, bool isDefault = false) {
       lock (_defaultResourceNameMap) {
         _resourceNameEntityTypeMap[resourceName] = entityType;
         if (isDefault) {
@@ -379,7 +379,7 @@ namespace Breeze.Sharp {
     /// <param name="resourceName"></param>
     /// <param name="okIfNotFound"></param>
     /// <returns></returns>
-    public EntityType GetEntityTypeForResourceName(String resourceName, bool okIfNotFound) {
+    public EntityType GetEntityTypeForResourceName(string resourceName, bool okIfNotFound) {
       // by convention locking the _defaultResourceMap is a surrogate for also locking the _resourceNameEntityTypeMap;
       EntityType et;
       lock (_defaultResourceNameMap) {
@@ -398,7 +398,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="clrType"></param>
     /// <returns></returns>
-    public String GetDefaultResourceName(Type clrType) {
+    public string GetDefaultResourceName(Type clrType) {
       var entityType = GetEntityType(clrType);
       return GetDefaultResourceName(entityType);
     }
@@ -410,7 +410,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public string GetDefaultResourceName(EntityType entityType) {
       lock (_defaultResourceNameMap) {
-        String resourceName = null;
+        string resourceName = null;
         // give the type it's base's resource name if it doesn't have its own.
         if (!_defaultResourceNameMap.TryGetValue(entityType, out resourceName)) {
           var baseEntityType = entityType.BaseEntityType;
@@ -439,7 +439,7 @@ namespace Breeze.Sharp {
     /// Exports metadata as a string.
     /// </summary>
     /// <returns></returns>
-    public String ExportMetadata() {
+    public string ExportMetadata() {
       return ((IJsonSerializable)this).ToJNode(null).Serialize();
     }
 
@@ -457,7 +457,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="metadata"></param>
     /// <param name="isFromServer"></param>
-    public void ImportMetadata(String metadata, bool isFromServer = false) {
+    public void ImportMetadata(string metadata, bool isFromServer = false) {
       var jNode = JNode.DeserializeFrom(metadata);
       ImportMetadata(jNode, isFromServer);
     }
@@ -501,7 +501,7 @@ namespace Breeze.Sharp {
     }
 
     private void DeserializeFrom(JNode jNode, bool isFromServer) {
-      MetadataVersion = jNode.Get<String>("metadataVersion");
+      MetadataVersion = jNode.Get<string>("metadataVersion");
       // may be more than just a name
 
       var ncNode = jNode.GetJNode("namingConvention");
@@ -524,7 +524,7 @@ namespace Breeze.Sharp {
       jNode.GetJNodeArray("structuralTypes")
         .ForEach(jn => UpdateStructuralTypeFromJNode(jn, isFromServer));
 
-      jNode.GetMap<String>("resourceEntityTypeMap").ForEach(kvp => {
+      jNode.GetMap<string>("resourceEntityTypeMap").ForEach(kvp => {
         var stName = kvp.Value;
         if (isFromServer) {
           stName = TypeNameInfo.FromStructuralTypeName(stName).ToClient(this).StructuralTypeName;
@@ -553,18 +553,18 @@ namespace Breeze.Sharp {
       stype.UpdateFromJNode(jNode, isFromServer);
     }
 
-    internal String GetStructuralTypeNameFromJNode(JNode jNode, String key, bool isFromServer) {
-      var stName = jNode.Get<String>(key);
+    internal string GetStructuralTypeNameFromJNode(JNode jNode, string key, bool isFromServer) {
+      var stName = jNode.Get<string>(key);
       if (stName != null && isFromServer) {
         stName = TypeNameInfo.FromStructuralTypeName(stName).ToClient(this).StructuralTypeName;
       }
       return stName;
     }
 
-    internal String GetStructuralTypeNameFromJNode(JNode jNode, bool isFromServer) {
-      var shortName = jNode.Get<String>("shortName");
-      var ns = jNode.Get<String>("namespace");
-      String stName;
+    internal string GetStructuralTypeNameFromJNode(JNode jNode, bool isFromServer) {
+      var shortName = jNode.Get<string>("shortName");
+      var ns = jNode.Get<string>("namespace");
+      string stName;
       if (isFromServer) {
         stName = new TypeNameInfo(shortName, ns).ToClient(this).StructuralTypeName;
       } else {
@@ -577,7 +577,7 @@ namespace Breeze.Sharp {
 
     #region Internal and Private
 
-    internal static Exception MissingTypeException(String typeName) {
+    internal static Exception MissingTypeException(string typeName) {
       return new Exception("Unable to locate a CLR type corresponding to: " + typeName
           + ".  Consider calling Configuration.Instance.ProbeAssemblies with the assembly containing this " +
           "type when your application starts up.  In addition, if your namespaces are different between server and client " +
@@ -620,7 +620,7 @@ namespace Breeze.Sharp {
 
 
     private class InternCache<T> where T : Internable {
-      public readonly Dictionary<String, Type> TypeMap = new Dictionary<string, Type>();
+      public readonly Dictionary<string, Type> TypeMap = new Dictionary<string, Type>();
       public readonly Dictionary<JNode, T> JNodeMap = new Dictionary<JNode, T>();
 
       internal T FindOrCreate(JNode jNode) {
@@ -661,7 +661,7 @@ namespace Breeze.Sharp {
         }
       }
 
-      public void Register(Type internableType, String defaultSuffix) {
+      public void Register(Type internableType, string defaultSuffix) {
         var ti = internableType.GetTypeInfo();
         if (ti.IsAbstract) return;
         if (ti.GenericTypeParameters.Length != 0) return;
@@ -672,7 +672,7 @@ namespace Breeze.Sharp {
       }
 
       private T InternableFromJNode(JNode jNode) {
-        var name = jNode.Get<String>("name");
+        var name = jNode.Get<string>("name");
         Type type;
         if (!TypeMap.TryGetValue(name, out type)) {
           return null;
@@ -690,7 +690,7 @@ namespace Breeze.Sharp {
 
     #region Internal vars;
 
-    internal static String ANONTYPE_PREFIX = "_IB_";
+    internal static string ANONTYPE_PREFIX = "_IB_";
 
     #endregion
 
@@ -708,25 +708,25 @@ namespace Breeze.Sharp {
     private readonly Object _lock = new Object();
 
     // lock using _dataServiceMap
-    private readonly Dictionary<String, DataService> _dataServiceMap = new Dictionary<String, DataService>();
+    private readonly Dictionary<string, DataService> _dataServiceMap = new Dictionary<string, DataService>();
 
 
     private readonly HashSet<Assembly> _probedAssemblies = new HashSet<Assembly>();
     private readonly List<Tuple<Type, Action<Type>, Func<Assembly, bool>>> _typeDiscoveryActions = new List<Tuple<Type, Action<Type>, Func<Assembly, bool>>>();
 
     private readonly StructuralTypeCollection _structuralTypes = new StructuralTypeCollection();
-    private readonly Dictionary<String, String> _shortNameMap = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> _shortNameMap = new Dictionary<string, string>();
 
 
     // locked using _resourceNameEntityTypeMap
-    private readonly Dictionary<EntityType, String> _defaultResourceNameMap = new Dictionary<EntityType, string>();
-    private readonly Dictionary<String, EntityType> _resourceNameEntityTypeMap = new Dictionary<string, EntityType>();
+    private readonly Dictionary<EntityType, string> _defaultResourceNameMap = new Dictionary<EntityType, string>();
+    private readonly Dictionary<string, EntityType> _resourceNameEntityTypeMap = new Dictionary<string, EntityType>();
 
     private InternCache<Validator> _validatorCache = new InternCache<Validator>();
     private InternCache<NamingConvention> _namingConventionCache = new InternCache<NamingConvention>();
 
 
-    private readonly Dictionary<String, Type> _namingConventionMap = new Dictionary<string, Type>();
+    private readonly Dictionary<string, Type> _namingConventionMap = new Dictionary<string, Type>();
     private readonly Dictionary<JNode, NamingConvention> _namingConventionJNodeCache = new Dictionary<JNode, NamingConvention>();
 
     private readonly List<Message> _messages = new List<Message>();
@@ -760,7 +760,7 @@ namespace Breeze.Sharp {
 
   internal class Message {
     public MessageType MessageType { get; set; }
-    public String Text { get; set; }
+    public string Text { get; set; }
     public bool IsError {
       get { return MessageType == MessageType.Error; }
     }

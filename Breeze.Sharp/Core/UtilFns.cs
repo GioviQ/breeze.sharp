@@ -25,7 +25,7 @@ namespace Breeze.Sharp.Core {
       }
     }
 
-    public static string TypeToSerializationName(Type type, String suffix) {
+    public static string TypeToSerializationName(Type type, string suffix) {
       var typeName = type.Name;
       if (typeName == suffix) return "none";
       var name = (typeName.EndsWith(suffix)) ? typeName.Substring(0, typeName.Length - suffix.Length) : typeName;

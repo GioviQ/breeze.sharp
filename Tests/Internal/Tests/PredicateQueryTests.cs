@@ -11,7 +11,7 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class PredicateQueryTests {
 
-    private String _serviceName;
+    private string _serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {

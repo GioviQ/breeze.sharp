@@ -18,7 +18,7 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class EntityManagerTests {
 
-    private String _serviceName;
+    private string _serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {

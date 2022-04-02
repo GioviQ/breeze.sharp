@@ -78,7 +78,7 @@ namespace Breeze.Sharp {
     /// <summary>
     /// The name of this group.
     /// </summary>
-    public String Name {
+    public string Name {
       get { return ClrType.FullName; }
     }
 
@@ -154,7 +154,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="entityType"></param>
     /// <returns></returns>
-    public static String GetNameFor(Type entityType) {
+    public static string GetNameFor(Type entityType) {
       return entityType.FullName;
     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 
@@ -15,7 +15,7 @@ namespace Breeze.Sharp {
     /// <param name="shortName"></param>
     /// <param name="ns"></param>
     /// <param name="isAnonymous"></param>
-    public TypeNameInfo(String shortName, String ns, bool isAnonymous = false) {
+    public TypeNameInfo(string shortName, string ns, bool isAnonymous = false) {
       ShortName = shortName;
       Namespace = ns;
       StructuralTypeName = ToStructuralTypeName(shortName, ns);
@@ -36,17 +36,17 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="clrTypeName"></param>
     /// <returns></returns>
-    public static TypeNameInfo FromClrTypeName(String clrTypeName) {
+    public static TypeNameInfo FromClrTypeName(string clrTypeName) {
       if (clrTypeName.StartsWith(MetadataStore.ANONTYPE_PREFIX)) {
-        return new TypeNameInfo(clrTypeName, String.Empty, true);
+        return new TypeNameInfo(clrTypeName, string.Empty, true);
       }
 
       var entityTypeNameNoAssembly = clrTypeName.Split(',')[0];
       var nameParts = entityTypeNameNoAssembly.Split('.');
-      String ns;
+      string ns;
       var shortName = nameParts[nameParts.Length - 1];
       if (nameParts.Length > 1) {
-        ns = String.Join(".", nameParts.Take(nameParts.Length - 1));
+        ns = string.Join(".", nameParts.Take(nameParts.Length - 1));
       } else {
         ns = "";
       }
@@ -58,12 +58,12 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static TypeNameInfo FromStructuralTypeName(String name) {
-      String shortName, ns;
+    public static TypeNameInfo FromStructuralTypeName(string name) {
+      string shortName, ns;
       var ix = name.IndexOf(":#");
       if (ix == -1) {
         shortName = name;
-        ns = String.Empty;
+        ns = string.Empty;
       } else {
         shortName = name.Substring(0, ix);
         ns = name.Substring(ix + 2);
@@ -77,8 +77,8 @@ namespace Breeze.Sharp {
     /// <param name="shortName"></param>
     /// <param name="ns"></param>
     /// <returns></returns>
-    public static String ToStructuralTypeName(String shortName, String ns) {
-      if (String.IsNullOrEmpty(ns)) {
+    public static string ToStructuralTypeName(string shortName, string ns) {
+      if (string.IsNullOrEmpty(ns)) {
         return shortName;
       } else {
         return shortName + ":#" + ns;
@@ -86,7 +86,7 @@ namespace Breeze.Sharp {
     }
 
     // This would be the same as the Name property;
-    //public String ToStructualTypeName() {
+    //public string ToStructualTypeName() {
     //  return ToStructuralTypeName(ShortName, Namespace);
     //}
     
@@ -99,13 +99,13 @@ namespace Breeze.Sharp {
       return metadataStore.NamingConvention.ClientTypeNameToServer(this);
     }
 
-    public static bool IsQualifiedTypeName(String typeName) {
+    public static bool IsQualifiedTypeName(string typeName) {
       return typeName.IndexOf(":#", StringComparison.Ordinal) >= 0;
     }
 
-    public String StructuralTypeName { get; private set; }
-    public String ShortName { get; set; }
-    public String Namespace { get; set; }
+    public string StructuralTypeName { get; private set; }
+    public string ShortName { get; set; }
+    public string Namespace { get; set; }
     public bool IsAnonymous { get; private set; }
 
   }

@@ -8,8 +8,8 @@ namespace Breeze.Sharp {
   /// <summary>
   /// For internal use only.
   /// </summary>
-  internal class PropertyCollection : KeyedCollection<String, StructuralProperty> {
-    protected override String GetKeyForItem(StructuralProperty item) {
+  internal class PropertyCollection : KeyedCollection<string, StructuralProperty> {
+    protected override string GetKeyForItem(StructuralProperty item) {
       return item.Name;
     }
   }
@@ -18,7 +18,7 @@ namespace Breeze.Sharp {
   /// Base class for both the <see cref="DataProperty"/> and the <see cref="NavigationProperty"/> classes.
   /// </summary>
   public abstract class StructuralProperty  {
-    protected StructuralProperty(String name) {
+    protected StructuralProperty(string name) {
       Name = name;
     
     }
@@ -36,8 +36,8 @@ namespace Breeze.Sharp {
 
     public StructuralType ParentType { get; internal set; }
     public abstract Type ClrType { get; internal set; }
-    public String Name { get; internal set; }
-    public String NameOnServer { get; internal set; }
+    public string Name { get; internal set; }
+    public string NameOnServer { get; internal set; }
     public bool IsScalar { get; internal set; }
     public bool IsInherited { get; internal set; }
 
@@ -64,22 +64,22 @@ namespace Breeze.Sharp {
       get { return ParentType.MetadataStore; }
     }
 
-    internal void Check(Object v1, Object v2, String name) {
+    internal void Check(Object v1, Object v2, string name) {
       if (v1 == null && v2 == null) return;
       if (Object.Equals(v1, v2)) return;
       var msg = "Metadata mismatch - values do not match between server and client for " + FormatName() + " Metadata property: " + name;
       MetadataStore.AddMessage(msg, MessageType.Error, true);
     }
 
-    internal String FormatName() {
+    internal string FormatName() {
       var typeLabel = ParentType.IsEntityType ? "EntityType" : "ComplexType";
       var propLabel = IsDataProperty ? "DataProperty" : "NavigationProperty";
-      return String.Format("{0}: '{1}' on the {2}: '{3}'", propLabel, Name, typeLabel, ParentType.Name);
+      return string.Format("{0}: '{1}' on the {2}: '{3}'", propLabel, Name, typeLabel, ParentType.Name);
     }
 
     internal void UpdateClientServerNames() {
       var nc = MetadataStore.NamingConvention;
-      if (!String.IsNullOrEmpty(Name)) {
+      if (!string.IsNullOrEmpty(Name)) {
         NameOnServer = nc.TestPropertyName(Name, ParentType, true);
       } else {
         Name = nc.TestPropertyName(NameOnServer, ParentType, false);
@@ -87,7 +87,7 @@ namespace Breeze.Sharp {
     }
 
     // TODO: enhance this later with DisplayName property and localization
-    public String DisplayName {
+    public string DisplayName {
       get { return Name; }
     }
     public Object Custom { get; internal set; }

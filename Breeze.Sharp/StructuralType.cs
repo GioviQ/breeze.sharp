@@ -12,8 +12,8 @@ namespace Breeze.Sharp {
   /// <summary>
   /// For internal use only.
   /// </summary>
-  internal class StructuralTypeCollection : MapCollection<String, StructuralType> {
-    protected override String GetKeyForItem(StructuralType item) {
+  internal class StructuralTypeCollection : MapCollection<string, StructuralType> {
+    protected override string GetKeyForItem(StructuralType item) {
       return item.ShortName + ":#" + item.Namespace;
     }
   }
@@ -33,7 +33,7 @@ namespace Breeze.Sharp {
 
     public MetadataStore MetadataStore { get; private set; }
 
-    public String Name { 
+    public string Name { 
       get { return TypeNameInfo.ToStructuralTypeName(ShortName, Namespace); }
       internal set {
         var parts = TypeNameInfo.FromStructuralTypeName(value);
@@ -43,7 +43,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public String NameOnServer {
+    public string NameOnServer {
       get {
         return _nameOnServer;
       }
@@ -63,23 +63,23 @@ namespace Breeze.Sharp {
     internal abstract void UpdateFromJNode(JNode jNode, bool isFromServer);
 
 
-    internal String GetPropertyNameFromJNode(JNode jn) {
-      var dpName = jn.Get<String>("name");
+    internal string GetPropertyNameFromJNode(JNode jn) {
+      var dpName = jn.Get<string>("name");
       if (dpName == null) {
-        var dpNameOnServer = jn.Get<String>("nameOnServer");
+        var dpNameOnServer = jn.Get<string>("nameOnServer");
         dpName = MetadataStore.NamingConvention.ServerPropertyNameToClient(dpNameOnServer, this);
       }
       return dpName;
     }
 
     private Type _clrType;
-    public String ShortName { get; private set; }
-    public String Namespace { get; private set;}
+    public string ShortName { get; private set; }
+    public string Namespace { get; private set;}
     public dynamic Custom { get; set; }
     public bool IsAbstract { get; internal set; }
     // TODO: determine if this is  still needed;
     public bool IsAnonymous { get; internal set; }
-    public List<String> Warnings { get; internal set; }
+    public List<string> Warnings { get; internal set; }
     public abstract bool IsEntityType { get;  }
     
     public virtual  IEnumerable<StructuralProperty> Properties {
@@ -90,11 +90,11 @@ namespace Breeze.Sharp {
       get { return _dataProperties.ReadOnlyValues; }
     }
 
-    public DataProperty GetDataProperty(String dpName) {
+    public DataProperty GetDataProperty(string dpName) {
       return _dataProperties[dpName];
     }
 
-    public virtual StructuralProperty GetProperty(String propName) {
+    public virtual StructuralProperty GetProperty(string propName) {
       return _dataProperties[propName];
     }
 
@@ -125,13 +125,13 @@ namespace Breeze.Sharp {
       UpdateCollection( _unmappedProperties, dp, dp.IsUnmapped);
     }
 
-    internal String FormatDpName(String propertyName) {
+    internal string FormatDpName(string propertyName) {
       var typeLabel = IsEntityType ? "EntityType" : "ComplexType";
-      return String.Format("Data Property: '{0}' on the {1}: '{2}'", propertyName, typeLabel, Name);
+      return string.Format("Data Property: '{0}' on the {1}: '{2}'", propertyName, typeLabel, Name);
     }
 
-    internal String FormatNpName(String propertyName) {
-      return String.Format("Navigation Property: '{0}' on the EntityType: '{1}'", propertyName, Name);
+    internal string FormatNpName(string propertyName) {
+      return string.Format("Navigation Property: '{0}' on the EntityType: '{1}'", propertyName, Name);
     }
     
     protected void UpdateCollection(SafeList<DataProperty> list, DataProperty dp, bool add) {
@@ -147,7 +147,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    private String _nameOnServer;
+    private string _nameOnServer;
     internal readonly DataPropertyCollection _dataProperties = new DataPropertyCollection();
     protected readonly SafeList<DataProperty> _complexProperties = new SafeList<DataProperty>();
     protected readonly SafeList<DataProperty> _unmappedProperties = new SafeList<DataProperty>();

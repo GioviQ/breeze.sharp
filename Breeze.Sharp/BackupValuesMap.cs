@@ -1,4 +1,4 @@
-﻿using Breeze.Sharp.Core;
+using Breeze.Sharp.Core;
 using System;
 using System.Collections.Generic;
 
@@ -8,12 +8,12 @@ namespace Breeze.Sharp {
   /// Class that is used to track property changes on an Entity or ComplexObject.  Instances of this type are used 
   /// for both the EntityAspect.OriginalValuesMap as well as to track IEditableObject changes on an entity.
   /// </summary>
-  public  class BackupValuesMap : SafeDictionary<String, Object> {
+  public  class BackupValuesMap : SafeDictionary<string, Object> {
     public BackupValuesMap() : base() {}
-    public BackupValuesMap(Dictionary<String, Object> map) : base(map) {
+    public BackupValuesMap(Dictionary<string, Object> map) : base(map) {
     }
 
-    public static BackupValuesMap Empty = new BackupValuesMap(new Dictionary<String, Object>());
+    public static BackupValuesMap Empty = new BackupValuesMap(new Dictionary<string, Object>());
   }
 
  

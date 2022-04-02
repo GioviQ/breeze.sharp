@@ -1,4 +1,4 @@
-﻿using Breeze.Sharp.Core;
+using Breeze.Sharp.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace Breeze.Sharp {
   /// Implemented via an explicit interface.
   /// </summary>
   public interface IHasBackingStore {
-    IDictionary<String, Object> BackingStore { get; set; }
+    IDictionary<string, Object> BackingStore { get; set; }
   }
 
   /// <summary>
@@ -21,7 +21,7 @@ namespace Breeze.Sharp {
   public abstract class StructuralAspect {
 
     public StructuralAspect(IStructuralObject stObj) {
-      _backingStore = (stObj is IHasBackingStore) ? null : new Dictionary<String, Object>();
+      _backingStore = (stObj is IHasBackingStore) ? null : new Dictionary<string, Object>();
     }
 
     #region Public/protected properties 
@@ -30,7 +30,7 @@ namespace Breeze.Sharp {
 
     public abstract EntityVersion EntityVersion { get; internal set;  }
 
-    public abstract IEnumerable<ValidationError> GetValidationErrors(String propertyPath);
+    public abstract IEnumerable<ValidationError> GetValidationErrors(string propertyPath);
      
     public abstract StructuralType StructuralType { get; }
 
@@ -38,7 +38,7 @@ namespace Breeze.Sharp {
 
     protected abstract IStructuralObject StructuralObject { get; }
 
-    protected internal IDictionary<String, Object> BackingStore {
+    protected internal IDictionary<string, Object> BackingStore {
       get {
         return _backingStore ?? ((IHasBackingStore)StructuralObject).BackingStore;
       }
@@ -56,7 +56,7 @@ namespace Breeze.Sharp {
 
     #region Get/Set value
 
-    protected internal Object GetRawValue(String propertyName) {
+    protected internal Object GetRawValue(string propertyName) {
       Object val = null;
       BackingStore.TryGetValue(propertyName, out val);
       return val;
@@ -66,7 +66,7 @@ namespace Breeze.Sharp {
       BackingStore[propertyName] = value;
     }
 
-    public Object GetValue(String propertyName) {
+    public Object GetValue(string propertyName) {
       // TODO: will be different when we add property interception.
       return GetRawValue(propertyName);
     }
@@ -79,7 +79,7 @@ namespace Breeze.Sharp {
       return (T) GetRawValue(prop.Name);
     }
 
-    public T GetValue<T>(String propertyName) {
+    public T GetValue<T>(string propertyName) {
       return (T) GetRawValue(propertyName);
     }
 
@@ -116,7 +116,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public abstract void SetValue(String propertyName, object newValue);
+    public abstract void SetValue(string propertyName, object newValue);
 
     protected internal abstract void SetDpValue(DataProperty dp, object newValue);
 
@@ -193,7 +193,7 @@ namespace Breeze.Sharp {
     // insures that validation events get fired and _validators collection is updated.
     protected abstract ValidationError ValidateCore(Validator vr, ValidationContext vc);
 
-    internal virtual String GetPropertyPath(String propName) {
+    internal virtual string GetPropertyPath(string propName) {
       return propName;
     }
 
@@ -349,15 +349,15 @@ namespace Breeze.Sharp {
       _preproposedValuesMap.Add(property.Name, oldValue);
     }
 
-    public ReadOnlyDictionary<String, Object> OriginalValuesMap {
+    public ReadOnlyDictionary<string, Object> OriginalValuesMap {
       get { return HandleNull(_originalValuesMap); }
     }
 
-    public ReadOnlyDictionary<String, Object> PreproposedValuesMap {
+    public ReadOnlyDictionary<string, Object> PreproposedValuesMap {
       get { return HandleNull(_preproposedValuesMap); }
     }
 
-    private ReadOnlyDictionary<String, Object> HandleNull(BackupValuesMap map) {
+    private ReadOnlyDictionary<string, Object> HandleNull(BackupValuesMap map) {
       return (map ?? BackupValuesMap.Empty).ReadOnlyDictionary;
     }
     
@@ -369,7 +369,7 @@ namespace Breeze.Sharp {
 
     #region Private 
 
-    private IDictionary<String, Object> _backingStore;
+    private IDictionary<string, Object> _backingStore;
 
     #endregion
 

@@ -13,13 +13,13 @@ namespace Breeze.Sharp {
 
 	private static readonly ReadOnlyCollection<EntityError> emptyErrors = new ReadOnlyCollection<EntityError>(new EntityError[0]); 
 
-    public SaveException(EntityManager em, String json) : 
+    public SaveException(EntityManager em, string json) : 
       this(em, JNode.DeserializeFrom(json)) {
     }
     
     internal SaveException(EntityManager em, JNode jn) 
       : base() {
-      _message = jn.Get<String>("ExceptionMessage") ?? "see EntityErrors";
+      _message = jn.Get<string>("ExceptionMessage") ?? "see EntityErrors";
       var entityErrors = jn.GetArray<EntityError>("Errors", "errors", "EntityErrors", "entityErrors");
       entityErrors = entityErrors.Select(ee => ee.Resolve(em));
       _entityErrors = new SafeList<EntityError>(entityErrors);
@@ -27,7 +27,7 @@ namespace Breeze.Sharp {
     }
 
 
-    public SaveException(String message, Exception innerException) : base(message, innerException) {
+    public SaveException(string message, Exception innerException) : base(message, innerException) {
       _message = message;
     }
 
@@ -68,10 +68,10 @@ namespace Breeze.Sharp {
   /// </summary>
   public class EntityError {
 
-    public String ErrorName;
-    public String EntityTypeName;
+    public string ErrorName;
+    public string EntityTypeName;
     public Object[] KeyValues;
-    public String PropertyName;
+    public string PropertyName;
     public string ErrorMessage;
 
     // set by Resolve

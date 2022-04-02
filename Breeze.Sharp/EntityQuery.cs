@@ -40,7 +40,7 @@ namespace Breeze.Sharp {
     /// Contructor for a query against a specific resource.
     /// </summary>
     /// <param name="resourceName"></param>
-    public EntityQuery(String resourceName)
+    public EntityQuery(string resourceName)
       : this() {
       if (resourceName != null) ResourceName = resourceName;
     }
@@ -68,7 +68,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="resourceName"></param>
     /// <returns></returns>
-    public EntityQuery<T> From(String resourceName) {
+    public EntityQuery<T> From(string resourceName) {
       var q = new EntityQuery<T>(this);
       q.ResourceName = resourceName;
       return q;
@@ -140,14 +140,14 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    public EntityQuery<T> Expand(String path) {
+    public EntityQuery<T> Expand(string path) {
       var q = new EntityQuery<T>(this);
       q.DataServiceQuery = DataServiceQuery.Expand(path.Replace('.', '/'));
       return q;
     }
 
     // can be called from EntityQuery;
-    protected internal override EntityQuery ExpandNonGeneric(String path) {
+    protected internal override EntityQuery ExpandNonGeneric(string path) {
       return Expand(path);
     }
 
@@ -173,7 +173,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="dictionary"></param>
     /// <returns></returns>
-    public EntityQuery<T> WithParameters(IDictionary<String, Object> dictionary) {
+    public EntityQuery<T> WithParameters(IDictionary<string, Object> dictionary) {
       var q = new EntityQuery<T>(this);
       var dsq = DataServiceQuery;
       dictionary.Where(kvp => kvp.Value != null).ForEach(kvp => dsq = dsq.AddQueryOption(kvp.Key, kvp.Value));
@@ -199,12 +199,12 @@ namespace Breeze.Sharp {
     /// For internal use.
     /// </summary>
     /// <returns></returns>
-    public override String GetResourcePath(MetadataStore metadataStore) {
+    public override string GetResourcePath(MetadataStore metadataStore) {
 
-      var resourceName = (String.IsNullOrEmpty(ResourceName))
+      var resourceName = (string.IsNullOrEmpty(ResourceName))
         ? metadataStore.GetDefaultResourceName(QueryableType)
         : ResourceName;
-      if (String.IsNullOrEmpty(resourceName)) {
+      if (string.IsNullOrEmpty(resourceName)) {
         throw new Exception("Cannot find a default resource name for CLR type: " + QueryableType.FullName);
       }
 
@@ -249,7 +249,7 @@ namespace Breeze.Sharp {
       return queryResource;
     }
 
-    private string RewriteResourcePath(String resourcePath) {
+    private string RewriteResourcePath(string resourcePath) {
       // This whole method is a hack to get around the fact that MS's current server OData implementations
       // do not understand the valid 'cast' operator the DataServiceQuery generates in the url.
       // So as a result we need to translate the cast query into a string query that the current server OData
@@ -257,7 +257,7 @@ namespace Breeze.Sharp {
       return RewriteEdmCastOperations(RewriteEnumFilters(resourcePath));
     }
 
-    private string RewriteEdmCastOperations(String resourcePath) {
+    private string RewriteEdmCastOperations(string resourcePath) {
       var pattern = @"(?<prefix>.*)cast\((?<propName>.*),'Edm\..*'\)(?<suffix>.*)";
       var m = System.Text.RegularExpressions.Regex.Match(resourcePath, pattern);
       if (m.Success) {
@@ -393,8 +393,8 @@ namespace Breeze.Sharp {
     }
 
 
-    private static String __placeholderServiceName = "http://localhost:7890/breeze/Undefined/";
-    private static String __placeholderResourceName = "__Undefined__";
+    private static string __placeholderServiceName = "http://localhost:7890/breeze/Undefined/";
+    private static string __placeholderResourceName = "__Undefined__";
 
   }
 
@@ -499,7 +499,7 @@ namespace Breeze.Sharp {
       return func(entityManager);
     }
 
-    protected internal abstract EntityQuery ExpandNonGeneric(String path);
+    protected internal abstract EntityQuery ExpandNonGeneric(string path);
 
     protected void UpdateFrom(EntityQuery query) {
       ResourceName = query.ResourceName;
@@ -521,7 +521,7 @@ namespace Breeze.Sharp {
     /// <summary>
     /// The resource name specified for this query.
     /// </summary>
-    public String ResourceName { get; protected internal set; }
+    public string ResourceName { get; protected internal set; }
 
     /// <summary>
     /// The element type of the IEnumerable being returned by this query.
@@ -554,7 +554,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <returns></returns>
     public abstract object Clone();
-    public abstract String GetResourcePath(MetadataStore metadataStore);
+    public abstract string GetResourcePath(MetadataStore metadataStore);
 
     DataServiceQuery IHasDataServiceQuery.DataServiceQuery {
       get { return DataServiceQuery; }
@@ -571,7 +571,7 @@ namespace Breeze.Sharp {
     DataService DataService { get; }
     EntityManager EntityManager { get; }
     QueryOptions QueryOptions { get; }
-    String ResourceName { get; }
+    string ResourceName { get; }
     IJsonResultsAdapter JsonResultsAdapter { get; }
     Object Clone();
   }

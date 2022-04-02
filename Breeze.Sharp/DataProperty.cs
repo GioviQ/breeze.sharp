@@ -10,8 +10,8 @@ namespace Breeze.Sharp {
   /// <summary>
   /// For internal use only. Unique collection of DataProperties.
   /// </summary>
-  internal class DataPropertyCollection : MapCollection<String, DataProperty> {
-    protected override String GetKeyForItem(DataProperty item) {
+  internal class DataPropertyCollection : MapCollection<string, DataProperty> {
+    protected override string GetKeyForItem(DataProperty item) {
       return item.Name;
     }
   }
@@ -25,7 +25,7 @@ namespace Breeze.Sharp {
   [DebuggerDisplay("{Name} - {ParentType.Name}")]
   public class DataProperty : StructuralProperty, IJsonSerializable {
 
-    internal DataProperty(String name)
+    internal DataProperty(string name)
       : base(name) {
       IsScalar = true;
 
@@ -55,7 +55,7 @@ namespace Breeze.Sharp {
     internal void UpdateFromJNode(JNode jNode, bool isFromServer) {
       var complexTypeName = MetadataStore.GetStructuralTypeNameFromJNode(jNode, "complexTypeName", isFromServer);
       if (complexTypeName == null) {
-        Check(DataType, DataType.FromName(jNode.Get<String>("dataType")), "DataType");
+        Check(DataType, DataType.FromName(jNode.Get<string>("dataType")), "DataType");
       } else {
         Check(ComplexType.Name, complexTypeName, "ComplexTypeName");
       }
@@ -71,11 +71,11 @@ namespace Breeze.Sharp {
       IsPartOfKey = jNode.Get<bool>("isPartOfKey", false);
       IsUnmapped = jNode.Get<bool>("isUnmapped", false);
       IsAutoIncrementing = jNode.Get<bool>("isAutoIncrementing", false);
-      ConcurrencyMode = (ConcurrencyMode)Enum.Parse(typeof(ConcurrencyMode), jNode.Get<String>("concurrencyMode", ConcurrencyMode.None.ToString()));
+      ConcurrencyMode = (ConcurrencyMode)Enum.Parse(typeof(ConcurrencyMode), jNode.Get<string>("concurrencyMode", ConcurrencyMode.None.ToString()));
       MaxLength = jNode.Get<int?>("maxLength");
       // EnumType is best determined on the client and not from the server
       // so for now just ignore the 'enumType'
-      // var enumTypeName = jNode.Get<String>("enumType");
+      // var enumTypeName = jNode.Get<string>("enumType");
       
       _validators = new ValidatorCollection(jNode.GetJNodeArray("validators"));
     }
@@ -231,7 +231,7 @@ namespace Breeze.Sharp {
     /// Whether this property is an Enum type.
     /// </summary>
     public bool IsEnumType {
-      get { return !String.IsNullOrEmpty(EnumTypeName); }
+      get { return !string.IsNullOrEmpty(EnumTypeName); }
     }
 
     public Object DefaultValue {
@@ -294,8 +294,8 @@ namespace Breeze.Sharp {
 
     public Int64? MaxLength { get; internal set; }
 
-    public String EnumTypeName { get; internal set; }
-    public String RawTypeName { get; internal set; }
+    public string EnumTypeName { get; internal set; }
+    public string RawTypeName { get; internal set; }
 
     public NavigationProperty InverseNavigationProperty {
       get { return _inverseNavigationProperty; }
@@ -324,10 +324,10 @@ namespace Breeze.Sharp {
       }
     }
 
-    private EntityType InsureEntityType(String propertyName) {
+    private EntityType InsureEntityType(string propertyName) {
       var et = EntityType;
       if (et == null) {
-        var msg = String.Format("Cannot set '{0}' on a property of a ComplexType", propertyName);
+        var msg = string.Format("Cannot set '{0}' on a property of a ComplexType", propertyName);
         throw new Exception(msg);
       }
       return et;

@@ -16,7 +16,7 @@ namespace Breeze.Sharp {
   /// </summary>
   public class NamingConvention : Internable {
 
-    public static String Suffix = "NamingConvention";
+    public static string Suffix = "NamingConvention";
 
     public static List<NamingConvention> __namingConventions = new List<NamingConvention>();
 
@@ -32,7 +32,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public virtual TypeNameInfo ServerTypeNameToClient(TypeNameInfo serverNameInfo) {
       
-      String clientNs;
+      string clientNs;
       if (_serverClientNamespaceMap == null) {
         _serverClientNamespaceMap = _clientServerNamespaceMap.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
       }
@@ -49,7 +49,7 @@ namespace Breeze.Sharp {
     /// <param name="serverPropertyName"></param>
     /// <param name="parentType"></param>
     /// <returns></returns>
-    public virtual String ServerPropertyNameToClient(String serverPropertyName, StructuralType parentType) {
+    public virtual string ServerPropertyNameToClient(string serverPropertyName, StructuralType parentType) {
       return serverPropertyName;
     }
 
@@ -60,7 +60,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public virtual TypeNameInfo ClientTypeNameToServer(TypeNameInfo clientNameInfo) {
       
-      String serverNs;
+      string serverNs;
       if (_clientServerNamespaceMap.TryGetValue(clientNameInfo.Namespace, out serverNs)) {
         return new TypeNameInfo(clientNameInfo.ShortName, serverNs);
       } else {
@@ -74,31 +74,31 @@ namespace Breeze.Sharp {
     /// <param name="clientPropertyName"></param>
     /// <param name="parentType"></param>
     /// <returns></returns>
-    public virtual String ClientPropertyNameToServer(String clientPropertyName, StructuralType parentType) {
+    public virtual string ClientPropertyNameToServer(string clientPropertyName, StructuralType parentType) {
       return clientPropertyName;
     }
 
-    public NamingConvention WithClientServerNamespaceMapping(IDictionary<String, String> clientServerNamespaceMap) {
+    public NamingConvention WithClientServerNamespaceMapping(IDictionary<string, string> clientServerNamespaceMap) {
       var clone = Clone();
       clone._clientServerNamespaceMap = new Dictionary<string, string>(clientServerNamespaceMap);
       _serverClientNamespaceMap = null;
       return clone;
     }
 
-    public NamingConvention WithServerClientNamespaceMapping(IDictionary<String, String> serverClientNamespaceMap) {
+    public NamingConvention WithServerClientNamespaceMapping(IDictionary<string, string> serverClientNamespaceMap) {
       var clone = Clone();
       clone._serverClientNamespaceMap = new Dictionary<string, string>(serverClientNamespaceMap);
       _clientServerNamespaceMap = null;
       return clone;
     }
 
-    public NamingConvention WithClientServerNamespaceMapping(String clientNamespace, String serverNamespace) {
+    public NamingConvention WithClientServerNamespaceMapping(string clientNamespace, string serverNamespace) {
       var clone = Clone();
       clone.AddClientServerNamespaceMapping(clientNamespace, serverNamespace);
       return clone;
     }
 
-    protected void AddClientServerNamespaceMapping(String clientNamespace, String serverNamespace) {
+    protected void AddClientServerNamespaceMapping(string clientNamespace, string serverNamespace) {
       _clientServerNamespaceMap[clientNamespace] = serverNamespace;
       _serverClientNamespaceMap = null;
     }
@@ -108,13 +108,13 @@ namespace Breeze.Sharp {
     }
 
     [JsonIgnore]
-    public ReadOnlyDictionary<String, String> ClientServerNamespaceMap {
-      get { return new ReadOnlyDictionary<String, String>(_clientServerNamespaceMap); }
+    public ReadOnlyDictionary<string, string> ClientServerNamespaceMap {
+      get { return new ReadOnlyDictionary<string, string>(_clientServerNamespaceMap); }
     }
 
     [JsonProperty("ClientServerNamespaceMap")]
-    private Dictionary<String, String> _clientServerNamespaceMap = new Dictionary<string, string>();
-    private Dictionary<String, String> _serverClientNamespaceMap;
+    private Dictionary<string, string> _clientServerNamespaceMap = new Dictionary<string, string>();
+    private Dictionary<string, string> _serverClientNamespaceMap;
 
 
     /// <summary>
@@ -126,9 +126,9 @@ namespace Breeze.Sharp {
     /// </summary>
     public static NamingConvention CamelCaseProperties = new CamelCasePropertiesNamingConvention();
 
-    public String TestPropertyName(String testVal, StructuralType parentType, bool toServer) {
-      Func<String, StructuralType, String> fn1;
-      Func<String, StructuralType, String> fn2;
+    public string TestPropertyName(string testVal, StructuralType parentType, bool toServer) {
+      Func<string, StructuralType, string> fn1;
+      Func<string, StructuralType, string> fn2;
       if (toServer) {
         fn1 = ClientPropertyNameToServer;
         fn2 = ServerPropertyNameToClient;
@@ -156,10 +156,10 @@ namespace Breeze.Sharp {
       
     }
     
-    public override String ServerPropertyNameToClient(String serverName, StructuralType parentType) {
+    public override string ServerPropertyNameToClient(string serverName, StructuralType parentType) {
       return serverName.Substring(0,1).ToLower() + serverName.Substring(1);
     }
-    public override String ClientPropertyNameToServer(String clientName, StructuralType parentType) {
+    public override string ClientPropertyNameToServer(string clientName, StructuralType parentType) {
       return clientName.Substring(0, 1).ToUpper() + clientName.Substring(1);
     }
   }

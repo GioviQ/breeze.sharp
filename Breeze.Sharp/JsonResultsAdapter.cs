@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +11,8 @@ namespace Breeze.Sharp {
   /// </summary>
   public class JsonNodeInfo {
     public TypeNameInfo ServerTypeNameInfo { get; set; }
-    public String NodeId { get; set; }
-    public String NodeRefId { get; set; }
+    public string NodeId { get; set; }
+    public string NodeRefId { get; set; }
     public bool Ignore { get; set; }
     public JObject Node { get; set; }
   } 
@@ -23,7 +23,7 @@ namespace Breeze.Sharp {
   ///  to talk to virtually any web service and return objects that will be first class 'breeze' citizens.
   /// </summary>
   public interface IJsonResultsAdapter {
-    String Name { get; }
+    string Name { get; }
     JToken ExtractResults(JToken node);
     JsonNodeInfo VisitNode(JObject node, MappingContext mappingContext, NodeContext nodeContext);
   }

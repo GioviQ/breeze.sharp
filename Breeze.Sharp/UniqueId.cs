@@ -76,7 +76,7 @@ namespace Breeze.Sharp {
     /// Returns a human readable representation of this UniqueId.
     /// </summary>
     /// <returns></returns>
-    public override String ToString() {
+    public override string ToString() {
       return Property.ParentType + "." + Property.Name + ", " + Value.ToString();
     }
 

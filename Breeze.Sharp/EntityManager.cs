@@ -30,7 +30,7 @@ namespace Breeze.Sharp {
     ///     // Example: 
     ///     var em = new EntityManager("http://localhost:7150/breeze/NorthwindIBModel/")
     /// </code></remarks>
-    public EntityManager(String serviceName, MetadataStore metadataStore = null)
+    public EntityManager(string serviceName, MetadataStore metadataStore = null)
       : this(new DataService(serviceName), metadataStore) {
 
     }
@@ -108,7 +108,7 @@ namespace Breeze.Sharp {
       //  msg += "the requested operation came from the thread with Id=‘{1}’.\n\n";
       //  msg += "You may have to disable this cross-thread checking for specific reasons such as automated testing. ";
       //  msg += "Please review our documentation on multi-threading issues and the EntityManager.AuthorizedThreadId property.";
-      //  msg = String.Format(msg, AuthorizedThreadId, CurrentThreadId);
+      //  msg = string.Format(msg, AuthorizedThreadId, CurrentThreadId);
       //  throw new Exception(msg);
       //}
     }
@@ -498,7 +498,7 @@ namespace Breeze.Sharp {
     /// <param name="entities"></param>
     /// <param name="includeMetadata">Default is 'true'</param>
     /// <returns></returns>
-    public String ExportEntities(IEnumerable<IEntity> entities = null, bool includeMetadata = true) {
+    public string ExportEntities(IEnumerable<IEntity> entities = null, bool includeMetadata = true) {
       var jn = ExportToJNode(entities, includeMetadata);
       return jn.Serialize();
     }
@@ -522,7 +522,7 @@ namespace Breeze.Sharp {
     /// <param name="exportedString"></param>
     /// <param name="importOptions"></param>
     /// <returns></returns>
-    public ImportResult ImportEntities(String exportedString, ImportOptions importOptions = null) {
+    public ImportResult ImportEntities(string exportedString, ImportOptions importOptions = null) {
       var jn = JNode.DeserializeFrom(exportedString);
       return ImportEntities(jn, importOptions);
     }
@@ -576,7 +576,7 @@ namespace Breeze.Sharp {
       foreach (var entityNode in entityNodes) {
         var ek = ExtractEntityKey(entityType, entityNode);
         var entityAspectNode = entityNode.GetJNode("entityAspect");
-        // var entityState = (EntityState)Enum.Parse(typeof(EntityState), entityAspectNode.Get<String>("entityState"));
+        // var entityState = (EntityState)Enum.Parse(typeof(EntityState), entityAspectNode.Get<string>("entityState"));
         var entityState = entityAspectNode.GetEnum<EntityState>("entityState");
         IEntity targetEntity = null;
         bool hasCollision = false;
@@ -659,7 +659,7 @@ namespace Breeze.Sharp {
 
     private void UpdateTempFks(IEntity targetEntity, JNode entityAspectNode, Dictionary<EntityKey, EntityKey> tempKeyMap) {
 
-      var tempNavPropNames = entityAspectNode.GetArray<String>("tempNavPropNames");
+      var tempNavPropNames = entityAspectNode.GetArray<string>("tempNavPropNames");
       if (!tempNavPropNames.Any()) return;
       var targetAspect = targetEntity.EntityAspect;
       var entityType = targetAspect.EntityType;
@@ -689,7 +689,7 @@ namespace Breeze.Sharp {
     }
 
     private JNode ExportEntityGroupsAndTempKeys(IEnumerable<IEntity> entities) {
-      Dictionary<String, IEnumerable<JNode>> map;
+      Dictionary<string, IEnumerable<JNode>> map;
       IEnumerable<EntityAspect> aspects;
 
       if (entities != null) {
@@ -757,7 +757,7 @@ namespace Breeze.Sharp {
       return jn;
     }
 
-    private IEnumerable<String> GetTempNavPropNames(EntityAspect entityAspect) {
+    private IEnumerable<string> GetTempNavPropNames(EntityAspect entityAspect) {
       var npNames = entityAspect.EntityType.NavigationProperties.Where(np => {
         if (!np.IsScalar) return false;
         var val = (IEntity)entityAspect.GetRawValue(np.Name);
@@ -1081,7 +1081,7 @@ namespace Breeze.Sharp {
           }
         } catch (Exception e) {
           var msg = "Unable to create entity of type '{0}'.  Initialization failed on property: '{1}'";
-          throw new Exception(String.Format(msg, et.Name, pi.Name), e);
+          throw new Exception(string.Format(msg, et.Name, pi.Name), e);
         }
       });
     }
@@ -1286,13 +1286,13 @@ namespace Breeze.Sharp {
       var entityType = entity.GetType();
 
       if (entityProperty.IsForeignKey) {
-        String msg = String.Format(
+        string msg = string.Format(
           "Cannot call GenerateId on '{0}.{1}'. GenerateId cannot be called on ForeignKey properties ( even if they are also part of a PrimaryKey).  Call GenerateId instead on the 'source' primary key.",
           entityProperty.ParentType.Name, entityProperty.Name);
         throw new ArgumentException("entityProperty", msg);
       }
       if (!entityProperty.ParentType.ClrType.IsAssignableFrom(entityType)) {
-        String msg = String.Format("The EntityType '{0}' for Property '{1}' must be of EntityType '{2}' or one of its subtypes", entityProperty.ParentType, entityProperty.Name, entityType);
+        string msg = string.Format("The EntityType '{0}' for Property '{1}' must be of EntityType '{2}' or one of its subtypes", entityProperty.ParentType, entityProperty.Name, entityType);
         throw new ArgumentException("entityProperty", msg);
       }
       // Associate this entity with this EntityManager if it previously wasn't
@@ -1518,7 +1518,7 @@ namespace Breeze.Sharp {
 
     #region other private 
 
-    private T InsureNotNull<T>(T val, String argumentName) {
+    private T InsureNotNull<T>(T val, string argumentName) {
       if (val == null) {
         throw new ArgumentNullException(argumentName);
       }

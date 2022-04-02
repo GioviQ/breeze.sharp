@@ -14,7 +14,7 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class InheritanceBillingTests {
 
-    private String _serviceName;
+    private string _serviceName;
     private MetadataStore _metadataStore = new MetadataStore();
 
     [TestInitialize]
@@ -115,7 +115,7 @@ namespace Breeze.Sharp.Tests {
       var r = await CreateBillingDetail<BankAccountTPH>(em1);
     }
 
-    private async Task<IEnumerable<T>> QueryBillingBase<T>(EntityManager em, String typeName) where T: IBillingDetail {
+    private async Task<IEnumerable<T>> QueryBillingBase<T>(EntityManager em, string typeName) where T: IBillingDetail {
       var q0 = new EntityQuery<T>(typeName + "s").With(em);
       var r0 = await q0.Execute();
       if (r0.Count() == 0) {
@@ -128,7 +128,7 @@ namespace Breeze.Sharp.Tests {
       return r0;
     }
 
-    private async Task<IEnumerable<T>> CanDeleteBillingBase<T>(EntityManager em, String typeName, String expandPropName = null) where T:IEntity {
+    private async Task<IEnumerable<T>> CanDeleteBillingBase<T>(EntityManager em, string typeName, string expandPropName = null) where T:IEntity {
       //    // Registering resource names for each derived type
       //    // because these resource names are not in metadata
       //    // because there are no corresponding DbSets in the DbContext

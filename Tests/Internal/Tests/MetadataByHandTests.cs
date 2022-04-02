@@ -21,7 +21,7 @@ namespace Breeze.Sharp.Tests {
 
     // TODO: need Exp/Imp tests with Complex type changes.
 
-    //private String _serviceName;
+    //private string _serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {

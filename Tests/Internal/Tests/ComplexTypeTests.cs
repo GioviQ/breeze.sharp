@@ -16,7 +16,7 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class ComplexTypeTests {
 
-    private String _serviceName;
+    private string _serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {
@@ -288,7 +288,7 @@ namespace Breeze.Sharp.Tests {
         var location = s.Location;
         Assert.IsTrue(location.Address.StartsWith("Foo"), "address should start with 'Foo'");
         Assert.IsTrue(location.ComplexAspect.OriginalValuesMap.ContainsKey("Address"), "ComplexAspect originalValues should contain address");
-        var oldAddress = (String) location.ComplexAspect.OriginalValuesMap["Address"];
+        var oldAddress = (string) location.ComplexAspect.OriginalValuesMap["Address"];
         if (oldAddress == null) {
           Assert.IsTrue(location.Address == "Foo:", "should have a null old address");
         } else {
@@ -420,7 +420,7 @@ namespace Breeze.Sharp.Tests {
         location.City = s;
         Assert.IsTrue(errors.Last().PropertyName == "Location.City", "location.city should have been the propertyName");
         Assert.IsTrue(errors.Count == 4);
-        Assert.IsTrue((String) valErrors.Last().Context.PropertyPath == "Location.City");
+        Assert.IsTrue((string) valErrors.Last().Context.PropertyPath == "Location.City");
         Assert.IsTrue(valErrors.Count == 2); // companyName_required and location.city_maxLength
         Assert.IsTrue(((INotifyDataErrorInfo) supplier).HasErrors);
         location.City = "much shorter";

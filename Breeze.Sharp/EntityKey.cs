@@ -37,7 +37,7 @@ namespace Breeze.Sharp {
     }
 
     internal EntityKey(JNode jn, MetadataStore metadataStore) {
-      var etName = jn.Get<String>("entityType");
+      var etName = jn.Get<string>("entityType");
       EntityType = metadataStore.GetEntityType(etName);
       ClrType = EntityType.ClrType;
       // coerce the incoming data
@@ -55,7 +55,7 @@ namespace Breeze.Sharp {
 
     private void InitializeValues(Object[] values, bool shouldCoerce = true) {
       if (!EntityType.KeyProperties.Any()) {
-        var msg = String.Format("There are no KeyProperties yet defined on EntityType: '{0}'.  "
+        var msg = string.Format("There are no KeyProperties yet defined on EntityType: '{0}'.  "
                                 + "Please insure that the metadata for this type is complete either by calling FetchMetadata or "
                                 + "by explicitly updating the KeyProperties before creating an EntityKey for this type.",
           EntityType.Name);
@@ -215,7 +215,7 @@ namespace Breeze.Sharp {
     /// Returns a human readable representation of this Primary Key.
     /// </summary>
     /// <returns></returns>
-    public override String ToString() {
+    public override string ToString() {
       return ClrType.Name + ": " + Values.ToAggregateString(",");
     }
 

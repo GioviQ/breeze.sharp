@@ -38,7 +38,7 @@ namespace Breeze.Sharp {
     public IComplexObject ComplexObject { get; set; }
     
 
-    public String PropertyPath {
+    public string PropertyPath {
       get {
         if (Property == null) return null;
         if (ComplexObject == null) return Property.Name;
@@ -56,7 +56,7 @@ namespace Breeze.Sharp {
       set;
     }
 
-    public String DisplayName {
+    public string DisplayName {
       get {
         return _displayName ?? (Property == null ? Entity.ToString() : Property.DisplayName);
       }
@@ -65,7 +65,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    private String _displayName;
+    private string _displayName;
   }
 
 }

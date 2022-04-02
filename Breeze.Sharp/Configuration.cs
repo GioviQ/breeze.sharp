@@ -93,7 +93,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="structuralTypeName"></param>
     /// <returns></returns>
-    public Type GetClrType(String structuralTypeName) {
+    public Type GetClrType(string structuralTypeName) {
       lock (_clrTypeMap) {
         Type type;
         _clrTypeMap.TryGetValue(structuralTypeName, out type);
@@ -183,7 +183,7 @@ namespace Breeze.Sharp {
     #region Inner classes 
 
     private class InternCache<T> where T : Internable {
-      public readonly Dictionary<String, Type> TypeMap = new Dictionary<string, Type>();
+      public readonly Dictionary<string, Type> TypeMap = new Dictionary<string, Type>();
       public readonly Dictionary<JNode, T> JNodeMap = new Dictionary<JNode, T>();
 
       internal T FindOrCreate(JNode jNode) {
@@ -224,7 +224,7 @@ namespace Breeze.Sharp {
         }
       }
 
-      public void Register(Type internableType, String defaultSuffix) {
+      public void Register(Type internableType, string defaultSuffix) {
         var ti = internableType.GetTypeInfo();
         if (ti.IsAbstract) return;
         if (ti.GenericTypeParameters.Length != 0) return;
@@ -235,7 +235,7 @@ namespace Breeze.Sharp {
       }
 
       private T InternableFromJNode(JNode jNode) {
-        var name = jNode.Get<String>("name");
+        var name = jNode.Get<string>("name");
         Type type;
         if (!TypeMap.TryGetValue(name, out type)) {
           return null;
@@ -252,7 +252,7 @@ namespace Breeze.Sharp {
 
     #region Private and Internal vars
 
-    internal static String ANONTYPE_PREFIX = "_IB_";
+    internal static string ANONTYPE_PREFIX = "_IB_";
 
     private static Configuration __instance = new Configuration();
     private static readonly Object __lock = new Object();
@@ -260,12 +260,12 @@ namespace Breeze.Sharp {
     private readonly AsyncSemaphore _asyncSemaphore = new AsyncSemaphore(1);
     private readonly Object _lock = new Object();
 
-    private Dictionary<String, Type> _clrTypeMap = new Dictionary<string, Type>();
+    private Dictionary<string, Type> _clrTypeMap = new Dictionary<string, Type>();
 
     private readonly HashSet<Assembly> _probedAssemblies = new HashSet<Assembly>();
     private readonly List<Tuple<Type, Action<Type>, Func<Assembly, bool>>> _typeDiscoveryActions = new List<Tuple<Type, Action<Type>, Func<Assembly, bool>>>();
     
-    private readonly Dictionary<String, String> _shortNameMap = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> _shortNameMap = new Dictionary<string, string>();
 
     private InternCache<Validator> _validatorCache = new InternCache<Validator>();
     private InternCache<NamingConvention> _namingConventionCache = new InternCache<NamingConvention>();

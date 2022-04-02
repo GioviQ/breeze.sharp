@@ -16,7 +16,7 @@ namespace Model.Inheritance.Produce {
       InitializedTypes.Add("ItemOfProduce");
     }
 
-    public List<String> InitializedTypes {
+    public List<string> InitializedTypes {
       get;
       set;
     }

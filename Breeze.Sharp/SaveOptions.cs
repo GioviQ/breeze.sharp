@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Breeze.Sharp {
 
@@ -7,7 +7,7 @@ namespace Breeze.Sharp {
   /// </summary>
   public class SaveOptions : IJsonSerializable {
 
-    public SaveOptions(string resourceName=null, DataService dataService=null,  String tag=null) {
+    public SaveOptions(string resourceName = null, DataService dataService = null, string tag = null) {
       ResourceName = resourceName;
       DataService = dataService;
       Tag = tag;
@@ -18,15 +18,15 @@ namespace Breeze.Sharp {
       DataService = saveOptions.DataService;
       Tag = saveOptions.Tag;
     }
-    
+
     //public SaveOptions(JNode jNode) {
-      
-      
+
+
     //}
 
     JNode IJsonSerializable.ToJNode(object config) {
       var jn = new JNode();
-      
+
       jn.AddPrimitive("tag", Tag);
       return jn;
     }
@@ -34,11 +34,11 @@ namespace Breeze.Sharp {
 
     public static SaveOptions Default = new SaveOptions(null, null, null);
 
-    public String ResourceName { get; internal set; }
+    public string ResourceName { get; internal set; }
     public DataService DataService { get; internal set; }
-    public String Tag { get; set;  }
-    
+    public string Tag { get; set; }
+
   }
 
- 
+
 }

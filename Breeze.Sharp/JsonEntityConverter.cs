@@ -31,7 +31,7 @@ namespace Breeze.Sharp {
     // AllEntities is a list of all deserialized entities not just the top level ones.
     public List<IEntity> Entities { get; private set; }
     public JsonSerializer Serializer { get; internal set; }
-    public Dictionary<String, Object> RefMap { get; private set; }
+    public Dictionary<string, Object> RefMap { get; private set; }
 
     public MetadataStore MetadataStore {
       get { return EntityManager.MetadataStore; }
@@ -75,7 +75,7 @@ namespace Breeze.Sharp {
         return null;
       }
 
-      var value = serializer.Deserialize<String>(reader);
+      var value = serializer.Deserialize<string>(reader);
       return XmlConvert.ToTimeSpan(value);
     }
 
@@ -194,7 +194,7 @@ namespace Breeze.Sharp {
     private void ParseObject(NodeContext nodeContext, EntityAspect targetAspect) {
       // backingStore will be null if not allowed to overwrite the entity.
       var backingStore = (targetAspect == null) ? null : targetAspect.BackingStore;
-      var dict = (IDictionary<String, JToken>)nodeContext.Node;
+      var dict = (IDictionary<string, JToken>)nodeContext.Node;
       var structuralType = nodeContext.StructuralType;
       // needs to be the current namingConvention
       var nc = _mappingContext.EntityManager.MetadataStore.NamingConvention;
@@ -214,7 +214,7 @@ namespace Breeze.Sharp {
                 });
               } else {
                 var val = kvp.Value;
-                if (val.Type == JTokenType.Null && dp.ClrType != typeof(String) && !TypeFns.IsNullableType(dp.ClrType)) {
+                if (val.Type == JTokenType.Null && dp.ClrType != typeof(string) && !TypeFns.IsNullableType(dp.ClrType)) {
                   // this can only happen if the client is nonnullable but the server is nullable.
                   backingStore[key] = dp.DefaultValue;
                 } else if (dp.IsEnumType || (dp.DataType.ClrType == typeof(TimeSpan))) {

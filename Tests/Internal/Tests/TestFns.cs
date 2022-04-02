@@ -90,9 +90,9 @@ namespace Breeze.Sharp.Tests {
       public static Object[] AlfredsOrderDetailKey = new Object[] { 10643, 28 };
     }
 
-    public static String MorphString(String val) {
+    public static string MorphString(string val) {
       var suffix = "__";
-      if (String.IsNullOrEmpty(val)) {
+      if (string.IsNullOrEmpty(val)) {
         return suffix;
       } else {
         if (val.EndsWith(suffix)) {
@@ -104,13 +104,13 @@ namespace Breeze.Sharp.Tests {
       return val;
     }
 
-    private static String Revese(String s) {
+    private static string Revese(string s) {
       var charArray = s.ToCharArray();
       Array.Reverse(charArray);
       return new string(charArray);
     }
 
-    public static String RandomSuffix(int length) {
+    public static string RandomSuffix(int length) {
       // length should be less <= 18
       var suffix = DateTime.Now.Ticks.ToString().Reverse().Take(length).ToArray();
       return new string(suffix);

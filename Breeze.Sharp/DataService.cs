@@ -35,8 +35,8 @@ namespace Breeze.Sharp {
     /// </remarks>
     /// <param name="serviceName"></param>
     /// <param name="httpClient"></param>
-    public DataService(String serviceName, HttpClient httpClient = null) {
-      if (String.IsNullOrEmpty(serviceName)) {
+    public DataService(string serviceName, HttpClient httpClient = null) {
+      if (string.IsNullOrEmpty(serviceName)) {
         throw new ArgumentNullException("serviceName");
       }
       ServiceName = serviceName;
@@ -52,11 +52,11 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="jNode"></param>
     public DataService(JNode jNode) {
-      ServiceName = jNode.Get<String>("serviceName");
+      ServiceName = jNode.Get<string>("serviceName");
       HasServerMetadata = jNode.Get<bool>("hasServerMetadata");
 
       UseJsonP = jNode.Get<bool>("useJsonp");
-      Adapter = GetAdapter(jNode.Get<String>("adapterName"));
+      Adapter = GetAdapter(jNode.Get<string>("adapterName"));
       // TODO: need to do the same as above with JsonResultsAdapter.
       JsonResultsAdapter = Adapter.JsonResultsAdapter;
       InitializeHttpClient(null);
@@ -105,7 +105,7 @@ namespace Breeze.Sharp {
       return new WebApiDataServiceAdapter();
     }
 
-    public String ServiceName {
+    public string ServiceName {
       get { return _serviceName; }
       set {
         _serviceName = value.Trim();
@@ -124,13 +124,13 @@ namespace Breeze.Sharp {
     public IJsonResultsAdapter JsonResultsAdapter { get; set; }
 
     // Only available for server retrieved metadata
-    public String ServerMetadata { get; internal set; }
+    public string ServerMetadata { get; internal set; }
 
-    public async Task<String> GetAsync(String resourcePath) {
+    public async Task<string> GetAsync(string resourcePath) {
       return await GetAsync(resourcePath, CancellationToken.None);
     }
 
-    public async Task<String> GetAsync(String resourcePath, CancellationToken cancellationToken) {
+    public async Task<string> GetAsync(string resourcePath, CancellationToken cancellationToken) {
       try {
         var response = await _httpClient.GetAsync($"{ServiceName}{resourcePath}", cancellationToken);
 
@@ -146,7 +146,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public async Task<String> PostAsync(String resourcePath, String json) {
+    public async Task<string> PostAsync(string resourcePath, string json) {
 
       try {
         var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -190,7 +190,7 @@ namespace Breeze.Sharp {
 
 
     private HttpClient _httpClient;
-    private String _serviceName;
+    private string _serviceName;
     private static HttpMessageHandler __defaultHttpMessageHandler;
     private static Object __lock = new Object();
 
@@ -201,16 +201,16 @@ namespace Breeze.Sharp {
   /// See the HttpResponse property for detailed information on the failed request.
   /// </summary>
   public class DataServiceRequestException : HttpRequestException {
-    public DataServiceRequestException(String msg) : base(msg) {
+    public DataServiceRequestException(string msg) : base(msg) {
 
     }
 
-    public DataServiceRequestException(HttpResponseMessage httpResponse, String responseContent) : base(httpResponse.ReasonPhrase) {
+    public DataServiceRequestException(HttpResponseMessage httpResponse, string responseContent) : base(httpResponse.ReasonPhrase) {
       HttpResponse = httpResponse;
       ResponseContent = responseContent;
     }
 
-    public String ResponseContent { get; private set; }
+    public string ResponseContent { get; private set; }
     public HttpResponseMessage HttpResponse { get; private set; }
 
   }

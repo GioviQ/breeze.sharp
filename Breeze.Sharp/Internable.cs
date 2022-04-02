@@ -11,7 +11,7 @@ namespace Breeze.Sharp {
       
     }
 
-    public String Name {
+    public string Name {
       get;
       protected set;
     }

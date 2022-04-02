@@ -12,7 +12,7 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class QueryTests {
 
-    private String _serviceName;
+    private string _serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {
@@ -497,7 +497,7 @@ namespace Breeze.Sharp.Tests {
     }
 
     public class Dummy {
-      public String CompanyName;
+      public string CompanyName;
       public IEnumerable<Foo.Order> Orders;
     }
 

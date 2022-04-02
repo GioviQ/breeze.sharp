@@ -21,7 +21,7 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class PartialMetadataTests {
 
-    private String _serviceName = TestFns.serviceName;
+    private string _serviceName = TestFns.serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {

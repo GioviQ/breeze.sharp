@@ -20,12 +20,12 @@ namespace Breeze.Sharp {
       MetadataStore = metadataStore;
       _schema = json["schema"];
 
-      _namespace = (String)_schema["namespace"];
+      _namespace = (string)_schema["namespace"];
 
-      var mapping = (String)_schema["cSpaceOSpaceMapping"];
+      var mapping = (string)_schema["cSpaceOSpaceMapping"];
       if (mapping != null) {
         var tmp = (JArray)JsonConvert.DeserializeObject(mapping);
-        _cSpaceOSpaceMap = tmp.ToDictionary(v => (String)v[0], v => (String)v[1]);
+        _cSpaceOSpaceMap = tmp.ToDictionary(v => (string)v[0], v => (string)v[1]);
       }
 
       var entityTypes = ToEnumerable(_schema["entityType"]).Cast<JObject>()
@@ -47,10 +47,10 @@ namespace Breeze.Sharp {
       if (entityContainer != null) {
         var entitySets = ToEnumerable(entityContainer["entitySet"]).Cast<JObject>().ToList();
         entitySets.ForEach(es => {
-          var clientEtName = GetClientTypeNameFromClrTypeName((String)es["entityType"]);
+          var clientEtName = GetClientTypeNameFromClrTypeName((string)es["entityType"]);
           var entityType = MetadataStore.GetEntityType(clientEtName, true);
           if (entityType != null) {
-            var resourceName = (String)es["name"];
+            var resourceName = (string)es["name"];
             MetadataStore.SetResourceName(resourceName, entityType, true);
           }
         });
@@ -65,9 +65,9 @@ namespace Breeze.Sharp {
     }
 
     private EntityType ParseCsdlEntityType(JObject csdlEntityType) {
-      var abstractVal = (String)csdlEntityType["abstract"];
-      var baseTypeVal = (String)csdlEntityType["baseType"];
-      var shortNameVal = (String)csdlEntityType["name"];
+      var abstractVal = (string)csdlEntityType["abstract"];
+      var baseTypeVal = (string)csdlEntityType["baseType"];
+      var shortNameVal = (string)csdlEntityType["name"];
       var isAbstract = abstractVal == "true";
       var etName = GetClientTypeNameFromShortName(shortNameVal);
       var entityType = MetadataStore.GetEntityType(etName, true);
@@ -83,7 +83,7 @@ namespace Breeze.Sharp {
         var baseEtName = GetClientTypeNameFromClrTypeName(baseTypeVal);
         var baseEntityType = MetadataStore.GetEntityType(baseEtName, true);
         if (baseEntityType == null) {
-          var detail = String.Format("BaseType of: '{0}' not found", baseEtName);
+          var detail = string.Format("BaseType of: '{0}' not found", baseEtName);
           MetadataStore.OnMetadataMismatch(etName, null, MetadataMismatchTypes.InconsistentCLRTypeDefinition, detail);
           return null;
         }
@@ -94,8 +94,8 @@ namespace Breeze.Sharp {
 
       var keyVal = csdlEntityType["key"];
       var keyNamesOnServer = keyVal == null
-        ? new List<String>()
-        : ToEnumerable(keyVal["propertyRef"]).Select(x => (String)x["name"]).ToList();
+        ? new List<string>()
+        : ToEnumerable(keyVal["propertyRef"]).Select(x => (string)x["name"]).ToList();
 
       keyNamesOnServer.AddRange(baseKeyNamesOnServer);
 
@@ -111,7 +111,7 @@ namespace Breeze.Sharp {
 
     }
 
-    private DataProperty ParseCsdlDataProperty(StructuralType parentType, JObject csdlProperty, List<String> keyNamesOnServer) {
+    private DataProperty ParseCsdlDataProperty(StructuralType parentType, JObject csdlProperty, List<string> keyNamesOnServer) {
       DataProperty dp;
       var typeParts = ExtractTypeNameParts(csdlProperty);
 
@@ -120,7 +120,7 @@ namespace Breeze.Sharp {
       } else {
         if (IsEnumType(csdlProperty)) {
           dp = ParseCsdlSimpleProperty(parentType, csdlProperty, keyNamesOnServer);
-          dp.EnumTypeName = (String)csdlProperty["type"];
+          dp.EnumTypeName = (string)csdlProperty["type"];
         } else {
           dp = ParseCsdlComplexProperty(parentType, csdlProperty);
         }
@@ -132,17 +132,17 @@ namespace Breeze.Sharp {
       return dp;
     }
 
-    private DataProperty ParseCsdlSimpleProperty(StructuralType parentType, JObject csdlProperty, List<String> keyNamesOnServer) {
+    private DataProperty ParseCsdlSimpleProperty(StructuralType parentType, JObject csdlProperty, List<string> keyNamesOnServer) {
 
-      var typeVal = (String)csdlProperty["type"];
+      var typeVal = (string)csdlProperty["type"];
 
       if (typeVal == "Edm.Time")
         typeVal = "Edm.TimeSpan";
 
-      var nameVal = (String)csdlProperty["name"];
-      var nullableVal = (String)csdlProperty["nullable"];
-      var maxLengthVal = (String)csdlProperty["maxLength"];
-      var concurrencyModeVal = (String)csdlProperty["concurrencyMode"];
+      var nameVal = (string)csdlProperty["name"];
+      var nullableVal = (string)csdlProperty["nullable"];
+      var maxLengthVal = (string)csdlProperty["maxLength"];
+      var concurrencyModeVal = (string)csdlProperty["concurrencyMode"];
 
       var dataType = DataType.FromEdmType(typeVal);
       if (dataType == DataType.Undefined) {
@@ -205,9 +205,9 @@ namespace Breeze.Sharp {
       // Complex properties are never nullable ( per EF specs)
       // var isNullable = csdlProperty.nullable === 'true' || csdlProperty.nullable == null;
 
-      var complexTypeName = GetClientTypeNameFromClrTypeName((String)csdlProperty["type"]);
+      var complexTypeName = GetClientTypeNameFromClrTypeName((string)csdlProperty["type"]);
       // can't set the name until we go thru namingConventions and these need the dp.
-      var nameOnServer = (String)csdlProperty["name"];
+      var nameOnServer = (string)csdlProperty["name"];
       var name = NamingConvention.ServerPropertyNameToClient(nameOnServer, parentType);
       var dp = parentType.GetDataProperty(name);
       if (dp == null) {
@@ -227,12 +227,12 @@ namespace Breeze.Sharp {
 
     private NavigationProperty ParseCsdlNavigationProperty(EntityType parentType, JObject csdlProperty) {
       var association = GetAssociation(csdlProperty);
-      var toRoleVal = (String)csdlProperty["toRole"];
-      var fromRoleVal = (String)csdlProperty["fromRole"];
-      var nameOnServer = (String)csdlProperty["name"];
-      var toEnd = ToEnumerable(association["end"]).FirstOrDefault(end => (String)end["role"] == toRoleVal);
-      var isScalar = (String)toEnd["multiplicity"] != "*";
-      var dataEtName = GetClientTypeNameFromClrTypeName((String)toEnd["type"]);
+      var toRoleVal = (string)csdlProperty["toRole"];
+      var fromRoleVal = (string)csdlProperty["fromRole"];
+      var nameOnServer = (string)csdlProperty["name"];
+      var toEnd = ToEnumerable(association["end"]).FirstOrDefault(end => (string)end["role"] == toRoleVal);
+      var isScalar = (string)toEnd["multiplicity"] != "*";
+      var dataEtName = GetClientTypeNameFromClrTypeName((string)toEnd["type"]);
       var constraintVal = association["referentialConstraint"];
       if (constraintVal == null) {
         return null;
@@ -256,15 +256,15 @@ namespace Breeze.Sharp {
       CheckProperty(np, np.EntityType.Name, dataEtName, "EntityTypeName");
       CheckProperty(np, np.IsScalar, isScalar, "IsScalar");
 
-      np.AssociationName = (String)association["name"];
+      np.AssociationName = (string)association["name"];
 
       var principal = constraintVal["principal"];
       var dependent = constraintVal["dependent"];
 
       var propRefs = ToEnumerable(dependent["propertyRef"]);
-      var fkNamesOnServer = propRefs.Select(pr => (String)pr["name"]).ToSafeList();
+      var fkNamesOnServer = propRefs.Select(pr => (string)pr["name"]).ToSafeList();
       var fkNames = fkNamesOnServer.Select(fkn => NamingConvention.ServerPropertyNameToClient(fkn, parentType));
-      if (fromRoleVal == (String)principal["role"]) {
+      if (fromRoleVal == (string)principal["role"]) {
         np.SetInvFkNames(fkNames);
       } else {
         np.SetFkNames(fkNames);
@@ -277,16 +277,16 @@ namespace Breeze.Sharp {
       var assocsVal = _schema["association"];
       if (assocsVal == null) return null;
 
-      var relationshipVal = (String)csdlNavProperty["relationship"];
+      var relationshipVal = (string)csdlNavProperty["relationship"];
       var assocName = ParseClrTypeName(relationshipVal).ShortName;
 
-      var association = ToEnumerable(assocsVal).FirstOrDefault(assoc => (String)assoc["name"] == assocName);
+      var association = ToEnumerable(assocsVal).FirstOrDefault(assoc => (string)assoc["name"] == assocName);
 
       return (JObject)association;
     }
 
     private ComplexType ParseCsdlComplexType(JObject csdlComplexType) {
-      var nameVal = (String)csdlComplexType["name"];
+      var nameVal = (string)csdlComplexType["name"];
       var clientTypeName = GetClientTypeNameFromShortName(nameVal);
       var complexType = MetadataStore.GetComplexType(clientTypeName);
       if (complexType == null) {
@@ -312,10 +312,10 @@ namespace Breeze.Sharp {
     }
 
     // Different from TypeNameInfo.FromClrTypeName because of cSpaceOSpaceMap
-    private TypeNameInfo ParseClrTypeName(String clrTypeName) {
-      if (String.IsNullOrEmpty(clrTypeName)) return null;
+    private TypeNameInfo ParseClrTypeName(string clrTypeName) {
+      if (string.IsNullOrEmpty(clrTypeName)) return null;
       if (clrTypeName.StartsWith(MetadataStore.ANONTYPE_PREFIX)) {
-        return new TypeNameInfo(clrTypeName, String.Empty, true);
+        return new TypeNameInfo(clrTypeName, string.Empty, true);
       }
 
       var entityTypeNameNoAssembly = clrTypeName.Split(',')[0];
@@ -326,15 +326,15 @@ namespace Breeze.Sharp {
         var ns = GetNamespaceFor(shortName);
         return new TypeNameInfo(shortName, ns);
       } else {
-        return new TypeNameInfo(clrTypeName, String.Empty);
+        return new TypeNameInfo(clrTypeName, string.Empty);
       }
     }
 
-    private String GetNamespaceFor(String shortName) {
+    private string GetNamespaceFor(string shortName) {
 
       if (_cSpaceOSpaceMap != null) {
         var cSpaceName = _namespace + "." + shortName;
-        String oSpaceName;
+        string oSpaceName;
         if (_cSpaceOSpaceMap.TryGetValue(cSpaceName, out oSpaceName)) {
           var ns = oSpaceName.Substring(0, oSpaceName.Length - (shortName.Length + 1));
           return ns;
@@ -347,14 +347,14 @@ namespace Breeze.Sharp {
 
       var subProp = csdlProperty.Properties().FirstOrDefault(p => p.Name.IndexOf("StoreGeneratedPattern", StringComparison.Ordinal) > 0);
       if (subProp != null) {
-        return subProp.Value.ToObject<String>() == "Identity";
+        return subProp.Value.ToObject<string>() == "Identity";
       } else {
         // see if Odata feed
         var extensionsVal = csdlProperty["extensions"];
         if (extensionsVal == null) return false;
         // TODO: NOT YET TESTED
         var identityExtn = ToEnumerable(extensionsVal).FirstOrDefault(extn => {
-          return (String)extn["name"] == "StoreGeneratedPattern" && (String)extn["value"] == "Identity";
+          return (string)extn["name"] == "StoreGeneratedPattern" && (string)extn["value"] == "Identity";
         });
         return identityExtn != null;
       }
@@ -370,19 +370,19 @@ namespace Breeze.Sharp {
       }
     }
 
-    internal void CheckStructuralType(StructuralType stType, Object v1, Object v2, String name) {
+    internal void CheckStructuralType(StructuralType stType, Object v1, Object v2, string name) {
       if (v1 == null && v2 == null) return;
       if (Object.Equals(v1, v2)) return;
-      var detail = String.Format("Type property: {0}, Client value: '{1}',  Server value: '{2}'",
+      var detail = string.Format("Type property: {0}, Client value: '{1}',  Server value: '{2}'",
         name, (v1 ?? "").ToString(), (v2 ?? "").ToString());
       MetadataStore.OnMetadataMismatch(stType.Name, null, MetadataMismatchTypes.InconsistentCLRTypeDefinition, detail);
     }
 
 
-    internal void CheckProperty(StructuralProperty prop, Object v1, Object v2, String name) {
+    internal void CheckProperty(StructuralProperty prop, Object v1, Object v2, string name) {
       if (v1 == null && v2 == null) return;
       if (Object.Equals(v1, v2)) return;
-      var detail = String.Format("Client value: '{0}',  Server value: '{1}'",
+      var detail = string.Format("Client value: '{0}',  Server value: '{1}'",
         (v1 ?? "").ToString(), (v2 ?? "").ToString());
       MetadataStore.OnMetadataMismatch(prop.ParentType.Name, prop.Name, MetadataMismatchTypes.InconsistentCLRPropertyDefinition, detail);
     }
@@ -394,11 +394,11 @@ namespace Breeze.Sharp {
       var enumTypes = ToEnumerable(enumTypeVal);
       var typeParts = ExtractTypeNameParts(csdlProperty);
       var baseTypeName = typeParts[typeParts.Length - 1];
-      return enumTypes.Any(enumType => ((String)enumType["name"] == baseTypeName));
+      return enumTypes.Any(enumType => ((string)enumType["name"] == baseTypeName));
     }
 
-    private String[] ExtractTypeNameParts(JObject csdlProperty) {
-      var typeParts = ((String)csdlProperty["type"]).Split('.');
+    private string[] ExtractTypeNameParts(JObject csdlProperty) {
+      var typeParts = ((string)csdlProperty["type"]).Split('.');
       return typeParts;
     }
 
@@ -413,9 +413,9 @@ namespace Breeze.Sharp {
     }
 
     private JToken _schema;
-    private String _namespace;
+    private string _namespace;
 
-    private Dictionary<String, String> _cSpaceOSpaceMap;
+    private Dictionary<string, string> _cSpaceOSpaceMap;
 
 
   }

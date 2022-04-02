@@ -20,7 +20,7 @@ namespace Breeze.Sharp.Tests {
 
     // TODO: need Exp/Imp tests with Complex type changes.
 
-    private String _serviceName;
+    private string _serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod()
@@ -189,7 +189,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(allEntities.OfType<Employee>().All(c => c.EntityAspect.EntityState.IsAdded()));
       Assert.IsTrue(impResult.ImportedEntities.Count == 2, "should have only imported 2 entities");
       Assert.IsTrue(custs.All(c => c.City == "London"), "city should still be London after import");
-      Assert.IsTrue(custs.All(c => ((String)c.EntityAspect.OriginalValuesMap["City"]) != "London"), "original city should not be London");
+      Assert.IsTrue(custs.All(c => ((string)c.EntityAspect.OriginalValuesMap["City"]) != "London"), "original city should not be London");
       Assert.IsTrue(impResult.TempKeyMap.All(kvp => kvp.Key != kvp.Value), "imported entities should not have same key values");
     }
 
@@ -221,7 +221,7 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(allEntities.Count() == 9, "should have 9 entities in the cache");
 
       Assert.IsTrue(custs.All(c => c.City == "Paris"), "city should be Paris after import");
-      Assert.IsTrue(custs.All(c => ((String)c.EntityAspect.OriginalValuesMap["City"]) != "Paris"), "original city should not be Paris");
+      Assert.IsTrue(custs.All(c => ((string)c.EntityAspect.OriginalValuesMap["City"]) != "Paris"), "original city should not be Paris");
       Assert.IsTrue(allEntities.OfType<Customer>().Count() == 5, "should only be the original 5 custs");
       Assert.IsTrue(allEntities.OfType<Employee>().Count() == 4, "should be 4 emps (2 + 2) ");
       Assert.IsTrue(allEntities.OfType<Customer>().Count(c => c.EntityAspect.EntityState.IsModified()) == 2, "should only be 2 modified customers");

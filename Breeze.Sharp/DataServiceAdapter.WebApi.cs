@@ -15,7 +15,7 @@ namespace Breeze.Sharp {
   /// </summary>
   public class WebApiDataServiceAdapter : IDataServiceAdapter {
 
-    public String Name {
+    public string Name {
       get { return "WebApi"; }
     }
 
@@ -172,7 +172,7 @@ namespace Breeze.Sharp {
   }
 
   internal class KeyMapping {
-    public String EntityTypeName;
+    public string EntityTypeName;
     public Object TempValue;
     public Object RealValue;
   }
@@ -194,18 +194,18 @@ namespace Breeze.Sharp {
 
       JToken refToken;
       if (node.TryGetValue("$ref", out refToken)) {
-        result.NodeRefId = refToken.Value<String>();
+        result.NodeRefId = refToken.Value<string>();
         return result;
       }
 
       JToken idToken;
       if (node.TryGetValue("$id", out idToken)) {
-        result.NodeId = idToken.Value<String>();
+        result.NodeId = idToken.Value<string>();
       }
 
       JToken typeToken;
       if (node.TryGetValue("$type", out typeToken)) {
-        var clrTypeName = typeToken.Value<String>();
+        var clrTypeName = typeToken.Value<string>();
         result.ServerTypeNameInfo = TypeNameInfo.FromClrTypeName(clrTypeName);
       }
 

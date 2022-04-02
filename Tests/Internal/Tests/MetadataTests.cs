@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -22,7 +22,7 @@ namespace Breeze.Sharp.Tests {
 
     
 
-    private String _serviceName;
+    private string _serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {
@@ -68,9 +68,9 @@ namespace Breeze.Sharp.Tests {
     // Warning: use only with metadata loaded directly from server
     public class UnderscoreRemovallNamingConvention : NamingConvention {
 
-      private Dictionary<String, String> _clientServerPropNameMap = new Dictionary<string, string>();
+      private Dictionary<string, string> _clientServerPropNameMap = new Dictionary<string, string>();
 
-      public override String ServerPropertyNameToClient(String serverPropertyName, StructuralType parentType) {
+      public override string ServerPropertyNameToClient(string serverPropertyName, StructuralType parentType) {
         if (serverPropertyName.IndexOf("_", StringComparison.InvariantCulture) != -1) {
           var clientPropertyName = serverPropertyName.Replace("_", "");
           _clientServerPropNameMap[clientPropertyName] = serverPropertyName;
@@ -81,7 +81,7 @@ namespace Breeze.Sharp.Tests {
       }
 
       public override string ClientPropertyNameToServer(string clientPropertyName, StructuralType parentType) {
-        String serverPropertyName;
+        string serverPropertyName;
         if (_clientServerPropNameMap.TryGetValue(clientPropertyName, out serverPropertyName)) {
           serverPropertyName = clientPropertyName;
         }

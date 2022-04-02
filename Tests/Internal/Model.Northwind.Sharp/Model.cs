@@ -17,11 +17,11 @@ namespace Foo {
       set { SetValue(value); }
     }
     public string CategoryName {
-      get { return GetValue<String>(); }
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
     public string Description {
-      get { return GetValue<String>(); }
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
     public byte[] Picture {
@@ -99,7 +99,7 @@ namespace Foo {
       get { return GetValue<NavigationSet<Order>>(); }
     }
 
-    public String ExtraData {
+    public string ExtraData {
       get;
       set;
     }
@@ -187,7 +187,7 @@ namespace Foo {
       get { return GetValue<int>(); }
       set { SetValue(value); }
     }
-    public String FullName {
+    public string FullName {
       get { return GetValue<string>(); }
       set { SetValue(value); }
     }
@@ -761,7 +761,7 @@ namespace Foo {
       set { SetValue(value); }
     }
     public string CustomsDescription {
-      get { return GetValue<String>(); }
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
     public decimal ExciseTax {
@@ -834,7 +834,7 @@ namespace Foo {
       set { SetValue(value); }
     }
     public string Comment1 {
-      get { return GetValue<String>(); }
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
 

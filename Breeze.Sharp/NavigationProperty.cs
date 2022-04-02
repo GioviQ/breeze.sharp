@@ -10,8 +10,8 @@ namespace Breeze.Sharp {
   /// <summary>
   /// For internal use only.
   /// </summary>
-  internal class NavigationPropertyCollection : MapCollection<String, NavigationProperty> {
-    protected override String GetKeyForItem(NavigationProperty item) {
+  internal class NavigationPropertyCollection : MapCollection<string, NavigationProperty> {
+    protected override string GetKeyForItem(NavigationProperty item) {
       return item.Name;
     }
   }
@@ -26,7 +26,7 @@ namespace Breeze.Sharp {
   public class NavigationProperty : StructuralProperty, IJsonSerializable {
     // TODO: what about IsNullable on a scalar navigation property
 
-    internal NavigationProperty(String name) : base(name) {
+    internal NavigationProperty(string name) : base(name) {
       
     }
 
@@ -46,10 +46,10 @@ namespace Breeze.Sharp {
       var etName = MetadataStore.GetStructuralTypeNameFromJNode(jNode, "entityTypeName", isFromServer);
       Check(EntityType.Name, etName, "EntityTypeName");
       IsScalar = jNode.Get<bool>("isScalar", true);
-      AssociationName = jNode.Get<String>("associationName");
+      AssociationName = jNode.Get<string>("associationName");
       _validators = new ValidatorCollection(jNode.GetJNodeArray("validators"));
-      SetFkNames(jNode.GetArray<String>( isFromServer ? "foreignKeyNamesOnServer" : "foreignKeyNames"));
-      SetInvFkNames(jNode.GetArray<String>(isFromServer ? "invForeignKeyNamesOnServer" : "invForeignKeyNames"));
+      SetFkNames(jNode.GetArray<string>( isFromServer ? "foreignKeyNamesOnServer" : "foreignKeyNames"));
+      SetInvFkNames(jNode.GetArray<string>(isFromServer ? "invForeignKeyNamesOnServer" : "invForeignKeyNames"));
       // custom
     }
 
@@ -83,7 +83,7 @@ namespace Breeze.Sharp {
     /// The name of the association to which that this property belongs. 
     /// This associationName will be shared with this properties 'Inverse', if it exists.
     /// </summary>
-    public String AssociationName { get; internal set; }
+    public string AssociationName { get; internal set; }
     
     /// <summary>
     /// The inverse of this NavigationProperty. The NavigationProperty that 
@@ -108,14 +108,14 @@ namespace Breeze.Sharp {
     /// There will usually only be a single DataProperty associated with a Navigation property
     /// except in the case of entities with multipart keys.
     /// </summary>
-    public ReadOnlyCollection<String> ForeignKeyNames {
+    public ReadOnlyCollection<string> ForeignKeyNames {
       get { return _fkNames.ReadOnlyValues;  }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public ReadOnlyCollection<String> InvForeignKeyNames {
+    public ReadOnlyCollection<string> InvForeignKeyNames {
       get { return _invFkNames.ReadOnlyValues; }
     }
 
@@ -145,16 +145,16 @@ namespace Breeze.Sharp {
       }
     }
 
-    internal void SetFkNames(IEnumerable<String> fkNames) {
+    internal void SetFkNames(IEnumerable<string> fkNames) {
       _fkNames.AddRange(fkNames);
     }
 
-    internal void SetInvFkNames(IEnumerable<String> invFkNames) {
+    internal void SetInvFkNames(IEnumerable<string> invFkNames) {
       _invFkNames.AddRange(invFkNames);
     }
 
 
-    internal void AddInvFkName(String invFkName) {
+    internal void AddInvFkName(string invFkName) {
       if (!_fkNames.Contains(invFkName)) {
         _invFkNames.Add(invFkName);
       }
@@ -180,8 +180,8 @@ namespace Breeze.Sharp {
     public override bool IsNavigationProperty { get { return true; } }
 
     private readonly SafeList<DataProperty> _relatedDataProperties = new SafeList<DataProperty>();
-    private readonly SafeList<String> _fkNames = new SafeList<string>();
-    private readonly SafeList<String> _invFkNames = new SafeList<string>();
+    private readonly SafeList<string> _fkNames = new SafeList<string>();
+    private readonly SafeList<string> _invFkNames = new SafeList<string>();
     
 
     private SafeList<DataProperty> _fkProps = null;

@@ -125,7 +125,7 @@ namespace Breeze.Sharp.Tests {
 
       var vr = new RequiredValidator();
       var mt = vr.LocalizedMessage.Message;
-      Assert.IsTrue(!String.IsNullOrEmpty(mt));
+      Assert.IsTrue(!string.IsNullOrEmpty(mt));
       Assert.IsTrue(vr.LocalizedMessage.IsLocalized);
     }
 
@@ -277,16 +277,16 @@ namespace Breeze.Sharp.Tests {
     }
 
     public class CountryValidator : Validator {
-      public CountryValidator(String countryAbbrev)
+      public CountryValidator(string countryAbbrev)
         : base() {
         CountryAbbrev = countryAbbrev;
         LocalizedMessage = new LocalizedMessage("{0} must start with the '" + countryAbbrev + "', '{1}' is not valid ");
       }
 
-      public String CountryAbbrev { get; private set; }
+      public string CountryAbbrev { get; private set; }
 
       protected override bool ValidateCore(ValidationContext context) {
-        var value = (String) context.PropertyValue;
+        var value = (string) context.PropertyValue;
         if (value == null) return true;
         return value.StartsWith(CountryAbbrev);
       }
@@ -296,7 +296,7 @@ namespace Breeze.Sharp.Tests {
       }
     }
 
-    private void CustPropValAssert(Customer cust, String propValue, int count) {
+    private void CustPropValAssert(Customer cust, string propValue, int count) {
       var valErrors = cust.EntityAspect.ValidationErrors;
       cust.Address = propValue;
       if (valErrors.Count > 0) {

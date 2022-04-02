@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,7 +120,7 @@ namespace Breeze.Sharp.Core {
         }
         sb.Append(aObject.ToString());
       }
-      if (sb == null) return String.Empty;
+      if (sb == null) return string.Empty;
       return sb.ToString();
     }
 

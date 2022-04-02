@@ -1,4 +1,4 @@
-﻿using Breeze.Sharp.Core;
+using Breeze.Sharp.Core;
 using Newtonsoft.Json;     // need because of JsonIgnore attribute
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace Breeze.Sharp {
   /// </remarks>
   public abstract class Validator : Internable {
 
-    public const String Suffix = "Validator";
+    public const string Suffix = "Validator";
 
     static Validator() {
       Configuration.Instance.ProbeAssemblies(typeof(Validator).GetTypeInfo().Assembly);
@@ -42,7 +42,7 @@ namespace Breeze.Sharp {
     }
 
     [JsonIgnore]
-    public String LocalizedKey {
+    public string LocalizedKey {
       get {
         return _localizedKey ?? "Val_" + Name;
       }
@@ -78,7 +78,7 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <param name="validationContext"></param>
     /// <returns></returns>
-    public abstract String GetErrorMessage(ValidationContext validationContext);
+    public abstract string GetErrorMessage(ValidationContext validationContext);
 
     /// <summary>
     /// For internal use only - used during validator deserialization.
@@ -149,7 +149,7 @@ namespace Breeze.Sharp {
   /// </summary>
   public static class ValidatorExtensions {
 
-    public static T WithMessage<T>(this T validator, String message) where T: Validator {
+    public static T WithMessage<T>(this T validator, string message) where T: Validator {
       return WithMessage(validator, new LocalizedMessage(message));
     }
 
@@ -157,7 +157,7 @@ namespace Breeze.Sharp {
       return WithMessage(validator, new LocalizedMessage(key: validator.LocalizedKey, resourceType: resourceType));
     }
 
-    public static T WithMessage<T>(this T validator, String baseName, Assembly assembly) where T : Validator {
+    public static T WithMessage<T>(this T validator, string baseName, Assembly assembly) where T : Validator {
       return WithMessage(validator, new LocalizedMessage(key: validator.LocalizedKey, baseName: baseName, assembly: assembly));
     }
 

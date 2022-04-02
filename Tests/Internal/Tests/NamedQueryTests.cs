@@ -21,7 +21,7 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class NamedQueryTests {
 
-    private String _serviceName;
+    private string _serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {
@@ -111,7 +111,7 @@ namespace Breeze.Sharp.Tests {
     public async Task CompanyNames() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var q = new EntityQuery<String>("CompanyNames");
+      var q = new EntityQuery<string>("CompanyNames");
       var rp = q.GetResourcePath(em1.MetadataStore);
       var companyNames = await q.Execute(em1);
       Assert.IsTrue(companyNames.Count() > 0, "should be some results");
@@ -120,7 +120,7 @@ namespace Breeze.Sharp.Tests {
       rp = q2.GetResourcePath(em1.MetadataStore);
       var companyNames2 = await q2.Execute(em1);
       Assert.IsTrue(companyNames2.Count() > 0, "should be some results");
-      Assert.IsTrue(companyNames.SequenceEqual(companyNames2.Cast<String>()));
+      Assert.IsTrue(companyNames.SequenceEqual(companyNames2.Cast<string>()));
     }
 
     [TestMethod]
@@ -133,7 +133,7 @@ namespace Breeze.Sharp.Tests {
       // each item is a JObject
       var companyNamesAndIdObjects = companyNamesAndIds.Cast<JObject>();
       var item = companyNamesAndIdObjects.First();
-      var companyName = item["CompanyName"].ToObject<String>();
+      var companyName = item["CompanyName"].ToObject<string>();
       var id = item["CustomerID"].ToObject<Guid>();
     }
 
@@ -246,7 +246,7 @@ namespace Breeze.Sharp.Tests {
       //      .withParameters( { CompanyName: "A", ContactNames: ["B", "C"] , City: "Los Angeles"  } );
       var q = new EntityQuery<Customer>("SearchCustomers")
         .WithParameter("CompanyName", "A")
-        .WithParameter("ContactNames", new String[] { "B", "C" })
+        .WithParameter("ContactNames", new string[] { "B", "C" })
         .WithParameter("City", "LosAngeles");
       var rp = q.GetResourcePath(em1.MetadataStore);
       var results = await q.Execute(em1);
@@ -265,9 +265,9 @@ namespace Breeze.Sharp.Tests {
       //var query = EntityQuery.from("SearchCustomers")
       //      .withParameters( { CompanyName: "A", ContactNames: ["B", "C"] , City: "Los Angeles"  } );
       var q = new EntityQuery<Customer>("SearchCustomers")
-        .WithParameters(new Dictionary<String, Object> {
+        .WithParameters(new Dictionary<string, Object> {
           { "CompanyName", "A" }, 
-          { "ContactNames", new String[] { "B", "C" }},
+          { "ContactNames", new string[] { "B", "C" }},
           { "City", "LosAngeles" }
       });
       var rp = q.GetResourcePath(em1.MetadataStore);
