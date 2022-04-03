@@ -42,9 +42,9 @@ namespace Breeze.Sharp {
 
 
 
-    private ParameterExpression _entityManagerParameterExpr;
-    private CacheQueryOptions _cacheQueryOptions;
-    private EntityQuery _query;
+    private readonly ParameterExpression _entityManagerParameterExpr;
+    private readonly CacheQueryOptions _cacheQueryOptions;
+    private readonly EntityQuery _query;
 
     #region Visit methods 
 

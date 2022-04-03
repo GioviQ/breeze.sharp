@@ -21,7 +21,7 @@ namespace Breeze.Sharp.Core {
       get { return _values; }
     }
 
-    private ReadOnlyCollection<T> _values;
+    private readonly ReadOnlyCollection<T> _values;
   }
 
 

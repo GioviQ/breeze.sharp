@@ -152,8 +152,8 @@ namespace Breeze.Sharp {
         GuidOrdering.GetHashCode();
     }
 
-    private static object __lock = new object();
-    private static CacheQueryOptions __default;
+    private static readonly object __lock = new object();
+    private static readonly CacheQueryOptions __default;
 
   }
 

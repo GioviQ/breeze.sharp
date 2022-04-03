@@ -39,8 +39,9 @@ namespace Breeze.Sharp {
     }
 
     public LocalizedMessage WithDefaultMessage(string defaultMessage) {
-      var lm = new LocalizedMessage(this);
-      lm.DefaultMessage = defaultMessage;
+      var lm = new LocalizedMessage(this) {
+        DefaultMessage = defaultMessage
+      };
       return lm;
     }
 
@@ -150,14 +151,14 @@ namespace Breeze.Sharp {
     }
 
     private ResourceManager _resourceManager;
-    private Func<ResourceManager> _resourceManagerFn;
+    private readonly Func<ResourceManager> _resourceManagerFn;
     private string _message;
     private bool _isLocalized;
 
-    private static object __lock = new object();
-    private static Dictionary<Type, ResourceManager> __resourceManagerTypeMap = new Dictionary<Type, ResourceManager>();
-    private static Dictionary<Tuple<string, Assembly>, ResourceManager> __resourceManagerFileMap = new Dictionary<Tuple<string, Assembly>, ResourceManager>();
-    private static ResourceManager __defaultResourceManager = new ResourceManager("Breeze.Sharp.LocalizedMessages", typeof(LocalizedMessage).GetTypeInfo().Assembly);
+    private static readonly object __lock = new object();
+    private static readonly Dictionary<Type, ResourceManager> __resourceManagerTypeMap = new Dictionary<Type, ResourceManager>();
+    private static readonly Dictionary<Tuple<string, Assembly>, ResourceManager> __resourceManagerFileMap = new Dictionary<Tuple<string, Assembly>, ResourceManager>();
+    private static readonly ResourceManager __defaultResourceManager = new ResourceManager("Breeze.Sharp.LocalizedMessages", typeof(LocalizedMessage).GetTypeInfo().Assembly);
   }
 
 

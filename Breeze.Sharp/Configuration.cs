@@ -215,7 +215,7 @@ namespace Breeze.Sharp {
           T cachedInternable;
           if (JNodeMap.TryGetValue(jNode, out cachedInternable)) {
             cachedInternable.IsInterned = true;
-            return (T)cachedInternable;
+            return cachedInternable;
           } else {
             JNodeMap[jNode] = internable;
             internable.IsInterned = true;
@@ -260,15 +260,15 @@ namespace Breeze.Sharp {
     private readonly AsyncSemaphore _asyncSemaphore = new AsyncSemaphore(1);
     private readonly object _lock = new object();
 
-    private Dictionary<string, Type> _clrTypeMap = new Dictionary<string, Type>();
+    private readonly Dictionary<string, Type> _clrTypeMap = new Dictionary<string, Type>();
 
     private readonly HashSet<Assembly> _probedAssemblies = new HashSet<Assembly>();
     private readonly List<Tuple<Type, Action<Type>, Func<Assembly, bool>>> _typeDiscoveryActions = new List<Tuple<Type, Action<Type>, Func<Assembly, bool>>>();
 
     private readonly Dictionary<string, string> _shortNameMap = new Dictionary<string, string>();
 
-    private InternCache<Validator> _validatorCache = new InternCache<Validator>();
-    private InternCache<NamingConvention> _namingConventionCache = new InternCache<NamingConvention>();
+    private readonly InternCache<Validator> _validatorCache = new InternCache<Validator>();
+    private readonly InternCache<NamingConvention> _namingConventionCache = new InternCache<NamingConvention>();
 
     #endregion
 

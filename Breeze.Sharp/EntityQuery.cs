@@ -66,8 +66,9 @@ namespace Breeze.Sharp {
     /// <param name="resourceName"></param>
     /// <returns></returns>
     public EntityQuery<T> From(string resourceName) {
-      var q = new EntityQuery<T>(this);
-      q.ResourceName = resourceName;
+      var q = new EntityQuery<T>(this) {
+        ResourceName = resourceName
+      };
       return q;
     }
 
@@ -124,8 +125,9 @@ namespace Breeze.Sharp {
     /// <param name="navigationPropertyFn"></param>
     /// <returns></returns>
     public EntityQuery<T> Expand<TTarget>(Expression<Func<T, TTarget>> navigationPropertyFn) {
-      var q = new EntityQuery<T>(this);
-      q.DataServiceQuery = DataServiceQuery.Expand(navigationPropertyFn);
+      var q = new EntityQuery<T>(this) {
+        DataServiceQuery = DataServiceQuery.Expand(navigationPropertyFn)
+      };
       return q;
     }
 
@@ -138,8 +140,9 @@ namespace Breeze.Sharp {
     /// <param name="path"></param>
     /// <returns></returns>
     public EntityQuery<T> Expand(string path) {
-      var q = new EntityQuery<T>(this);
-      q.DataServiceQuery = DataServiceQuery.Expand(path.Replace('.', '/'));
+      var q = new EntityQuery<T>(this) {
+        DataServiceQuery = DataServiceQuery.Expand(path.Replace('.', '/'))
+      };
       return q;
     }
 
@@ -158,8 +161,9 @@ namespace Breeze.Sharp {
       var q = this;
 
       if (value != null) {
-        q = new EntityQuery<T>(this);
-        q.DataServiceQuery = DataServiceQuery.AddQueryOption(name, value);
+        q = new EntityQuery<T>(this) {
+          DataServiceQuery = DataServiceQuery.AddQueryOption(name, value)
+        };
       }
 
       return q;
@@ -187,8 +191,9 @@ namespace Breeze.Sharp {
     /// </summary>
     /// <returns></returns>
     public EntityQuery<T> InlineCount() {
-      var q = new EntityQuery<T>(this);
-      q.DataServiceQuery = DataServiceQuery.IncludeTotalCount();
+      var q = new EntityQuery<T>(this) {
+        DataServiceQuery = DataServiceQuery.IncludeTotalCount()
+      };
       return q;
     }
 
@@ -390,8 +395,8 @@ namespace Breeze.Sharp {
     }
 
 
-    private static string __placeholderServiceName = "http://localhost:7890/breeze/Undefined/";
-    private static string __placeholderResourceName = "__Undefined__";
+    private static readonly string __placeholderServiceName = "http://localhost:7890/breeze/Undefined/";
+    private static readonly string __placeholderResourceName = "__Undefined__";
 
   }
 

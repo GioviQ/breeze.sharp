@@ -232,7 +232,7 @@ namespace Breeze.Sharp {
     /// <returns></returns>
     public override bool Equals(object obj) {
       var other = obj as EntityAspect;
-      if ((object)other == null) {
+      if (other == null) {
         return (obj == null && IsNullEntity);
       }
       if (IsNullEntity && other.IsNullEntity) return true;
@@ -1541,7 +1541,7 @@ namespace Breeze.Sharp {
     private EntityType _entityType;
     private EntityGroup _entityGroup;
     private EntityState _entityState = EntityState.Detached;
-    private ValidationErrorCollection _validationErrors;
+    private readonly ValidationErrorCollection _validationErrors;
     // should only ever be set to either current or proposed ( never original)
     private EntityVersion _entityVersion = EntityVersion.Current;
 

@@ -371,8 +371,8 @@ namespace Breeze.Sharp {
 
     #endregion
 
-    private List<EntityAspect> _innerList;
-    private List<int> _emptyIndexes;
+    private readonly List<EntityAspect> _innerList;
+    private readonly List<int> _emptyIndexes;
   }
 
 

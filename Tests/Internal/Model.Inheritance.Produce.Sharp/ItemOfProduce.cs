@@ -12,8 +12,9 @@ namespace Model.Inheritance.Produce {
 
     public override void Initialize() {
       base.Initialize();
-      InitializedTypes = new List<string>();
-      InitializedTypes.Add("ItemOfProduce");
+      InitializedTypes = new List<string> {
+        "ItemOfProduce"
+      };
     }
 
     public List<string> InitializedTypes {

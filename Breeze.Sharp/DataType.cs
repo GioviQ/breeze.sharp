@@ -59,18 +59,18 @@ namespace Breeze.Sharp {
     public static List<DataType> All = new List<DataType>();
 
     public static DataType String = new DataType(typeof(string)) {
-      DefaultValue = "",
+      DefaultValue = string.Empty,
       FmtOData = FmtString,
       GetNextTempValue = GetNextString
     };
 
     public static DataType Int64 = new NumericDataType(typeof(long), "L", true);
 
-    public static DataType Int32 = new NumericDataType(typeof(int), "", true);
+    public static DataType Int32 = new NumericDataType(typeof(int), string.Empty, true);
 
-    public static DataType Int16 = new NumericDataType(typeof(short), "", true);
+    public static DataType Int16 = new NumericDataType(typeof(short), string.Empty, true);
 
-    public static DataType Byte = new NumericDataType(typeof(byte), "", true);
+    public static DataType Byte = new NumericDataType(typeof(byte), string.Empty, true);
 
     public static DataType Decimal = new NumericDataType(typeof(decimal), "m", false);
 
@@ -121,28 +121,28 @@ namespace Breeze.Sharp {
 
     public static DataType FromClrType(Type clrType) {
       var dataType = All.FirstOrDefault(dt => dt.ClrType == clrType);
-      return dataType != null ? dataType : DataType.Undefined;
+      return dataType ?? Undefined;
     }
 
     public static DataType FromName(string typeName) {
       var dataType = All.FirstOrDefault(dt => dt.Name == typeName);
-      return dataType != null ? dataType : DataType.Undefined;
+      return dataType ?? Undefined;
     }
 
     public static DataType FromEdmType(string typeName) {
-      DataType dt = DataType.Undefined;
+      DataType dt = Undefined;
       var parts = typeName.Split('.');
       if (parts.Length > 1) {
         var simpleName = parts[1];
         if (simpleName == "image") {
           // hack
-          dt = DataType.Byte;
+          dt = Byte;
         } else if (parts.Length == 2) {
-          dt = DataType.FromName(simpleName);
+          dt = FromName(simpleName);
         } else {
           // enum
           // dt = DataType.Int32;
-          dt = DataType.Undefined;
+          dt = Undefined;
         }
       }
       return dt;

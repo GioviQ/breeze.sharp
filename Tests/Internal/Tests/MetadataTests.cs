@@ -60,7 +60,7 @@ namespace Breeze.Sharp.Tests {
     // Warning: use only with metadata loaded directly from server
     public class UnderscoreRemovallNamingConvention : NamingConvention {
 
-      private Dictionary<string, string> _clientServerPropNameMap = new Dictionary<string, string>();
+      private readonly Dictionary<string, string> _clientServerPropNameMap = new Dictionary<string, string>();
 
       public override string ServerPropertyNameToClient(string serverPropertyName, StructuralType parentType) {
         if (serverPropertyName.IndexOf("_", StringComparison.InvariantCulture) != -1) {

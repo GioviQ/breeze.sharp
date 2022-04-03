@@ -44,9 +44,10 @@ namespace Breeze.Sharp.Tests {
     public async Task AttachEntityWithComplexPropsSet() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var supplier = new Supplier();
-      supplier.CompanyName = "Test1";
-      supplier.Location = new Location() { City = "Seattle", PostalCode = "11111" };
+      var supplier = new Supplier {
+        CompanyName = "Test1",
+        Location = new Location() { City = "Seattle", PostalCode = "11111" }
+      };
       em1.AttachEntity(supplier);
       Assert.IsTrue(supplier.EntityAspect.IsAttached);
       Assert.IsTrue(supplier.CompanyName == "Test1" && supplier.Location.City == "Seattle" && supplier.Location.PostalCode == "11111");
@@ -83,8 +84,9 @@ namespace Breeze.Sharp.Tests {
       var initLocation = supplier.Location;
       supplier.Location.City = "San Francisco";
       Assert.IsTrue(supplier.Location.City == "San Francisco", "city should be set");
-      var newLocation = new Location();
-      newLocation.City = "Seatle";
+      var newLocation = new Location {
+        City = "Seatle"
+      };
       supplier.Location = newLocation;
       Assert.IsTrue(supplier.Location == initLocation, "location ref should not have changed");
       Assert.IsTrue(supplier.Location.City == "Seatle", "city should have changed");
@@ -344,8 +346,9 @@ namespace Breeze.Sharp.Tests {
     public async Task SaveAdded() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var supplier = new Supplier();
-      supplier.CompanyName = "Test-" + TestFns.RandomSuffix(5);
+      var supplier = new Supplier {
+        CompanyName = "Test-" + TestFns.RandomSuffix(5)
+      };
       var companyName = supplier.CompanyName;
       supplier.Location = new Location() { Region = "USA", Address = "123 Main Street", City = "San Diego", PostalCode = "12345" };
       em1.AddEntity(supplier);
@@ -368,8 +371,9 @@ namespace Breeze.Sharp.Tests {
     public async Task DeleteTestEntities() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var supplier = new Supplier();
-      supplier.CompanyName = "Test-" + TestFns.RandomSuffix(5);
+      var supplier = new Supplier {
+        CompanyName = "Test-" + TestFns.RandomSuffix(5)
+      };
       var companyName = supplier.CompanyName;
       supplier.Location = new Location() { Region = "USA", Address = "123 Main Street", City = "San Diego", PostalCode = "12345" };
       em1.AddEntity(supplier);
@@ -416,7 +420,7 @@ namespace Breeze.Sharp.Tests {
         location.City = s;
         Assert.IsTrue(errors.Last().PropertyName == "Location.City", "location.city should have been the propertyName");
         Assert.IsTrue(errors.Count == 4);
-        Assert.IsTrue((string)valErrors.Last().Context.PropertyPath == "Location.City");
+        Assert.IsTrue(valErrors.Last().Context.PropertyPath == "Location.City");
         Assert.IsTrue(valErrors.Count == 2); // companyName_required and location.city_maxLength
         Assert.IsTrue(((INotifyDataErrorInfo)supplier).HasErrors);
         location.City = "much shorter";

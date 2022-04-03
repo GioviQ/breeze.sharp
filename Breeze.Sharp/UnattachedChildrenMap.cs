@@ -64,6 +64,6 @@ namespace Breeze.Sharp {
       }
     }
 
-    private Dictionary<EntityKey, List<NavChildren>> _map;
+    private readonly Dictionary<EntityKey, List<NavChildren>> _map;
   }
 }

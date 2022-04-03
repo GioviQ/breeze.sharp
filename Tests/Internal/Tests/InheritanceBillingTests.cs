@@ -12,7 +12,7 @@ namespace Breeze.Sharp.Tests {
   public class InheritanceBillingTests {
 
     private string _serviceName;
-    private MetadataStore _metadataStore = new MetadataStore();
+    private readonly MetadataStore _metadataStore = new MetadataStore();
 
     [TestInitialize]
     public void TestInitializeMethod() {
@@ -183,7 +183,7 @@ namespace Breeze.Sharp.Tests {
       }
       em.AddEntity(bd);
       Assert.IsTrue(bd.MiscData == "asdf");
-      return (SaveResult)null;
+      return null;
       // TODO: figure out how to save here
       //SaveResult sr = null;
       //try {

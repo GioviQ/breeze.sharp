@@ -91,7 +91,7 @@ namespace Breeze.Sharp {
     private string _localizedKey;
 
 
-    private static object __lock = new object();
+    private static readonly object __lock = new object();
 
 
     private static readonly IEnumerable<ValidationError> EmptyErrors = Enumerable.Empty<ValidationError>();

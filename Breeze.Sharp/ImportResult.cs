@@ -22,8 +22,8 @@ namespace Breeze.Sharp {
       get { return _tempKeyMap; }
     }
 
-    private SafeList<IEntity> _importedEntities;
-    private ReadOnlyDictionary<EntityKey, EntityKey> _tempKeyMap;
+    private readonly SafeList<IEntity> _importedEntities;
+    private readonly ReadOnlyDictionary<EntityKey, EntityKey> _tempKeyMap;
   }
 
 

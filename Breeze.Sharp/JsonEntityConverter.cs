@@ -277,8 +277,8 @@ namespace Breeze.Sharp {
 
 
 
-    private MappingContext _mappingContext;
-    private JsonSerializer _customSerializer;
+    private readonly MappingContext _mappingContext;
+    private readonly JsonSerializer _customSerializer;
   }
 
 

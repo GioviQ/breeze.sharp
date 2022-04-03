@@ -91,9 +91,9 @@ namespace Breeze.Sharp.Core {
       _action(_revertValue);
     }
 
-    private Action<bool> _action;
-    private bool _initialValue;
-    private bool _revertValue;
+    private readonly Action<bool> _action;
+    private readonly bool _initialValue;
+    private readonly bool _revertValue;
   }
 
 }

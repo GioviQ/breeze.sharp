@@ -85,7 +85,7 @@ namespace Breeze.Sharp.Core {
       return _map.Values.GetEnumerator();
     }
 
-    private Dictionary<T, U> _map = new Dictionary<T, U>();
+    private readonly Dictionary<T, U> _map = new Dictionary<T, U>();
 
   }
 

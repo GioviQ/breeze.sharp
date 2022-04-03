@@ -59,8 +59,9 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
 
-      var prod1 = new Product();
-      prod1.Discontinued = true;
+      var prod1 = new Product {
+        Discontinued = true
+      };
       em1.AttachEntity(prod1, EntityState.Unchanged);
       prod1.Discontinued = false;
       prod1.EntityAspect.RejectChanges();
@@ -73,8 +74,9 @@ namespace Breeze.Sharp.Tests {
       var em1 = await TestFns.NewEm(_serviceName);
 
 
-      var prod1 = new Product();
-      prod1.Discontinued = true;
+      var prod1 = new Product {
+        Discontinued = true
+      };
       em1.AddEntity(prod1);
       em1.RejectChanges();
 
@@ -380,8 +382,9 @@ namespace Breeze.Sharp.Tests {
       Assert.IsTrue(order1.Customer == cust, "should be customer");
       Assert.IsTrue(cust.Orders.Contains(order1), "should contain order1");
 
-      var order2 = new Order();
-      order2.Customer = cust;
+      var order2 = new Order {
+        Customer = cust
+      };
       Assert.IsTrue(order2.EntityAspect.IsAttached && order2.EntityAspect.EntityState.IsAdded());
       Assert.IsTrue(order2.Customer == cust, "should be customer - again");
       Assert.IsTrue(cust.Orders.Contains(order2), "should contain order2");
@@ -953,11 +956,13 @@ namespace Breeze.Sharp.Tests {
     public async Task GraphAttachChild() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var cust1 = new Customer();
-      // this test will fail if we don't give the customer a new Guid 
-      cust1.CustomerID = Guid.NewGuid();
-      var order1 = new Order();
-      order1.Customer = cust1;
+      var cust1 = new Customer {
+        // this test will fail if we don't give the customer a new Guid 
+        CustomerID = Guid.NewGuid()
+      };
+      var order1 = new Order {
+        Customer = cust1
+      };
 
       em1.AddEntity(order1);
 
@@ -1003,11 +1008,13 @@ namespace Breeze.Sharp.Tests {
         return;
       }
 
-      var order = new Order();
-      order.OrderID = 999;
+      var order = new Order {
+        OrderID = 999
+      };
       for (int i = 0; i < 3; i++) {
-        var od = new OrderDetail();
-        od.ProductID = i;
+        var od = new OrderDetail {
+          ProductID = i
+        };
         order.OrderDetails.Add(od);
       }
       em1.AttachEntity(order);
@@ -1028,12 +1035,14 @@ namespace Breeze.Sharp.Tests {
         return;
       }
 
-      var order = new Order();
-      order.OrderID = 999;
+      var order = new Order {
+        OrderID = 999
+      };
       for (int i = 0; i < 3; i++) {
-        var od = new OrderDetail();
-        od.ProductID = i;
-        od.OrderID = order.OrderID;
+        var od = new OrderDetail {
+          ProductID = i,
+          OrderID = order.OrderID
+        };
         em1.AttachEntity(od);
       }
       em1.AttachEntity(order);

@@ -176,7 +176,7 @@ namespace Breeze.Core {
 
     }
 
-    private Dictionary<TKey, WeakReference> _inner = new Dictionary<TKey, WeakReference>();
+    private readonly Dictionary<TKey, WeakReference> _inner = new Dictionary<TKey, WeakReference>();
     /// <summary>
     /// Serves as a simple "GC Monitor" that indicates whether cleanup is needed. 
     /// If _gcSentinal.IsAlive is false, GC has occurred and we should perform cleanup

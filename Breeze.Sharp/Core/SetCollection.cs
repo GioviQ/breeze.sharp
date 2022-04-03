@@ -52,7 +52,7 @@ namespace Breeze.Sharp.Core {
       return _set.GetEnumerator();
     }
 
-    private HashSet<U> _set = new HashSet<U>();
+    private readonly HashSet<U> _set = new HashSet<U>();
 
   }
 

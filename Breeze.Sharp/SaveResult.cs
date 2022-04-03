@@ -33,8 +33,8 @@ namespace Breeze.Sharp {
       get { return _keyMappings.ReadOnlyDictionary; }
     }
 
-    private SafeList<IEntity> _savedEntities;
-    private SafeDictionary<EntityKey, EntityKey> _keyMappings;
+    private readonly SafeList<IEntity> _savedEntities;
+    private readonly SafeDictionary<EntityKey, EntityKey> _keyMappings;
 
     public static SaveResult Empty = new SaveResult(Enumerable.Empty<IEntity>(), new Dictionary<EntityKey, EntityKey>());
 

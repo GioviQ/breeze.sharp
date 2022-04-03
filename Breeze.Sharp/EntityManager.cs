@@ -1504,8 +1504,8 @@ namespace Breeze.Sharp {
         _entityManager.IsLoadingEntity = _wasLoadingEntity;
       }
 
-      private EntityManager _entityManager;
-      private bool _wasLoadingEntity;
+      private readonly EntityManager _entityManager;
+      private readonly bool _wasLoadingEntity;
     }
 
     internal bool IsLoadingEntity { get; set; }
@@ -1524,7 +1524,7 @@ namespace Breeze.Sharp {
     }
 
     private EntityGroupCollection EntityGroups { get; set; }
-    private List<Action> _queuedEvents = new List<Action>();
+    private readonly List<Action> _queuedEvents = new List<Action>();
     private bool _changeNotificationEnabled = true;
     private DataService _dataService;
     private QueryOptions _defaultQueryOptions;

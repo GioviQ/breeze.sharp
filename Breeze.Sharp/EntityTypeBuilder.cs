@@ -137,11 +137,11 @@ namespace Breeze.Sharp {
         isScalar = true;
       }
 
-      var np = new NavigationProperty(pInfo.Name);
-
-      np.IsScalar = isScalar;
-      // np.EntityTypeName = TypeNameInfo.FromClrTypeName(targetType.FullName).Name;
-      np.EntityType = MetadataStore.GetEntityType(targetType);
+      var np = new NavigationProperty(pInfo.Name) {
+        IsScalar = isScalar,
+        // np.EntityTypeName = TypeNameInfo.FromClrTypeName(targetType.FullName).Name;
+        EntityType = MetadataStore.GetEntityType(targetType)
+      };
       // may change later
       np.AssociationName = entityType.Name + "_" + np.Name;
 

@@ -213,7 +213,7 @@ namespace Breeze.Sharp {
     }
 
     public Dictionary<string, T> GetMap<T>(string propName) {
-      var map = (JObject)GetToken<JObject>(propName);
+      var map = GetToken<JObject>(propName);
 
       var rmap = new Dictionary<string, T>();
       if (map == null) return rmap;
@@ -224,7 +224,7 @@ namespace Breeze.Sharp {
     }
 
     public Dictionary<string, object> GetMap(string propName, Func<string, Type> toTypeFn) {
-      var map = (JObject)GetToken<JObject>(propName);
+      var map = GetToken<JObject>(propName);
       if (map == null) return null;
       var rmap = new Dictionary<string, object>();
       foreach (var kvp in map) {
@@ -235,7 +235,7 @@ namespace Breeze.Sharp {
     }
 
     public JNode GetJNode(string propName) {
-      var item = (JObject)GetToken<JObject>(propName);
+      var item = GetToken<JObject>(propName);
       if (item == null) return null;
       var jNode = new JNode(item);
       return jNode;
@@ -344,9 +344,10 @@ namespace Breeze.Sharp {
 
     public static JNode DeserializeFrom(TextReader textReader) {
       var serializer = new JsonSerializer();
-      var reader = new JsonTextReader(textReader);
-      // needed because we need to set the DateParseHandling to work with DataTimeOffsets
-      reader.DateParseHandling = DateParseHandling.DateTimeOffset;
+      var reader = new JsonTextReader(textReader) {
+        // needed because we need to set the DateParseHandling to work with DataTimeOffsets
+        DateParseHandling = DateParseHandling.DateTimeOffset
+      };
       var jo = JObject.Load(reader);
       //if (reader.Read() && reader.TokenType != JsonToken.Comment) {
       //  JObject.Parse(json);
@@ -402,7 +403,7 @@ namespace Breeze.Sharp {
 
     internal JObject _jo;
 
-    private static JsonSerializer CamelCaseSerializer = CreateCamelCaseSerializer();
+    private static readonly JsonSerializer CamelCaseSerializer = CreateCamelCaseSerializer();
 
     private static JsonSerializer CreateCamelCaseSerializer() {
       var s = new JsonSerializer() {
@@ -412,7 +413,7 @@ namespace Breeze.Sharp {
       return s;
     }
 
-    private static JTokenEqualityComparer EqualityComparer = new JTokenEqualityComparer();
+    private static readonly JTokenEqualityComparer EqualityComparer = new JTokenEqualityComparer();
   }
 
   public class DictionaryKeysAreNotPropertyNamesJsonConverter : JsonConverter {

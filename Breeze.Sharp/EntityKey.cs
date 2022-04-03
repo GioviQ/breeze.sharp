@@ -44,9 +44,10 @@ namespace Breeze.Sharp {
 
     // should be called internally when we don't need to go thru coercion.
     internal static EntityKey Create(EntityType entityType, params object[] values) {
-      var ek = new EntityKey();
-      ek.EntityType = entityType;
-      ek.ClrType = entityType.ClrType;
+      var ek = new EntityKey {
+        EntityType = entityType,
+        ClrType = entityType.ClrType
+      };
       ek.InitializeValues(values, false);
       return ek;
     }

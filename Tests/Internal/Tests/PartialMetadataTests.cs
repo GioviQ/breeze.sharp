@@ -15,7 +15,7 @@ namespace Breeze.Sharp.Tests {
   [TestClass]
   public class PartialMetadataTests {
 
-    private string _serviceName = TestFns.serviceName;
+    private readonly string _serviceName = TestFns.serviceName;
 
     [TestInitialize]
     public void TestInitializeMethod() {
@@ -48,8 +48,9 @@ namespace Breeze.Sharp.Tests {
     [TestMethod]
     public async Task MetadataMissingClrProperty() {
 
-      var ms = new MetadataStore();
-      ms.NamingConvention = new MorphedClassNamingConvention();
+      var ms = new MetadataStore {
+        NamingConvention = new MorphedClassNamingConvention()
+      };
       var em = new EntityManager(_serviceName, ms);
 
       em.MetadataStore.AllowedMetadataMismatchTypes = MetadataMismatchTypes.AllAllowable;

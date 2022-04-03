@@ -184,7 +184,7 @@ namespace Breeze.Sharp.Core {
       return validAssemblies;
     }
 
-    private static List<Assembly> __invalidAssemblies = new List<Assembly>();
+    private static readonly List<Assembly> __invalidAssemblies = new List<Assembly>();
 
     #endregion
 
@@ -257,7 +257,7 @@ namespace Breeze.Sharp.Core {
       __nullableInfoMap[typeof(T)] = new NullableInfo(typeof(Nullable<T>), default(T));
     }
 
-    private static Dictionary<Type, NullableInfo> __nullableInfoMap = new Dictionary<Type, NullableInfo>();
+    private static readonly Dictionary<Type, NullableInfo> __nullableInfoMap = new Dictionary<Type, NullableInfo>();
 
     private class NullableInfo {
       public NullableInfo(Type pNullableType, object pDefaultValue) {

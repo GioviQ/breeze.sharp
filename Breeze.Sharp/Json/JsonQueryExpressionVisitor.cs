@@ -291,8 +291,9 @@ namespace Breeze.Sharp.Json {
         (MemberExpression)lambdaExpression.Body : ((UnaryExpression)lambdaExpression.Body).Operand as MemberExpression;
 
       if (body != null) {
-        var exp = new List<string>();
-        exp.Add(body.Member.Name);
+        var exp = new List<string> {
+          body.Member.Name
+        };
 
         while (body.Expression is MemberExpression) {
           body = (MemberExpression)body.Expression;

@@ -281,9 +281,10 @@ namespace Breeze.Sharp.Tests {
     public async Task DeleteWithoutQuery() {
       var em1 = await TestFns.NewEm(_serviceName);
 
-      var emp = new Employee();
-      emp.FirstName = "Test Fn";
-      emp.LastName = "Test Fn";
+      var emp = new Employee {
+        FirstName = "Test Fn",
+        LastName = "Test Fn"
+      };
       em1.AddEntity(emp);
       var sr = await em1.SaveChanges();
 
@@ -751,19 +752,21 @@ namespace Breeze.Sharp.Tests {
     }
 
     private TwoCusts CreateParentAndChildren(EntityManager em) {
-      var cust1 = new Customer();
-      cust1.CompanyName = "Test1_" + TestFns.RandomSuffix(8);
-      cust1.City = "Oakland";
-      cust1.RowVersion = 13;
-      cust1.Fax = "510 999-9999";
+      var cust1 = new Customer {
+        CompanyName = "Test1_" + TestFns.RandomSuffix(8),
+        City = "Oakland",
+        RowVersion = 13,
+        Fax = "510 999-9999"
+      };
       em.AddEntity(cust1);
       var cust2 = em.CreateEntity<Customer>();
       cust2.CompanyName = "Test2_" + TestFns.RandomSuffix(8);
       cust2.City = "Emeryville";
       cust2.RowVersion = 1;
       cust2.Fax = "510 888-8888";
-      var order1 = new Order();
-      order1.OrderDate = DateTime.Today;
+      var order1 = new Order {
+        OrderDate = DateTime.Today
+      };
       var order2 = em.CreateEntity<Order>();
       order1.OrderDate = DateTime.Today;
       cust1.Orders.Add(order1);

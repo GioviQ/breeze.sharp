@@ -66,7 +66,7 @@ namespace Breeze.Sharp {
 
     private INotifyDataErrorInfo INotifyDataErrorInfoImpl {
       get {
-        return (INotifyDataErrorInfo)ComplexAspect;
+        return ComplexAspect;
       }
     }
   }

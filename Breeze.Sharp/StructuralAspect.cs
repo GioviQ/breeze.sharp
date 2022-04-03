@@ -146,8 +146,9 @@ namespace Breeze.Sharp {
     }
 
     protected internal void ValidateInternal() {
-      var vc = new ValidationContext(StructuralObject);
-      vc.IsMutable = true;
+      var vc = new ValidationContext(StructuralObject) {
+        IsMutable = true
+      };
 
       // PERF: 
       // Not using LINQ here because we want to reuse the same

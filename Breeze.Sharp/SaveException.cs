@@ -55,9 +55,9 @@ namespace Breeze.Sharp {
 
     public bool IsServerError { get; private set; }
 
-    private string _message;
-    private SafeList<EntityError> _entityErrors;
-    private IEnumerable<ValidationError> _validationErrors;
+    private readonly string _message;
+    private readonly SafeList<EntityError> _entityErrors;
+    private readonly IEnumerable<ValidationError> _validationErrors;
   }
 
   /// <summary>
@@ -98,11 +98,13 @@ namespace Breeze.Sharp {
             }
           }
 
-          var vc = new ValidationContext(Entity);
-          vc.Property = Property;
+          var vc = new ValidationContext(Entity) {
+            Property = Property
+          };
           var veKey = (ErrorName ?? ErrorMessage) + (PropertyName ?? "");
-          var ve = new ValidationError(null, vc, ErrorMessage, veKey);
-          ve.IsServerError = true;
+          var ve = new ValidationError(null, vc, ErrorMessage, veKey) {
+            IsServerError = true
+          };
           Entity.EntityAspect.ValidationErrors.Add(ve);
         }
       } catch (Exception e) {

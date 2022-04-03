@@ -40,7 +40,7 @@ namespace Breeze.Sharp {
 
     public static string MetadataVersion = "1.0.3";
 
-    private Regex regExGeneric = new Regex(@"`\d+");
+    private readonly Regex regExGeneric = new Regex(@"`\d+");
 
     public static MetadataStore Detached {
       get { return __detached; }
@@ -295,7 +295,7 @@ namespace Breeze.Sharp {
         }
         return result;
       } else if (okIfNotFound) {
-        return (T)null;
+        return null;
       } else {
         throw MissingTypeException(typeName);
       }
@@ -652,7 +652,7 @@ namespace Breeze.Sharp {
           T cachedInternable;
           if (JNodeMap.TryGetValue(jNode, out cachedInternable)) {
             cachedInternable.IsInterned = true;
-            return (T)cachedInternable;
+            return cachedInternable;
           } else {
             JNodeMap[jNode] = internable;
             internable.IsInterned = true;
@@ -696,7 +696,7 @@ namespace Breeze.Sharp {
 
     #region Private vars
 
-    private static object __lock = new object();
+    private static readonly object __lock = new object();
     private static int __nextStoreID = 1;
     // Note: the two lines above need to appear before this next one 
     private static MetadataStore __detached = new MetadataStore();
@@ -722,8 +722,8 @@ namespace Breeze.Sharp {
     private readonly Dictionary<EntityType, string> _defaultResourceNameMap = new Dictionary<EntityType, string>();
     private readonly Dictionary<string, EntityType> _resourceNameEntityTypeMap = new Dictionary<string, EntityType>();
 
-    private InternCache<Validator> _validatorCache = new InternCache<Validator>();
-    private InternCache<NamingConvention> _namingConventionCache = new InternCache<NamingConvention>();
+    private readonly InternCache<Validator> _validatorCache = new InternCache<Validator>();
+    private readonly InternCache<NamingConvention> _namingConventionCache = new InternCache<NamingConvention>();
 
 
     private readonly Dictionary<string, Type> _namingConventionMap = new Dictionary<string, Type>();

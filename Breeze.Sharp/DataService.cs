@@ -191,7 +191,7 @@ namespace Breeze.Sharp {
     private HttpClient _httpClient;
     private string _serviceName;
     private static HttpMessageHandler __defaultHttpMessageHandler;
-    private static object __lock = new object();
+    private static readonly object __lock = new object();
 
   }
 
