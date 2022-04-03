@@ -1,37 +1,32 @@
-﻿using System.ComponentModel;
 using Breeze.Sharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Breeze.Sharp.Core;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace Model.Edmunds {
 
   public static class Config {
     public static void Initialize(MetadataStore metadataStore) {
-      
+
 
       var makeBuilder = new EntityTypeBuilder<Make>(metadataStore);
       makeBuilder.DataProperty(make => make.Id).IsPartOfKey();
       makeBuilder.DataProperty(make => make.Name).MaxLength(40);
       // makeBuilder.NavigationProperty(make => make.Models).HasInverse(model => model.Make);
-      
+
       var modelBuilder = new EntityTypeBuilder<Model>(metadataStore);
       modelBuilder.DataProperty(model => model.Id).IsPartOfKey();
       modelBuilder.NavigationProperty(model => model.Make)
         .HasForeignKey(model => model.MakeId)
         .HasInverse(make => make.Models);
-       
-      
+
+
     }
   }
 
   public class EdmundsNamingConvention : NamingConvention {
     public EdmundsNamingConvention() {
-      
+
     }
 
     public override string ClientPropertyNameToServer(string serverName, StructuralType parentType) {
@@ -42,13 +37,14 @@ namespace Model.Edmunds {
       }
     }
 
-    public override String ServerPropertyNameToClient(String serverName, StructuralType parentType) {
+    public override string ServerPropertyNameToClient(string serverName, StructuralType parentType) {
       if (parentType.Namespace == "Model.Edmunds") {
         return serverName.Substring(0, 1).ToUpper() + serverName.Substring(1);
       } else {
         return base.ServerPropertyNameToClient(serverName, parentType);
-      }}
-    
+      }
+    }
+
   }
 
   public class EdmundsJsonResultsAdapter : IJsonResultsAdapter {
@@ -59,7 +55,7 @@ namespace Model.Edmunds {
 
     public JToken ExtractResults(JToken node) {
       JToken token;
-      var rootNode = (JObject) node;
+      var rootNode = (JObject)node;
       if (rootNode.TryGetValue("makeHolder", out token)) {
         return token;
       }
@@ -88,7 +84,7 @@ namespace Model.Edmunds {
         var catsProp = node.Property("categories");
         if (catsProp != null) {
           var styleProps = catsProp["Vehicle Style"];
-          var styles = styleProps.Select(t => t.Value<String>()).ToAggregateString(", ");
+          var styles = styleProps.Select(t => t.Value<string>()).ToAggregateString(", ");
           node.Add("vehicleStyles", new JValue(styles));
         }
         result.ServerTypeNameInfo = new TypeNameInfo("Model", "");
@@ -118,18 +114,18 @@ namespace Model.Edmunds {
       set { SetValue(value); }
     }
 
-    public String Name {
-      get { return GetValue<String>(); }
-      set { SetValue(value);}
-    }
-
-    public String NiceName {
-      get { return GetValue<String>(); }
+    public string Name {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
 
-    public Object ModelLinks {
-      get { return GetValue<Object>(); }
+    public string NiceName {
+      get { return GetValue<string>(); }
+      set { SetValue(value); }
+    }
+
+    public object ModelLinks {
+      get { return GetValue<object>(); }
       set { SetValue(value); }
     }
 
@@ -150,38 +146,38 @@ namespace Model.Edmunds {
       set { SetValue(value); }
     }
 
-    public String MakeName {
-      get { return GetValue<String>(); }
+    public string MakeName {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String MakeNiceName {
-      get { return GetValue<String>(); }
+    public string MakeNiceName {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String Name {
-      get { return GetValue<String>(); }
+    public string Name {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String NiceName {
-      get { return GetValue<String>(); }
+    public string NiceName {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String VehicleStyles {
-      get { return GetValue<String>(); }
+    public string VehicleStyles {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String VehicleSizes {
-      get { return GetValue<String>(); }
+    public string VehicleSizes {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public Object Categories {
-      get { return GetValue<Object>(); }
+    public object Categories {
+      get { return GetValue<object>(); }
       set { SetValue(value); }
     }
 
     public Make Make {
       get { return GetValue<Make>(); }
-      set { SetValue(value);}
+      set { SetValue(value); }
     }
   }
 }

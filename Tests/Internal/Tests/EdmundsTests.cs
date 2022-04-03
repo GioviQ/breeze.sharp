@@ -1,17 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.Sharp;
-using Breeze.Sharp.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Foo;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
 //using Model.Edmunds;
 
 
@@ -28,18 +14,18 @@ using System.Reflection;
 
 //    [TestInitialize]
 //    public void TestInitializeMethod() {
-      
+
 //      Configuration.Instance.ProbeAssemblies(typeof(Make).Assembly);
-      
+
 //      var serviceName = "http://api.edmunds.com/v1/api/"; // edmunds
 //      _dataService = new DataService(serviceName) {HasServerMetadata = false};
-      
+
 //    }
 
 //    [TestCleanup]
 //    public void TearDown() {
-      
-      
+
+
 //    }
 
 
@@ -67,9 +53,9 @@ using System.Reflection;
 //      return map;
 //    }
 
-    
+
 //  }
 
 
-    
+
 //}

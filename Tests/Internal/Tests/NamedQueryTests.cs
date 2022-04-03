@@ -1,4 +1,4 @@
-﻿using Foo;
+using Foo;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;

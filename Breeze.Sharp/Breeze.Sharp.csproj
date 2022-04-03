@@ -122,11 +122,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="__RequestedFeatures.txt" />
-    <Content Include="_Status.txt" />
-    <None Include="__Notes.md" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="LocalizedMessages.resx" />
   </ItemGroup>
   <ItemGroup>

@@ -1,46 +1,41 @@
-﻿using System.IO;
-
+﻿
 using Breeze.Sharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Model.CodeCamper {
 
   public class Person : BaseEntity {
-    public Int32 Id {
-      get { return GetValue<Int32>(); }
+    public int Id {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
-    public String FirstName {
-      get { return GetValue<String>(); }
+    public string FirstName {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String LastName {
-      get { return GetValue<String>(); }
+    public string LastName {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String Email {
-      get { return GetValue<String>(); }
+    public string Email {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String Blog {
-      get { return GetValue<String>(); }
+    public string Blog {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String Twitter {
-      get { return GetValue<String>(); }
+    public string Twitter {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String Gender {
-      get { return GetValue<String>(); }
+    public string Gender {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String ImageSource {
-      get { return GetValue<String>(); }
+    public string ImageSource {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
     public NavigationSet<Session> SpeakerSessions {
@@ -48,46 +43,46 @@ namespace Model.CodeCamper {
       set { SetValue(value); }
     }
   }
-  
+
   public class Session : BaseEntity {
-    public Int32 Id {
-      get { return GetValue<Int32>(); }
+    public int Id {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
-    public String Title {
-      get { return GetValue<String>(); }
+    public string Title {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String Code {
-      get { return GetValue<String>(); }
+    public string Code {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String Description {
-      get { return GetValue<String>(); }
+    public string Description {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String Level {
-      get { return GetValue<String>(); }
+    public string Level {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public String Tags {
-      get { return GetValue<String>(); }
+    public string Tags {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
-    public Int32 RoomId {
-      get { return GetValue<Int32>(); }
+    public int RoomId {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
-    public Int32 SpeakerId {
-      get { return GetValue<Int32>(); }
+    public int SpeakerId {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
-    public Int32 TimeSlotId {
-      get { return GetValue<Int32>(); }
+    public int TimeSlotId {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
-    public Int32 TrackId {
-      get { return GetValue<Int32>(); }
+    public int TrackId {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
     public Room Room {
@@ -109,19 +104,19 @@ namespace Model.CodeCamper {
   }
 
   public class Room : BaseEntity {
-    public Int32 Id {
-      get { return GetValue<Int32>(); }
+    public int Id {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
-    public String Name {
-      get { return GetValue<String>(); }
+    public string Name {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
   }
 
   public class TimeSlot : BaseEntity {
-    public Int32 Id {
-      get { return GetValue<Int32>(); }
+    public int Id {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
     public DateTime Start {
@@ -132,19 +127,19 @@ namespace Model.CodeCamper {
       get { return GetValue<bool>(); }
       set { SetValue(value); }
     }
-    public Int32 Duration {
-      get { return GetValue<Int32>(); }
+    public int Duration {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
   }
 
   public class Track : BaseEntity {
-    public Int32 Id {
-      get { return GetValue<Int32>(); }
+    public int Id {
+      get { return GetValue<int>(); }
       set { SetValue(value); }
     }
-    public String Name {
-      get { return GetValue<String>(); }
+    public string Name {
+      get { return GetValue<string>(); }
       set { SetValue(value); }
     }
   }

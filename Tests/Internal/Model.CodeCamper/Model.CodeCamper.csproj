@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Model.CodeCamper</RootNamespace>
     <AssemblyName>Model.CodeCamper</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,9 +44,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Breeze.Sharp\Breeze.Sharp.csproj">
-      <Project>{54b1ce10-2847-4565-839a-26da3a51af38}</Project>
-      <Name>Breeze.Sharp</Name>
+    <ProjectReference Include="..\..\..\Breeze.Sharp\Breeze.Sharp.Standard.csproj">
+      <Project>{1db4ed1b-1041-470a-8d45-689a05e5d4f5}</Project>
+      <Name>Breeze.Sharp.Standard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,6 +1,5 @@
 ﻿using Breeze.Sharp;
 using System;
-using System.Spatial;
 
 namespace Foo {
 
