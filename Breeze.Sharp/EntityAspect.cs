@@ -226,7 +226,7 @@ namespace Breeze.Sharp {
     #region Misc overrides
 
     /// <summary>
-    /// <see cref="Object.Equals(object)"/>.
+    /// <see cref="object.Equals(object)"/>.
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
@@ -240,7 +240,7 @@ namespace Breeze.Sharp {
     }
 
     /// <summary>
-    /// <see cref="Object.GetHashCode"/>.
+    /// <see cref="object.GetHashCode"/>.
     /// </summary>
     /// <returns></returns>
     public override int GetHashCode() {

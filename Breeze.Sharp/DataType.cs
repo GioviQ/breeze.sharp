@@ -40,8 +40,8 @@ namespace Breeze.Sharp {
       All.Add(this);
     }
 
-    public static Int64 NextNumber = -1;
-    public static Int64 NextNumberIncrement = -1;
+    public static long NextNumber = -1;
+    public static long NextNumberIncrement = -1;
 
     public static string StringPrefix = "K_";
 
@@ -64,19 +64,19 @@ namespace Breeze.Sharp {
       GetNextTempValue = GetNextString
     };
 
-    public static DataType Int64 = new NumericDataType(typeof(Int64), "L", true);
+    public static DataType Int64 = new NumericDataType(typeof(long), "L", true);
 
-    public static DataType Int32 = new NumericDataType(typeof(Int32), "", true);
+    public static DataType Int32 = new NumericDataType(typeof(int), "", true);
 
-    public static DataType Int16 = new NumericDataType(typeof(Int16), "", true);
+    public static DataType Int16 = new NumericDataType(typeof(short), "", true);
 
-    public static DataType Byte = new NumericDataType(typeof(Byte), "", true);
+    public static DataType Byte = new NumericDataType(typeof(byte), "", true);
 
-    public static DataType Decimal = new NumericDataType(typeof(Decimal), "m", false);
+    public static DataType Decimal = new NumericDataType(typeof(decimal), "m", false);
 
-    public static DataType Double = new NumericDataType(typeof(Double), "d", false);
+    public static DataType Double = new NumericDataType(typeof(double), "d", false);
 
-    public static DataType Single = new NumericDataType(typeof(Single), "f", false);
+    public static DataType Single = new NumericDataType(typeof(float), "f", false);
 
     public static DataType DateTime = new DataType(typeof(DateTime)) {
       DefaultValue = new DateTime(1900, 1, 1),
@@ -97,7 +97,7 @@ namespace Breeze.Sharp {
       FmtOData = FmtTime,
     };
 
-    public static DataType Boolean = new DataType(typeof(Boolean)) {
+    public static DataType Boolean = new DataType(typeof(bool)) {
       DefaultValue = false,
       FmtOData = FmtBoolean,
     };
@@ -108,7 +108,7 @@ namespace Breeze.Sharp {
       GetNextTempValue = () => GetNextGuid()
     };
 
-    public static DataType Binary = new DataType(typeof(Byte[])) {
+    public static DataType Binary = new DataType(typeof(byte[])) {
       Name = "Binary",
       DefaultValue = null,
       FmtOData = FmtBinary,
@@ -149,7 +149,7 @@ namespace Breeze.Sharp {
     }
 
     protected static string GetNextString() {
-      return StringPrefix + GetNextNumber(typeof(Int64)).ToString();
+      return StringPrefix + GetNextNumber(typeof(long)).ToString();
     }
 
     protected static object GetNextNumber(Type clrType) {
@@ -214,13 +214,13 @@ namespace Breeze.Sharp {
 
     protected static string FmtBoolean(object val) {
       if (val == null) return null;
-      var tmp = (Boolean)val;
+      var tmp = (bool)val;
       return tmp ? "true" : "false";
     }
 
     protected static string FmtBinary(object val) {
       if (val == null) return null;
-      var tmp = (Byte[])val;
+      var tmp = (byte[])val;
       return "binary'" + tmp + "'";
     }
 

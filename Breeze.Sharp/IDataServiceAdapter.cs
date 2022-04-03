@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Breeze.Sharp {
@@ -8,7 +7,7 @@ namespace Breeze.Sharp {
   /// Client side interface that describes the interaction between a DataService and a remote data service.
   /// </summary>
   public interface IDataServiceAdapter {
-    String Name { get; }
+    string Name { get; }
     IJsonResultsAdapter JsonResultsAdapter { get; }
     Task<SaveResult> SaveChanges(IEnumerable<IEntity> entitiesToSave, SaveOptions saveOptions);
   }

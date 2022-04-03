@@ -75,7 +75,7 @@ namespace Breeze.Sharp {
 
     #region Thread checking
 
-    public Int32 CurrentThreadId {
+    public int CurrentThreadId {
       get {
 
         if (__threadLocalId == null) {
@@ -89,7 +89,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public Int32 AuthorizedThreadId {
+    public int AuthorizedThreadId {
       get {
         if (_authorizedThreadId == 0) {
           _authorizedThreadId = CurrentThreadId;
@@ -112,9 +112,9 @@ namespace Breeze.Sharp {
     }
 
     [ThreadStatic]
-    private static ThreadLocal<Int32> __threadLocalId;
-    private static Int32 __nextThreadId = 34;
-    private Int32 _authorizedThreadId;
+    private static ThreadLocal<int> __threadLocalId;
+    private static int __nextThreadId = 34;
+    private int _authorizedThreadId;
     private readonly object _reificationLock = new object();
 
     #endregion

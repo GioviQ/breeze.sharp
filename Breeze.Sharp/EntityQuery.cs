@@ -280,7 +280,7 @@ namespace Breeze.Sharp {
         if (pinfo == null) return resourcePath;
         var enumType = TypeFns.GetNonNullableType(pinfo.PropertyType);
         if (!enumType.GetTypeInfo().IsEnum) return resourcePath;
-        var enumString = "'" + Enum.GetName(enumType, Int32.Parse(enumValue)) + "'";
+        var enumString = "'" + Enum.GetName(enumType, int.Parse(enumValue)) + "'";
         var result = m.Groups["prefix"].Value
                    + enumName + "%20eq%20" + enumString
                    + m.Groups["suffix"].Value;

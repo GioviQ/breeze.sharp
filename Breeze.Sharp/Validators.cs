@@ -163,8 +163,8 @@ namespace Breeze.Sharp {
   /// <summary>
   /// Specialization of the <see cref="RangeValidator{T}"/> for Int32's.
   /// </summary>
-  public class Int32RangeValidator : RangeValidator<Int32> {
-    public Int32RangeValidator(Int32 min, Int32 max, bool includeMinEndpoint = true, bool includeMaxEndpoint = true)
+  public class Int32RangeValidator : RangeValidator<int> {
+    public Int32RangeValidator(int min, int max, bool includeMinEndpoint = true, bool includeMaxEndpoint = true)
       : base(min, max, includeMinEndpoint, includeMaxEndpoint) {
     }
   }

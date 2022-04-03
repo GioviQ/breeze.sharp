@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 
 namespace Breeze.Sharp {
@@ -16,7 +15,7 @@ namespace Breeze.Sharp {
   [JsonObject]
   public class QueryResult<T> : IEnumerable<T>, IHasInlineCount {
     public IEnumerable<T> Results { get; set; }
-    public Int64? InlineCount { get; set; }
+    public long? InlineCount { get; set; }
     public IEnumerator<T> GetEnumerator() {
       return Results.GetEnumerator();
     }
@@ -34,7 +33,7 @@ namespace Breeze.Sharp {
     /// <summary>
     /// The actual inline count.
     /// </summary>
-    Int64? InlineCount { get; }
+    long? InlineCount { get; }
   }
 
 

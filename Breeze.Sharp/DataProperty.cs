@@ -292,7 +292,7 @@ namespace Breeze.Sharp {
       }
     }
 
-    public Int64? MaxLength { get; internal set; }
+    public long? MaxLength { get; internal set; }
 
     public string EnumTypeName { get; internal set; }
     public string RawTypeName { get; internal set; }

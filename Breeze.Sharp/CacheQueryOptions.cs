@@ -103,7 +103,7 @@ namespace Breeze.Sharp {
     }
 
     /// <summary>
-    /// See <see cref="Object.Equals(object)"/>.
+    /// See <see cref="object.Equals(object)"/>.
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>

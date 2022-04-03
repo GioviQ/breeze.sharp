@@ -116,10 +116,10 @@ namespace Breeze.Sharp.Tests {
     }
 
     // in practice should always return a monotonically increasing integer - even across separate runs.
-    public static Int32 GetNextInt() {
+    public static int GetNextInt() {
       return __seedInt++;
     }
 
-    private static Int32 __seedInt = (DateTime.Now - new DateTime(2014, 3, 1)).Milliseconds;
+    private static int __seedInt = (DateTime.Now - new DateTime(2014, 3, 1)).Milliseconds;
   }
 }

@@ -179,7 +179,7 @@ namespace Breeze.Sharp {
       }
 
       // TODO: nit - don't set maxLength if null;
-      var maxLength = (maxLengthVal == null || maxLengthVal == "Max") ? (Int64?)null : Int64.Parse(maxLengthVal);
+      var maxLength = (maxLengthVal == null || maxLengthVal == "Max") ? (long?)null : long.Parse(maxLengthVal);
       var concurrencyMode = concurrencyModeVal == "fixed" ? ConcurrencyMode.Fixed : ConcurrencyMode.None;
 
 
@@ -365,7 +365,7 @@ namespace Breeze.Sharp {
         dp._validators.Add(new RequiredValidator());
       }
       if (dp.DataType == DataType.String && dp.MaxLength.HasValue) {
-        var vr = new MaxLengthValidator((Int32)dp.MaxLength.Value);
+        var vr = new MaxLengthValidator((int)dp.MaxLength.Value);
         dp._validators.Add(vr);
       }
     }

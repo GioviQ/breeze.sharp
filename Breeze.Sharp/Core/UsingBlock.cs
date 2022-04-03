@@ -54,7 +54,7 @@ namespace Breeze.Sharp.Core {
     /// Create an instance with the specified action, defaulting the initial value to True.
     /// </summary>
     /// <param name="action"></param>
-    public BooleanUsingBlock(Action<Boolean> action)
+    public BooleanUsingBlock(Action<bool> action)
       : this(action, true, false) {
     }
 
@@ -66,7 +66,7 @@ namespace Breeze.Sharp.Core {
     /// <remarks>
     /// The action is performed with the initial value provided and its inverse.
     /// </remarks>
-    public BooleanUsingBlock(Action<Boolean> action, bool initialValue) :
+    public BooleanUsingBlock(Action<bool> action, bool initialValue) :
       this(action, initialValue, !initialValue) {
     }
 
@@ -77,7 +77,7 @@ namespace Breeze.Sharp.Core {
     /// <param name="action"></param>
     /// <param name="initialValue"></param>
     /// <param name="revertValue"></param>
-    public BooleanUsingBlock(Action<Boolean> action, bool initialValue, bool revertValue) {
+    public BooleanUsingBlock(Action<bool> action, bool initialValue, bool revertValue) {
       _action = action;
       _initialValue = initialValue;
       _revertValue = revertValue;
@@ -91,7 +91,7 @@ namespace Breeze.Sharp.Core {
       _action(_revertValue);
     }
 
-    private Action<Boolean> _action;
+    private Action<bool> _action;
     private bool _initialValue;
     private bool _revertValue;
   }

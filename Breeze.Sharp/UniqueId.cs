@@ -44,11 +44,11 @@ namespace Breeze.Sharp {
     }
 
     /// <summary>
-    /// See <see cref="Object.Equals(object)"/>.
+    /// See <see cref="object.Equals(object)"/>.
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public override Boolean Equals(object obj) {
+    public override bool Equals(object obj) {
       if (this == obj) return true;
       var other = obj as UniqueId;
       if (other == null) return false;
@@ -60,7 +60,7 @@ namespace Breeze.Sharp {
 
 
     /// <summary>
-    /// See <see cref="Object.GetHashCode"/>.
+    /// See <see cref="object.GetHashCode"/>.
     /// </summary>
     /// <returns></returns>
     public override int GetHashCode() {

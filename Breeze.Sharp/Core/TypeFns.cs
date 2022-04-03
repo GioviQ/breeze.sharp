@@ -229,19 +229,19 @@ namespace Breeze.Sharp.Core {
       get {
         lock (__nullableInfoMap) {
           if (__nullableInfoMap.Count == 0) {
-            UpdateNullableInfoMap<Byte>();
-            UpdateNullableInfoMap<SByte>();
-            UpdateNullableInfoMap<Int16>();
-            UpdateNullableInfoMap<UInt16>();
-            UpdateNullableInfoMap<Int32>();
-            UpdateNullableInfoMap<UInt32>();
-            UpdateNullableInfoMap<Int64>();
-            UpdateNullableInfoMap<UInt64>();
-            UpdateNullableInfoMap<Single>();
-            UpdateNullableInfoMap<Double>();
-            UpdateNullableInfoMap<Decimal>();
-            UpdateNullableInfoMap<Boolean>();
-            UpdateNullableInfoMap<Char>();
+            UpdateNullableInfoMap<byte>();
+            UpdateNullableInfoMap<sbyte>();
+            UpdateNullableInfoMap<short>();
+            UpdateNullableInfoMap<ushort>();
+            UpdateNullableInfoMap<int>();
+            UpdateNullableInfoMap<uint>();
+            UpdateNullableInfoMap<long>();
+            UpdateNullableInfoMap<ulong>();
+            UpdateNullableInfoMap<float>();
+            UpdateNullableInfoMap<double>();
+            UpdateNullableInfoMap<decimal>();
+            UpdateNullableInfoMap<bool>();
+            UpdateNullableInfoMap<char>();
             UpdateNullableInfoMap<DateTime>();
             UpdateNullableInfoMap<DateTimeOffset>();
             UpdateNullableInfoMap<TimeSpan>();
