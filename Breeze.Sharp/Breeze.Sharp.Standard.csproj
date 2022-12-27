@@ -13,8 +13,14 @@
     <PackageProjectUrl>http://breeze.github.io/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GioviQ/breeze.sharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.9.19</Version>
+    <Version>0.9.20</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <!-- Declare that the Repository URL can be published to NuSpec -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Embed source files that are not tracked by the source control manager to the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Include PDB in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -32,7 +38,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Services.Client" Version="5.8.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
