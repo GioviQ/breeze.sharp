@@ -164,8 +164,8 @@ namespace Breeze.Sharp {
     }
 
     private static async Task<string> ReadResult(HttpResponseMessage response) {
-
       var result = await response.Content.ReadAsStringAsync();
+
       if (!response.IsSuccessStatusCode) {
         try {
           var json = JNode.DeserializeFrom(result);
@@ -174,6 +174,7 @@ namespace Breeze.Sharp {
 
         throw new DataServiceRequestException(response, result);
       }
+
       return result;
     }
 
