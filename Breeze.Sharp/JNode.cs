@@ -317,7 +317,7 @@ namespace Breeze.Sharp {
     }
 
     public TextWriter SerializeTo(TextWriter textWriter) {
-      var serializer = new JsonSerializer();
+      var serializer = new JsonSerializer() { MaxDepth = 128 };
       serializer.Converters.Add(new StringEnumConverter());
       serializer.Converters.Add(new TimeSpanConverter());
 
