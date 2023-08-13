@@ -1,4 +1,4 @@
-﻿
+
 using Breeze.Sharp.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -250,13 +250,15 @@ namespace Breeze.Sharp {
                 });
                 // add to existing nav set if there is one otherwise just set it. 
                 object tmp;
-                if (backingStore.TryGetValue(key, out tmp)) {
-                  var backingNavSet = (INavigationSet)tmp;
-                  navSet.Cast<IEntity>().ForEach(e => backingNavSet.Add(e));
-                } else {
-                  navSet.NavigationProperty = np;
-                  navSet.ParentEntity = targetAspect.Entity;
-                  backingStore[key] = navSet;
+                if (backingStore != null) {
+                  if (backingStore.TryGetValue(key, out tmp)) {
+                    var backingNavSet = (INavigationSet)tmp;
+                    navSet.Cast<IEntity>().ForEach(e => backingNavSet.Add(e));
+                  } else {
+                    navSet.NavigationProperty = np;
+                    navSet.ParentEntity = targetAspect.Entity;
+                    backingStore[key] = navSet;
+                  }
                 }
               }
             } else {
