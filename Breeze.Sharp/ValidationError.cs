@@ -102,6 +102,10 @@ namespace Breeze.Sharp {
       }
     }
 
+    public override string ToString() {
+      return Message;
+    }
+
     private string _key;
     private string _message;
 
