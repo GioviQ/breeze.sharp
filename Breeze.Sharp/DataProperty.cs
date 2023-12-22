@@ -55,7 +55,12 @@ namespace Breeze.Sharp {
     internal void UpdateFromJNode(JNode jNode, bool isFromServer) {
       var complexTypeName = MetadataStore.GetStructuralTypeNameFromJNode(jNode, "complexTypeName", isFromServer);
       if (complexTypeName == null) {
-        Check(DataType, DataType.FromName(jNode.Get<string>("dataType")), "DataType");
+        if (DataType != null && DataType == DataType.Undefined) {
+          // If undefined in current definition, use type from JNode.  This applies to enum types.
+          DataType = DataType.FromName(jNode.Get<string>("dataType"));
+        } else {
+          Check(DataType, DataType.FromName(jNode.Get<string>("dataType")), "DataType");
+        }
       } else {
         Check(ComplexType.Name, complexTypeName, "ComplexTypeName");
       }
