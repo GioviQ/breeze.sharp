@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -234,7 +235,7 @@ namespace Breeze.Sharp.Json {
             break;
 
           case TypeCode.DateTime:
-            sb.Append('"').Append(c.Value).Append('"');
+            sb.Append('"').Append(((DateTime)c.Value).ToString("o", CultureInfo.InvariantCulture)).Append('"');
             break;
 
           case TypeCode.Object:
