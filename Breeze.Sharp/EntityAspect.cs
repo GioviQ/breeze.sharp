@@ -274,7 +274,7 @@ namespace Breeze.Sharp {
       if (em == null) {
         throw new InvalidOperationException("There is no EntityManager associated with this entity and none was passed in.");
       }
-      em.AttachEntity(Entity, entityState);
+      em.AttachEntity(Entity, entityState, em.DefaultQueryOptions.MergeStrategy ?? MergeStrategy.Disallowed);
     }
 
 
@@ -751,7 +751,7 @@ namespace Breeze.Sharp {
       if (IsAttached) {
         if (newAspect.IsDetached) {
           if (!EntityManager.IsLoadingEntity) {
-            EntityManager.AttachEntity(newEntity, EntityState.Added);
+            EntityManager.AttachEntity(newEntity, EntityState.Added, EntityManager.DefaultQueryOptions.MergeStrategy ?? MergeStrategy.Disallowed);
           }
         } else {
           if (newAspect.EntityManager != EntityManager) {
@@ -762,7 +762,7 @@ namespace Breeze.Sharp {
         if (newAspect.IsAttached) {
           var em = newAspect.EntityManager;
           if (!em.IsLoadingEntity) {
-            em.AttachEntity(Entity, EntityState.Added);
+            em.AttachEntity(Entity, EntityState.Added, em.DefaultQueryOptions.MergeStrategy ?? MergeStrategy.Disallowed);
 
           }
         }

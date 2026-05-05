@@ -216,9 +216,9 @@ namespace Breeze.Sharp {
       }
     }
 
-    internal EntityAspect AttachEntityAspect(EntityAspect entityAspect, EntityState entityState) {
+    internal EntityAspect AttachEntityAspect(EntityAspect entityAspect, EntityState entityState, MergeStrategy mergeStrategy = MergeStrategy.Disallowed) {
       entityAspect.EntityGroup = this;
-      AddToKeyMap(entityAspect);
+      AddToKeyMap(entityAspect, entityState, mergeStrategy);
       _entityAspects.Add(entityAspect);
       entityAspect.SetEntityStateCore(entityState);
       return entityAspect;
@@ -251,11 +251,23 @@ namespace Breeze.Sharp {
 
     #region private and protected
 
-    private void AddToKeyMap(EntityAspect aspect) {
+    private void AddToKeyMap(EntityAspect aspect, EntityState entityState, MergeStrategy mergeStrategy = MergeStrategy.Disallowed) {
       try {
+
+        if (_entityKeyMap.TryGetValue(aspect.EntityKey, out var existingAspect)) {
+          if (mergeStrategy == MergeStrategy.OverwriteChanges) {
+            RemoveFromKeyMap(existingAspect);
+          } else if (mergeStrategy == MergeStrategy.PreserveChanges &&
+            (existingAspect.EntityState & EntityState.AnyAddedModifiedOrDeleted) > 0) {
+            throw new InvalidOperationException($"An entity with this key: {existingAspect.EntityKey} already exists in this EntityManager with state: {existingAspect.EntityState}");
+          } else if (mergeStrategy != MergeStrategy.Disallowed)
+            return;
+        }
+
         _entityKeyMap.Add(aspect.EntityKey, aspect);
+
       } catch (ArgumentException) {
-        throw new InvalidOperationException("An entity with this key: " + aspect.EntityKey.ToString() + " already exists in this EntityManager");
+        throw new InvalidOperationException($"An entity with this key: {aspect.EntityKey} already exists in this EntityManager with state: {aspect.EntityState}");
       }
     }
 

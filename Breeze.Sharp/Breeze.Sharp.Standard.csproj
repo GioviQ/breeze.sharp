@@ -13,7 +13,7 @@
     <PackageProjectUrl>http://breeze.github.io/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GioviQ/breeze.sharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.10.2</Version>
+    <Version>0.11</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <!-- Declare that the Repository URL can be published to NuSpec -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

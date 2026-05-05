@@ -1042,7 +1042,7 @@ namespace Breeze.Sharp {
       if (entityState == EntityState.Detached) {
         PrepareForAttach(entity);
       } else {
-        AttachEntity(entity, entityState);
+        AttachEntity(entity, entityState, DefaultQueryOptions.MergeStrategy ?? MergeStrategy.Disallowed);
       }
       return entity;
     }
@@ -1090,7 +1090,7 @@ namespace Breeze.Sharp {
     /// <param name="entity"></param>
     /// <returns></returns>
     public IEntity AddEntity(IEntity entity) {
-      return AttachEntity(entity, EntityState.Added);
+      return AttachEntity(entity, EntityState.Added, DefaultQueryOptions.MergeStrategy ?? MergeStrategy.Disallowed);
     }
 
     /// <summary>
@@ -1187,7 +1187,7 @@ namespace Breeze.Sharp {
 
     private EntityAspect AttachEntityAspect(EntityAspect entityAspect, EntityState entityState) {
       var group = GetEntityGroup(entityAspect.EntityType.ClrType);
-      group.AttachEntityAspect(entityAspect, entityState);
+      group.AttachEntityAspect(entityAspect, entityState, DefaultQueryOptions.MergeStrategy ?? MergeStrategy.Disallowed);
       if (entityState != EntityState.Modified) {
         // don't clear this if modified because it came from an earlier incarnation.
         entityAspect._originalValuesMap = null;
